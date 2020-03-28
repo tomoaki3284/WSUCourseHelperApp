@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-public class Course {
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
 
+public class Course {
     //first cell
     private String courseCRN;
     //second cell
@@ -19,15 +22,15 @@ public class Course {
     //eighth cell
     private List<String> cores;
     //fifth cell
-    private EnumMap<DayOfWeek, Hours> hoursOfDay;
+    private EnumMap<DayOfWeek, Hours> hoursOfDay; // use this to detect the overlap
+    private String timeContent;
 
     public Course() {
         cores = new ArrayList();
         hoursOfDay = new EnumMap<DayOfWeek, Hours>(DayOfWeek.class);
     }
 
-    public Course(String courseCRN, String title, String faculty, String room, double credit,
-        List<String> cores, EnumMap<DayOfWeek, Hours> hoursOfDay) {
+    public Course(String courseCRN, String title, String faculty, String room, double credit, List<String> cores, EnumMap<DayOfWeek,Hours> hoursOfDay, String timeContent) {
         this.courseCRN = courseCRN;
         this.title = title;
         this.faculty = faculty;
@@ -35,9 +38,10 @@ public class Course {
         this.credit = credit;
         this.cores = cores;
         this.hoursOfDay = hoursOfDay;
+        this.timeContent = timeContent;
     }
 
-    public Course(String courseCRN, String title, String faculty, String room, double credit) {
+    public Course(String courseCRN, String title, String faculty, String room, double credit, String timeContent) {
         this.courseCRN = courseCRN;
         this.title = title;
         this.faculty = faculty;
@@ -45,6 +49,7 @@ public class Course {
         this.credit = credit;
         this.cores = new ArrayList<String>();
         this.hoursOfDay = new EnumMap<DayOfWeek, Hours>(DayOfWeek.class);
+        this.timeContent = timeContent;
     }
 
     public String getCourseCRN() {
@@ -95,7 +100,7 @@ public class Course {
         cores.add(core);
     }
 
-    public EnumMap<DayOfWeek, Hours> getHoursOfDay() {
+    public EnumMap<DayOfWeek,Hours> getHoursOfDay() {
         return hoursOfDay;
     }
 
@@ -111,6 +116,14 @@ public class Course {
         this.hoursOfDay = hoursOfDay;
     }
 
+    public String getTimeContent() {
+        return timeContent;
+    }
+
+    public void setTimeContent(String timeContent) {
+        this.timeContent = timeContent;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -121,6 +134,8 @@ public class Course {
             ", credit=" + credit +
             ", cores=" + cores +
             ", hoursOfDay=" + hoursOfDay +
+            ", timeContent='" + timeContent + '\'' +
             "}";
     }
 }
+
