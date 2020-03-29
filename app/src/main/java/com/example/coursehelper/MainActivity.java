@@ -16,14 +16,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    static List<Course> courses = null;
+    private List<Course> courses = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new ReadCourses().execute();
+        new ReadCourses().execute("https://coursehlperwsu.s3.amazonaws.com/current-semester.json");
     }
 
     private void listUpCourses() {
@@ -33,14 +33,13 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-
     private class ReadCourses extends AsyncTask<String, Void, List<Course>> {
         @Override
-        protected List<Course> doInBackground(String... params) {
-            List<Course> courses = null;
+        protected List<Course> doInBackground(String... strings) {
             ObjectMapper mapper = new ObjectMapper();
             try {
-                URL url = new URL("https://coursehlperwsu.s3.amazonaws.com/current-semester.json");
+                String urlStr = strings[0];
+                URL url = new URL(urlStr);
                 courses = mapper.readValue(url, new TypeReference<List<Course>>(){ });
                 if(courses == null){
                     System.out.println("***Courses Object Null***");
@@ -52,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
             if(courses == null){
                 System.out.println("********************courses is NULL in AsyncTask");
             }
-
-            MainActivity.courses = courses;
 
             return courses;
         }
