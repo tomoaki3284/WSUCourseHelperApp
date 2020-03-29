@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-
 public class Course {
     //first cell
     private String courseCRN;
     //second cell
     private String title;
+    private boolean isLabCourse;
+    private String courseDescription;
     //fourth cell
     private String faculty;
     //sixth cell
@@ -50,6 +48,22 @@ public class Course {
         this.cores = new ArrayList<String>();
         this.hoursOfDay = new EnumMap<DayOfWeek, Hours>(DayOfWeek.class);
         this.timeContent = timeContent;
+    }
+
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    public void setCourseDescription(String courseDescription) {
+        this.courseDescription = courseDescription;
+    }
+
+    public boolean getIsLabCourse() {
+        return isLabCourse;
+    }
+
+    public void serIsLabCourse(boolean isLabCourse) {
+        this.isLabCourse = isLabCourse;
     }
 
     public String getCourseCRN() {
@@ -128,6 +142,8 @@ public class Course {
     public String toString() {
         return "Course{" +
             "courseCRN='" + courseCRN + '\'' +
+            ", isLabCourse=" + isLabCourse +
+            ", courseDescription='" + courseDescription + '\'' +
             ", title='" + title + '\'' +
             ", faculty='" + faculty + '\'' +
             ", room='" + room + '\'' +
@@ -138,4 +154,3 @@ public class Course {
             "}";
     }
 }
-
