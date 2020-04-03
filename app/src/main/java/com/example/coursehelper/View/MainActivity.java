@@ -1,27 +1,16 @@
 package com.example.coursehelper.View;
 
-import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.viewpager.widget.ViewPager;
-import com.example.coursehelper.Model.Course;
-import com.example.coursehelper.Model.courseArrayAdapter;
+
 import com.example.coursehelper.R;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
 import com.google.android.material.tabs.TabLayout.Tab;
 import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener;
-import java.io.IOException;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,17 +58,4 @@ public class MainActivity extends AppCompatActivity {
         // sync the swipe move with tabs
         viewPager.addOnPageChangeListener(new TabLayoutOnPageChangeListener(tabLayout));
     }
-
-//    private class ReadCourses extends AsyncTask<Object, Void, List<Course>> {
-//
-//        @Override
-//        protected List<Course> doInBackground(Object... objects) {
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<Course> courses) {
-//
-//        }
-//    }
 }

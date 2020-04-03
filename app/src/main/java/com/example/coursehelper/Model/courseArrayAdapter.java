@@ -1,13 +1,21 @@
 package com.example.coursehelper.Model;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.res.Resources.Theme;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.example.coursehelper.R;
+import com.example.coursehelper.View.CourseDescriptionDialogFragment;
 import java.util.List;
 
 public class courseArrayAdapter extends ArrayAdapter<Course> {
@@ -44,6 +52,24 @@ public class courseArrayAdapter extends ArrayAdapter<Course> {
         credit.setText(Double.toString(raw_credit));
         timeContent.setText(raw_timeContent);
 
+        view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // display Dialog
+                Bundle bundle = new Bundle();
+                bundle.putString("title", course.getTitle());
+                bundle.putString("timeContent", course.getTimeContent());
+                bundle.putString("faculty", course.getFaculty());
+                bundle.putString("room", course.getRoom());
+                bundle.putString("credit", Double.toString(course.getCredit()));
+                bundle.putString("crn", course.getCourseCRN());
+                bundle.putString("description", course.getCourseDescription());
+
+                DialogFragment dialog = CourseDescriptionDialogFragment.newInstance(bundle);
+                FragmentActivity activity = (FragmentActivity)(context);
+                dialog.show(activity.getSupportFragmentManager().beginTransaction(), "dialog");
+            }
+        });
         return view;
     }
 }

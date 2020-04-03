@@ -3,6 +3,7 @@ package com.example.coursehelper.View;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,9 +25,10 @@ import java.util.List;
  */
 public class CoursesFragment extends Fragment {
 
-    List<Course> courses;
-    // for onclick purpose
-    HashMap<String, Course> crnLinkedCourse;
+    private List<Course> courses;
+
+    // for onclick purpose on Dialog class
+    static private HashMap<String, Course> crnLinkedCourse;// maybe don't need this anymore
 
     public CoursesFragment() {
         // Required empty public constructor

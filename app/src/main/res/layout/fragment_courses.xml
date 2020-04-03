@@ -7,15 +7,15 @@
   tools:context=".View.CoursesFragment">
 
   <!-- TODO: Update blank fragment layout -->
-    <ListView
-      android:id="@+id/customListView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginLeft="10dp"
-      android:layout_marginRight="10dp"
-      android:layout_marginTop="5dp"
-      android:layout_marginBottom="5dp"
-      android:divider="@android:color/transparent"
-      android:dividerHeight="2dp" />
+  <ListView
+    android:id="@+id/customListView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="2dp" />
 
 </FrameLayout>
