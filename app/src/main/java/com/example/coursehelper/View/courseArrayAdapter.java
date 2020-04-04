@@ -1,9 +1,7 @@
-package com.example.coursehelper.Model;
+package com.example.coursehelper.View;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +9,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.coursehelper.Model.Course;
 import com.example.coursehelper.R;
 import com.example.coursehelper.View.CourseDescriptionDialogFragment;
+
 import java.util.List;
 
 public class courseArrayAdapter extends ArrayAdapter<Course> {
@@ -64,12 +65,22 @@ public class courseArrayAdapter extends ArrayAdapter<Course> {
                 bundle.putString("credit", Double.toString(course.getCredit()));
                 bundle.putString("crn", course.getCourseCRN());
                 bundle.putString("description", course.getCourseDescription());
+                bundle.putString("cores", coresToString(course.getCores()));
 
                 DialogFragment dialog = CourseDescriptionDialogFragment.newInstance(bundle);
-                FragmentActivity activity = (FragmentActivity)(context);
+                FragmentActivity activity = (FragmentActivity) (context);
                 dialog.show(activity.getSupportFragmentManager().beginTransaction(), "dialog");
             }
         });
         return view;
+    }
+
+    public String coresToString(List<String> cores) {
+        String res = "";
+        for(String core : cores){
+            res += core;
+            res += "/";
+        }
+        return res.substring(0,res.length()-1);
     }
 }

@@ -4,4 +4,64 @@
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="dialog_header_textSize">10dp</string>
+  
+  <string-array name="cores">
+    <item>Any</item>
+    <item>Double Dipper</item>
+    <item>ARSM</item>
+    <item>ASCI</item>
+    <item>CMP</item>
+    <item>SOCU</item>
+    <item>TMTH</item>
+    <item>GDIV</item>
+    <item>UDIV</item>
+    <item>HSGV</item>
+    <item>LPA</item>
+    <item>AAPP</item>
+    <item>LSCI</item>
+  </string-array>
+
+  <string-array name="subjects">
+    <item>Any</item>
+    <item>ACCT</item>
+    <item>ART</item>
+    <item>ASTR</item>
+    <item>BIOL</item>
+    <item>CAIS</item>
+    <item>CHEM</item>
+    <item>COMM</item>
+    <item>CRJU</item>
+    <item>ECON</item>
+    <item>EDUC</item>
+    <item>EGST</item>
+    <item>ENGL</item>
+    <item>ENVS</item>
+    <item>FINC</item>
+    <item>GARP</item>
+    <item>GEOL</item>
+    <item>GERO</item>
+    <item>GNSC</item>
+    <item>HESC</item>
+    <item>HIST</item>
+    <item>LANG</item>
+    <item>LARA</item>
+    <item>LASL</item>
+    <item>LCHI</item>
+    <item>LCUL</item>
+    <item>LFRE</item>
+    <item>LLIT</item>
+    <item>LSPA</item>
+    <item>MATH</item>
+    <item>MGMT</item>
+    <item>MLSC</item>
+    <item>MOVP</item>
+    <item>MRKT</item>
+    <item>MUSC</item>
+    <item>NURS</item>
+    <item>PHIL</item>
+    <item>PHYC</item>
+    <item>SOCI</item>
+    <item>SOCW</item>
+    <item>THEA</item>
+  </string-array>
 </resources>

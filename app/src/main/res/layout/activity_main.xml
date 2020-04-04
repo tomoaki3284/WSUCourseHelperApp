@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  tools:context=".View.MainActivity"
-  style="@style/LinearLayout"
-  android:orientation="vertical"
-  android:layout_height="match_parent"
-  android:layout_width="match_parent">
-
-  <androidx.appcompat.widget.Toolbar
-    android:id="@+id/toolbar"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/LinearLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#2e2e2e"
-    app:title="CourseHelper"
-    app:titleTextColor="#029891"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".View.MainActivity">
 
-  <com.google.android.material.tabs.TabLayout
-    android:id="@+id/tablayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#2e2e2e"
-    app:tabIndicatorColor="@android:color/holo_purple"
-    app:tabTextColor="#029891"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#2e2e2e"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="CourseHelper"
+        app:titleTextColor="#029891" />
 
-    <com.google.android.material.tabs.TabItem
-      android:id="@+id/coursesTab"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Courses" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#2e2e2e"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabIndicatorColor="@android:color/holo_purple"
+        app:tabTextColor="#029891">
 
-    <com.google.android.material.tabs.TabItem
-      android:id="@+id/scheduleTab"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Schedule" />
-  </com.google.android.material.tabs.TabLayout>
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/coursesTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Courses" />
 
-  <androidx.viewpager.widget.ViewPager
-    android:id="@+id/viewPager"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/scheduleTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Schedule" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
 
 

@@ -8,26 +8,6 @@ import java.util.regex.Pattern;
  */
 public class Hours {
 
-    // hours [0..23]/minute[0..59] in military (24h format)
-    private int startHour, startMinute, endHour, endMinute;
-    private String militaryTime;
-
-    public void setStartHour(int startHour) {
-        this.startHour = startHour;
-    }
-
-    public void setStartMinute(int startMinute) {
-        this.startMinute = startMinute;
-    }
-
-    public void setEndHour(int endHour) {
-        this.endHour = endHour;
-    }
-
-    public void setEndMinute(int endMinute) {
-        this.endMinute = endMinute;
-    }
-
     // match the open-close hours using regular expression pattern
     // Notes:
     //   - am/pm are required.
@@ -42,7 +22,10 @@ public class Hours {
     //   6:30am-01:00am
     //
     static private Pattern hoursPattern = Pattern
-        .compile("(\\d+):(\\d+)(am|pm)\\s*-\\s*(\\d+):(\\d+)(am|pm)");
+            .compile("(\\d+):(\\d+)(am|pm)\\s*-\\s*(\\d+):(\\d+)(am|pm)");
+    // hours [0..23]/minute[0..59] in military (24h format)
+    private int startHour, startMinute, endHour, endMinute;
+    private String militaryTime;
 
     public Hours() {
 
@@ -63,7 +46,7 @@ public class Hours {
      *
      * @param hoursString The opening-closing hours of the location, see examples above.
      * @throws Exception Exception will be thrown if the supplied hours do not meet the required
-     * format.
+     *                   format.
      */
     public Hours(String hoursString) throws Exception {
         Matcher m = hoursPattern.matcher(hoursString);
@@ -98,12 +81,39 @@ public class Hours {
     }
 
     /**
+     * Convert a 0-12 hour and am/pm to military (24h format)
+     *
+     * @param hour the hour (0 to 12)
+     * @param amPm the string "am" or "pm"
+     * @return The hour converted to 4h format (0 to 23)
+     */
+    public static int getHour(int hour, String amPm) {
+        assert hour >= 0;
+        assert hour <= 12;
+        if (hour == 12) {
+            if (amPm.equals("am")) {
+                return 0;
+            }
+            return 12;
+        }
+        if (amPm.equals("am")) {
+            return hour;
+        } else {
+            return (hour + 12) % 24;
+        }
+    }
+
+    /**
      * Get the opening hour of the location, this will return a number 0-23
      *
      * @return the opening hour from 0 (midnight) to 23 (11pm at night)
      */
     public int getStartHour() {
         return startHour;
+    }
+
+    public void setStartHour(int startHour) {
+        this.startHour = startHour;
     }
 
     /**
@@ -115,6 +125,10 @@ public class Hours {
         return startMinute;
     }
 
+    public void setStartMinute(int startMinute) {
+        this.startMinute = startMinute;
+    }
+
     /**
      * Get the closing hour of the location, this will return a number 0-23
      *
@@ -124,6 +138,10 @@ public class Hours {
         return endHour;
     }
 
+    public void setEndHour(int endHour) {
+        this.endHour = endHour;
+    }
+
     /**
      * Get the closing minute of the location, will return a number 0 to 59
      *
@@ -131,6 +149,10 @@ public class Hours {
      */
     public int getEndMinute() {
         return endMinute;
+    }
+
+    public void setEndMinute(int endMinute) {
+        this.endMinute = endMinute;
     }
 
     /**
@@ -145,7 +167,7 @@ public class Hours {
     /**
      * Check if the location is open at the given hour/minute
      *
-     * @param hour the hour of the time that we're checking, [0..23]
+     * @param hour   the hour of the time that we're checking, [0..23]
      * @param minute the minute of the time that we're checking
      * @return true if the location is open, false if the location is closed
      */
@@ -179,29 +201,6 @@ public class Hours {
             }
         }
         return false;
-    }
-
-    /**
-     * Convert a 0-12 hour and am/pm to military (24h format)
-     *
-     * @param hour the hour (0 to 12)
-     * @param amPm the string "am" or "pm"
-     * @return The hour converted to 4h format (0 to 23)
-     */
-    public static int getHour(int hour, String amPm) {
-        assert hour >= 0;
-        assert hour <= 12;
-        if (hour == 12) {
-            if (amPm.equals("am")) {
-                return 0;
-            }
-            return 12;
-        }
-        if (amPm.equals("am")) {
-            return hour;
-        } else {
-            return (hour + 12) % 24;
-        }
     }
 
     public String getMilitaryTime() {

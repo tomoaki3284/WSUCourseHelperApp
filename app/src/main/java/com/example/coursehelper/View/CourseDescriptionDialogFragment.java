@@ -1,6 +1,7 @@
 package com.example.coursehelper.View;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,6 +25,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
     String timeContentRaw;
     String creditRaw;
     String descriptionRaw;
+    String coresRaw;
 
     // private Schedule schedule;
 
@@ -46,6 +48,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         creditRaw = getArguments().getString("credit");
         crnRaw = getArguments().getString("crn");
         descriptionRaw = getArguments().getString("description");
+        coresRaw = getArguments().getString("cores");
 
         inflateDialog(view);
         setClickListener(view);
@@ -61,6 +64,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // do something
+                dismiss();
             }
         });
 
@@ -96,5 +100,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         timeContent.setText(timeContentRaw);
         credit.setText(creditRaw);
         description.setText(descriptionRaw);
+        description.setMovementMethod(new ScrollingMovementMethod());
+        cores.setText(coresRaw);
     }
 }

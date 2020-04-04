@@ -7,6 +7,7 @@ import java.util.List;
 public class Course {
     //first cell
     private String courseCRN;
+    private String subject;
     //second cell
     private String title;
     private boolean isLabCourse;
@@ -28,7 +29,7 @@ public class Course {
         hoursOfDay = new EnumMap<DayOfWeek, Hours>(DayOfWeek.class);
     }
 
-    public Course(String courseCRN, String title, String faculty, String room, double credit, List<String> cores, EnumMap<DayOfWeek,Hours> hoursOfDay, String timeContent) {
+    public Course(String courseCRN, String title, String faculty, String room, double credit, List<String> cores, EnumMap<DayOfWeek, Hours> hoursOfDay, String timeContent) {
         this.courseCRN = courseCRN;
         this.title = title;
         this.faculty = faculty;
@@ -56,6 +57,14 @@ public class Course {
 
     public void setCourseDescription(String courseDescription) {
         this.courseDescription = courseDescription;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public boolean getIsLabCourse() {
@@ -114,8 +123,12 @@ public class Course {
         cores.add(core);
     }
 
-    public EnumMap<DayOfWeek,Hours> getHoursOfDay() {
+    public EnumMap<DayOfWeek, Hours> getHoursOfDay() {
         return hoursOfDay;
+    }
+
+    public void setHoursOfDay(EnumMap<DayOfWeek, Hours> hoursOfDay) {
+        this.hoursOfDay = hoursOfDay;
     }
 
     public Hours getHoursFromDay(DayOfWeek day) {
@@ -124,10 +137,6 @@ public class Course {
 
     public void putHoursOfDay(DayOfWeek dayOfWeek, Hours hours) {
         hoursOfDay.put(dayOfWeek, hours);
-    }
-
-    public void setHoursOfDay(EnumMap<DayOfWeek, Hours> hoursOfDay) {
-        this.hoursOfDay = hoursOfDay;
     }
 
     public String getTimeContent() {
@@ -141,16 +150,17 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-            "courseCRN='" + courseCRN + '\'' +
-            ", isLabCourse=" + isLabCourse +
-            ", courseDescription='" + courseDescription + '\'' +
-            ", title='" + title + '\'' +
-            ", faculty='" + faculty + '\'' +
-            ", room='" + room + '\'' +
-            ", credit=" + credit +
-            ", cores=" + cores +
-            ", hoursOfDay=" + hoursOfDay +
-            ", timeContent='" + timeContent + '\'' +
-            "}";
+                "courseCRN='" + courseCRN + '\'' +
+                ", subject='" + subject + '\'' +
+                ", isLabCourse=" + isLabCourse +
+                ", courseDescription='" + courseDescription + '\'' +
+                ", title='" + title + '\'' +
+                ", faculty='" + faculty + '\'' +
+                ", room='" + room + '\'' +
+                ", credit=" + credit +
+                ", cores=" + cores +
+                ", hoursOfDay=" + hoursOfDay +
+                ", timeContent='" + timeContent + '\'' +
+                "}";
     }
 }

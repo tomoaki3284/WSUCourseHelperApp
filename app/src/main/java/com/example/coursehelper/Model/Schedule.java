@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class Schedule {
 
@@ -117,7 +115,7 @@ public class Schedule {
         };
         for (DayOfWeek day : map.keySet()) {
             List<Hours> hours = map.get(day);
-            Collections.sort(hours,com);
+            Collections.sort(hours, com);
             int len = hours.size();
             if (len <= 1) {
                 continue;
@@ -132,7 +130,7 @@ public class Schedule {
                     anyOverlap = true;
                     // overlap exist
                     String warning = "CLASS TIME OVERLAPPED - " + day.name() + ": " +
-                        hours.get(i - 1).toString() + " <-> " + hours.get(i).toString();
+                            hours.get(i - 1).toString() + " <-> " + hours.get(i).toString();
                     if (overlapWarning.get(day) == null) {
                         List<String> warings = new ArrayList();
                         warings.add(warning);
