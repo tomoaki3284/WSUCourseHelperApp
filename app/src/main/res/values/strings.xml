@@ -6,62 +6,62 @@
   <string name="dialog_header_textSize">10dp</string>
   
   <string-array name="cores">
-    <item>Any</item>
+    <item>None</item>
     <item>Double Dipper</item>
-    <item>ARSM</item>
-    <item>ASCI</item>
-    <item>CMP</item>
-    <item>SOCU</item>
-    <item>TMTH</item>
-    <item>GDIV</item>
-    <item>UDIV</item>
-    <item>HSGV</item>
-    <item>LPA</item>
-    <item>AAPP</item>
-    <item>LSCI</item>
+    <item>ARSN - Applied Analytical Reasoning</item>
+    <item>ASCI - Allied Science</item>
+    <item>CMP - English Composition</item>
+    <item>SOCU - Social Understanding</item>
+    <item>TMTH - Traditional Mathematics</item>
+    <item>GDIV - Global Diversity</item>
+    <item>UDIV - United States Diversity</item>
+    <item>HSGV - U.S History and Government</item>
+    <item>LPA - Literary/Philosophical Analysis</item>
+    <item>AAPP - Appreciation of the Arts</item>
+    <item>LSCI - Laboratory Science</item>
   </string-array>
 
   <string-array name="subjects">
-    <item>Any</item>
-    <item>ACCT</item>
-    <item>ART</item>
-    <item>ASTR</item>
-    <item>BIOL</item>
-    <item>CAIS</item>
-    <item>CHEM</item>
-    <item>COMM</item>
-    <item>CRJU</item>
-    <item>ECON</item>
-    <item>EDUC</item>
-    <item>EGST</item>
-    <item>ENGL</item>
-    <item>ENVS</item>
-    <item>FINC</item>
-    <item>GARP</item>
-    <item>GEOL</item>
-    <item>GERO</item>
-    <item>GNSC</item>
-    <item>HESC</item>
-    <item>HIST</item>
-    <item>LANG</item>
-    <item>LARA</item>
-    <item>LASL</item>
-    <item>LCHI</item>
-    <item>LCUL</item>
-    <item>LFRE</item>
-    <item>LLIT</item>
-    <item>LSPA</item>
-    <item>MATH</item>
-    <item>MGMT</item>
-    <item>MLSC</item>
-    <item>MOVP</item>
-    <item>MRKT</item>
-    <item>MUSC</item>
-    <item>NURS</item>
-    <item>PHIL</item>
-    <item>PHYC</item>
-    <item>SOCI</item>
-    <item>SOCW</item>
-    <item>THEA</item>
+    <item>None</item>
+    <item>ACCT - Accounting</item>
+    <item>ART - Art</item>
+    <item>ASTR - Astronomy</item>
+    <item>BIOL - Biology</item>
+    <item>CAIS - Computer Science</item>
+    <item>CHEM - Chemistry</item>
+    <item>COMM - Communication</item>
+    <item>CRJU - Criminal Justice</item>
+    <item>ECON - Economics</item>
+    <item>EDUC - Education</item>
+    <item>EGST - Ethnic and Gender Studies</item>
+    <item>ENGL - English</item>
+    <item>ENVS - Environmental Science</item>
+    <item>FINC - Finance</item>
+    <item>GARP - Geography</item>
+    <item>GEOL - Geology</item>
+    <item>GERO - Gerontology</item>
+    <item>GNSC - Physical Science</item>
+    <item>HESC - Health Science</item>
+    <item>HIST - History</item>
+    <item>LANG - Language</item>
+    <item>LARA - Language(Arabic)</item>
+    <item>LASL - Sign Language</item>
+    <item>LCHI - Language(Chinese)</item>
+    <item>LCUL - Culture Studies</item>
+    <item>LFRE - Language(French)</item>
+    <item>LLIT - Literature</item>
+    <item>LSPA - Language(Spanish)</item>
+    <item>MATH - Mathematics</item>
+    <item>MGMT - Management</item>
+    <item>MLSC - Military Science</item>
+    <item>MOVP - Movement Science</item>
+    <item>MRKT - Marketing</item>
+    <item>MUSC - Music</item>
+    <item>NURS - Nursing</item>
+    <item>PHIL - Philosophy</item>
+    <item>PHYC - Physics</item>
+    <item>SOCI - Sociology</item>
+    <item>SOCW - Social Work</item>
+    <item>THEA - Theatre</item>
   </string-array>
 </resources>

@@ -64,11 +64,12 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 listUpCourses();
-                if(position == 0){
+                if(position == 0){ // first item = "None"
                     listUpCourses();
                     return;
                 }
-                String targetCore = parent.getItemAtPosition(position).toString();
+
+                String targetCore = parent.getItemAtPosition(position).toString().split(" ")[0];
                 assert coreCourses.get(targetCore) != null;
                 if(targetCore.equals("Double Dipper")){
                     listUpFilteredCourses(doubleDipperCourses);
@@ -90,11 +91,12 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 listUpCourses();
-                if(position == 0){
+                if(position == 0){ // first item = "None"
                     listUpCourses();
                     return;
                 }
-                String targetSubject = parent.getItemAtPosition(position).toString();
+
+                String targetSubject = parent.getItemAtPosition(position).toString().split(" ")[0];
                 assert subjectCourses.get(targetSubject) != null;
                 listUpFilteredCourses(subjectCourses.get(targetSubject));
             }

@@ -17,17 +17,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="CourseHelper"
-        app:titleTextColor="#029891" />
+        app:titleTextColor="@android:color/white" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2e2e2e"
+        android:layout_marginBottom="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tabIndicatorColor="@android:color/holo_purple"
-        app:tabTextColor="#029891">
+        app:tabIndicatorColor="@android:color/holo_blue_dark"
+        app:tabTextColor="@android:color/white">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/coursesTab"

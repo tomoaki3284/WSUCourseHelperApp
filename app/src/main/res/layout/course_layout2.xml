@@ -3,8 +3,12 @@
     android:id="@+id/courseItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="#2e2e2e"
+    android:translationZ="10dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:background="@drawable/roundedcorner"
+    android:elevation="1dp"
+    android:padding="3dp"
     android:orientation="horizontal"
     android:weightSum="1">
 
@@ -25,7 +29,7 @@
             android:layout_weight="0.6"
             android:fontFamily="sans-serif-medium"
             android:text="aaaaaaaaaa"
-            android:textColor="#DDDDDD"
+            android:textColor="@android:color/black"
             android:textSize="16dp" />
 
         <TextView
@@ -55,7 +59,7 @@
             android:layout_margin="5dp"
             android:fontFamily="sans-serif"
             android:text="MWF 06:10 AM-7:10 AM\nMWF 06:10 AM-7:10 AM"
-            android:textColor="#DDDDDD"
+            android:textColor="@android:color/black"
             android:textSize="12dp" />
     </LinearLayout>
 
