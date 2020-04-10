@@ -4,4 +4,8 @@
   <color name="colorPrimaryDark">#000000</color>
   <color name="colorPrimaryText">#029891</color>
   <color name="colorAccent">#D81B60</color>
+
+  <color name="colorDialogDynamicText">#000000</color>
+  <color name="colorDialogStaticText">#029891</color>
+  <color name="colorDialogButton">#ffffff</color>
 </resources>

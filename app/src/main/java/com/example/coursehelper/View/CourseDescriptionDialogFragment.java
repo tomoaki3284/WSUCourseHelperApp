@@ -55,6 +55,12 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
     public void setClickListener(View view) {
         Button cancelButton = view.findViewById(R.id.cancelButton);
         Button addButton = view.findViewById(R.id.addButton);

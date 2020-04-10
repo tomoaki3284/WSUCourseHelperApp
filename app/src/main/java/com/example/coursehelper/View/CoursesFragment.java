@@ -71,7 +71,7 @@ public class CoursesFragment extends Fragment {
 
                 String targetCore = parent.getItemAtPosition(position).toString().split(" ")[0];
                 assert coreCourses.get(targetCore) != null;
-                if(targetCore.equals("Double Dipper")){
+                if(targetCore.equals("DoubleDipper")){
                     listUpFilteredCourses(doubleDipperCourses);
                 }else{
                     listUpFilteredCourses(coreCourses.get(targetCore));

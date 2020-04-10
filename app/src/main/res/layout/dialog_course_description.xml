@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Drawing I"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDialogDynamicText"
                 android:textSize="@dimen/dialog_header_textSize" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="COMP (123412) - 21343"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDialogDynamicText"
                 android:textSize="@dimen/dialog_header_textSize" />
         </LinearLayout>
 
@@ -85,7 +85,7 @@
                 android:layout_weight="0.9"
                 android:gravity="center|left"
                 android:text="3.0"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDialogDynamicText"
                 android:textSize="@dimen/dialog_header_textSize" />
         </LinearLayout>
     </LinearLayout>
@@ -118,7 +118,7 @@
                 android:layout_weight="0.9"
                 android:gravity="center|left"
                 android:text="Tomoaki Mitsuhashi"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDialogDynamicText"
                 android:textSize="@dimen/dialog_header_textSize" />
         </LinearLayout>
 
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:text="Wilson 300"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDialogDynamicText"
                 android:textSize="@dimen/dialog_header_textSize" />
         </LinearLayout>
     </LinearLayout>
@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.9"
                 android:text="TR 02:15 PM-05:00 PM\nTR 02:15 PM-05:00 PM\nHybrid (50% in class/online)"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDialogDynamicText"
                 android:textSize="@dimen/dialog_header_textSize" />
         </LinearLayout>
 
@@ -197,18 +197,22 @@
                 android:layout_weight="0.4"
                 android:gravity="center|left"
                 android:text="None"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorDialogDynamicText" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
@@ -217,21 +221,22 @@
             android:textColor="@color/colorPrimaryText" />
 
         <LinearLayout
-            android:layout_weight="0.5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:background="@drawable/border">
 
             <TextView
                 android:id="@+id/courseDescription"
-                android:scrollbars = "vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="200dp"
+                android:minHeight="80dp"
                 android:layout_margin="10dp"
                 android:fontFamily="sans-serif-light"
+                android:maxHeight="200dp"
+                android:scrollbars="vertical"
                 android:text="This introductory computer graphics course allows the student to explore the creative, visual and artistic possibilities which the microcomputer offers. Class work and lab time on the computer are supplemented with lectures on computer generated art and its potential. Lectures assume no previous knowledge of computers or programming. Students create a variety of projects in the form of slides, animations, and printouts."
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDialogDynamicText"
                 android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
@@ -239,20 +244,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_marginStart="16dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:background="@color/colorPrimary"
+            android:layout_marginRight="10dp"
+            android:background="@color/colorDialogButton"
             android:text="Cancel"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -262,7 +270,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_marginEnd="8dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorDialogButton"
             android:text="Add"
             android:textColor="@color/colorPrimaryText"
             app:layout_constraintEnd_toStartOf="@+id/dropButton"
@@ -274,7 +282,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorDialogButton"
             android:text="Drop"
             android:textColor="@android:color/holo_red_dark"
             app:layout_constraintEnd_toEndOf="parent"

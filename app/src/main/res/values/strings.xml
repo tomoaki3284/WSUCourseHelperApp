@@ -6,8 +6,8 @@
   <string name="dialog_header_textSize">10dp</string>
   
   <string-array name="cores">
-    <item>None</item>
-    <item>Double Dipper</item>
+    <item>Cores</item>
+    <item>DoubleDipper</item>
     <item>ARSN - Applied Analytical Reasoning</item>
     <item>ASCI - Allied Science</item>
     <item>CMP - English Composition</item>
@@ -22,7 +22,7 @@
   </string-array>
 
   <string-array name="subjects">
-    <item>None</item>
+    <item>Subjects</item>
     <item>ACCT - Accounting</item>
     <item>ART - Art</item>
     <item>ASTR - Astronomy</item>
