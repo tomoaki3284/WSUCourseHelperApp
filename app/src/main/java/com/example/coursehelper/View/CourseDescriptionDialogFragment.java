@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
+import android.widget.Toast;
+
 import com.example.coursehelper.Model.Course;
 import com.example.coursehelper.R;
 
@@ -17,7 +19,8 @@ import com.example.coursehelper.R;
  */
 public class CourseDescriptionDialogFragment extends DialogFragment {
 
-    private Course course;
+    CoursesFragment coursesFragment;
+
     String titleRaw;
     String crnRaw;
     String facultyRaw;
@@ -26,8 +29,6 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
     String creditRaw;
     String descriptionRaw;
     String coresRaw;
-
-    // private Schedule schedule;
 
     public static DialogFragment newInstance(Bundle bundle) {
         System.out.println("********************** called newInstance on Dialog");
@@ -59,6 +60,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        coursesFragment = (CoursesFragment) getTargetFragment();
     }
 
     public void setClickListener(View view) {
@@ -69,7 +71,6 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         cancelButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                // do something
                 dismiss();
             }
         });
@@ -77,14 +78,18 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                // do something
+                coursesFragment.addCourseToSchedule(crnRaw);
+                Toast.makeText(getContext(), "You successfully added class", Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         });
 
         dropButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                // do something
+                coursesFragment.removeCourseFromSchedule(crnRaw);
+                Toast.makeText(getContext(), "You successfully dropped class", Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         });
     }

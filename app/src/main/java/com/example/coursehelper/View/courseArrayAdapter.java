@@ -53,34 +53,11 @@ public class courseArrayAdapter extends ArrayAdapter<Course> {
         credit.setText(Double.toString(raw_credit));
         timeContent.setText(raw_timeContent);
 
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // display Dialog
-                Bundle bundle = new Bundle();
-                bundle.putString("title", course.getTitle());
-                bundle.putString("timeContent", course.getTimeContent());
-                bundle.putString("faculty", course.getFaculty());
-                bundle.putString("room", course.getRoom());
-                bundle.putString("credit", Double.toString(course.getCredit()));
-                bundle.putString("crn", course.getCourseCRN());
-                bundle.putString("description", course.getCourseDescription());
-                bundle.putString("cores", coresToString(course.getCores()));
-
-                DialogFragment dialog = CourseDescriptionDialogFragment.newInstance(bundle);
-                FragmentActivity activity = (FragmentActivity) (context);
-                dialog.show(activity.getSupportFragmentManager().beginTransaction(), "dialog");
-            }
-        });
         return view;
     }
 
-    public String coresToString(List<String> cores) {
-        String res = "";
-        for(String core : cores){
-            res += core;
-            res += "/";
-        }
-        return res.substring(0,res.length()-1);
+    public void updateList(List<Course> courses) {
+        this.courses = courses;
+        notifyDataSetChanged();
     }
 }

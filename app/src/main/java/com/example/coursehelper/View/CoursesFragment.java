@@ -5,13 +5,19 @@ import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
 import com.example.coursehelper.Model.Course;
+import com.example.coursehelper.Model.Schedule;
+import com.example.coursehelper.Model.ScheduleObserver;
 import com.example.coursehelper.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,14 +32,17 @@ import java.util.List;
  */
 public class CoursesFragment extends Fragment {
 
+    private ScheduleObserver scheduleObserver;
+    private Schedule schedule;
+
     private ListView listView;
     private List<Course> courses;
+    courseArrayAdapter adapter;
+
     private HashMap<String, List<Course>> coreCourses;
     private HashMap<String, List<Course>> subjectCourses;
     private List<Course> doubleDipperCourses;
-
-    // for onclick purpose on Dialog class
-    static private HashMap<String, Course> crnLinkedCourse;// maybe don't need this anymore
+    private HashMap<String, Course> crnLinkedCourse;
 
     public CoursesFragment() {
         // Required empty public constructor
@@ -43,13 +52,54 @@ public class CoursesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
-        listView = view.findViewById(R.id.customListView);
 
+        schedule = new Schedule();
+        setUpListView(view);
         setUpSpinner(view);
+
         if(courses == null || courses.size() < 1){
             new ReadCourses().execute("https://coursehlperwsu.s3.amazonaws.com/current-semester.json");
         }
+
         return view;
+    }
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
+    }
+
+    public void setUpListView(View view) {
+        listView = view.findViewById(R.id.customListView);
+        Fragment f = this;
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Course course = (Course)listView.getItemAtPosition(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", course.getTitle());
+                bundle.putString("timeContent", course.getTimeContent());
+                bundle.putString("faculty", course.getFaculty());
+                bundle.putString("room", course.getRoom());
+                bundle.putString("credit", Double.toString(course.getCredit()));
+                bundle.putString("crn", course.getCourseCRN());
+                bundle.putString("description", course.getCourseDescription());
+                bundle.putString("cores", coresToString(course.getCores()));
+
+                DialogFragment dialog = CourseDescriptionDialogFragment.newInstance(bundle);
+                dialog.setTargetFragment(f,0);
+                dialog.show(getFragmentManager(), "dialog");
+            }
+
+            public String coresToString(List<String> cores) {
+                String res = "";
+                for(String core : cores){
+                    res += core;
+                    res += "/";
+                }
+                return res.substring(0,res.length()-1);
+            }
+        });
     }
 
     public void setUpSpinner(View view) {
@@ -59,29 +109,26 @@ public class CoursesFragment extends Fragment {
         ArrayAdapter<CharSequence> adapterCore = ArrayAdapter.createFromResource(getContext(), R.array.cores, android.R.layout.simple_spinner_item);
         adapterCore.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         coreSpinner.setAdapter(adapterCore);
-
         coreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                listUpCourses();
+                if(adapter == null) return;
                 if(position == 0){ // first item = "None"
-                    listUpCourses();
+                    adapter.updateList(courses);
                     return;
                 }
 
                 String targetCore = parent.getItemAtPosition(position).toString().split(" ")[0];
                 assert coreCourses.get(targetCore) != null;
                 if(targetCore.equals("DoubleDipper")){
-                    listUpFilteredCourses(doubleDipperCourses);
+                    adapter.updateList(doubleDipperCourses);
                 }else{
-                    listUpFilteredCourses(coreCourses.get(targetCore));
+                    adapter.updateList(coreCourses.get(targetCore));
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
 
         ArrayAdapter<CharSequence> adapterSubject = ArrayAdapter.createFromResource(getContext(), R.array.subjects, android.R.layout.simple_spinner_item);
@@ -90,36 +137,52 @@ public class CoursesFragment extends Fragment {
         subjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                listUpCourses();
+                if(adapter == null) return;
                 if(position == 0){ // first item = "None"
-                    listUpCourses();
+                    adapter.updateList(courses);
                     return;
                 }
 
                 String targetSubject = parent.getItemAtPosition(position).toString().split(" ")[0];
                 assert subjectCourses.get(targetSubject) != null;
-                listUpFilteredCourses(subjectCourses.get(targetSubject));
+                adapter.updateList(subjectCourses.get(targetSubject));
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
-    public void listUpFilteredCourses(List<Course> courses) {
-        if(courses == null) return;
-        ArrayAdapter<Course> adapter = new courseArrayAdapter(getActivity(), 0, courses);
-        listView.setAdapter(adapter);
+    public void addCourseToSchedule(String crn) {
+        Course course = crnLinkedCourse.get(crn);
+        schedule.addCourse(course);
+        notifyScheduleChangesToObserver();
     }
+
+    //called by CourseDescriptionDialog
+    public void removeCourseFromSchedule(String crn) {
+        Course course = crnLinkedCourse.get(crn);
+        schedule.removeCourse(course);
+        notifyScheduleChangesToObserver();
+    }
+    //called by CourseDescriptionDialog
+    public void notifyScheduleChangesToObserver() {
+        scheduleObserver.setSchedule(schedule);
+    }
+
+
+
+
 
     public void listUpCourses() {
         if(courses == null) return;
-        ArrayAdapter<Course> adapter = new courseArrayAdapter(getActivity(), 0, courses);
+        adapter = new courseArrayAdapter(getActivity(), 0, courses);
         listView.setAdapter(adapter);
     }
 
+    /*
+     * AsyncTask class to get course Data
+     */
     private class ReadCourses extends AsyncTask<Object, Void, List<Course>> {
 
         @Override

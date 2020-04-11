@@ -38,36 +38,6 @@ public class Schedule {
         return totalCredit;
     }
 
-//	public List<Course> filterByCourseCategory(String category) {
-//		List<Course> res = new ArrayList();
-//		for(Course course : courses){
-//			if(course.getCourseCategory().equals(category)){
-//				res.add(course);
-//			}
-//		}
-//		return res;
-//	}
-//
-//	public List<Course> filterByTitle(String title) {
-//		List<Course> res = new ArrayList();
-//		for(Course course : courses){
-//			if(course.getTitle().equals(title)){
-//				res.add(course);
-//			}
-//		}
-//		return res;
-//	}
-//
-//	public List<Course> filterByFaculty(String faculty) {
-//		List<Course> res = new ArrayList();
-//		for(Course course : courses){
-//			if(course.getFaculty().toLowerCase().contains(faculty.toLowerCase())){
-//				res.add(course);
-//			}
-//		}
-//		return res;
-//	}
-
     /**
      * Remove the course that matches the param course
      *
@@ -76,6 +46,17 @@ public class Schedule {
     public boolean removeCourse(Course course) {
         totalCredit -= course.getCredit();
         return courses.remove(course);
+    }
+
+    /**
+     * Remove the courses based on index
+     *
+     * @param idx
+     * @return Course
+     */
+    public Course removeCourse(int idx) {
+        if(idx < 0 || idx >= courses.size()) return null;
+        return courses.remove(idx);
     }
 
     /**
