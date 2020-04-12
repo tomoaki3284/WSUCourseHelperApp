@@ -1,5 +1,7 @@
 package com.example.coursehelper.View;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -13,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.coursehelper.Model.Course;
 import com.example.coursehelper.Model.DayOfWeek;
@@ -30,6 +31,9 @@ import java.util.List;
  */
 public class ScheduleFragment extends Fragment {
 
+    private Schedule schedule;
+    private ScheduleObserver scheduleObserver;
+
     private LinearLayout mondayTimeGraph;
     private LinearLayout tuesdayTimeGraph;
     private LinearLayout wednesdayTimeGraph;
@@ -41,6 +45,8 @@ public class ScheduleFragment extends Fragment {
     private RelativeLayout wednesdayTimeCol;
     private RelativeLayout thursdayTimeCol;
     private RelativeLayout fridayTimeCol;
+
+    private LinearLayout warningSection;
 
     private View view;
 
@@ -54,6 +60,8 @@ public class ScheduleFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+        warningSection = view.findViewById(R.id.warningArea);
+
         initialDayGraphSetup();
         updateUI(null);
         return view;
@@ -61,7 +69,7 @@ public class ScheduleFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ScheduleObserver scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
+        scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
         scheduleObserver.getSchedule().observe(getViewLifecycleOwner(), new Observer<Schedule>() {
             @Override
             public void onChanged(Schedule schedule) {
@@ -96,10 +104,33 @@ public class ScheduleFragment extends Fragment {
         fridayHeader.setText("Friday");
     }
 
+    public void addWarningsInWarningsSection() {
+        EnumMap<DayOfWeek, List<String>> map = schedule.getOverlapWarning();
+        for(DayOfWeek day : map.keySet()){
+            for(String warning : map.get(day)){
+                TextView tvWarning = new TextView(getContext());
+                tvWarning.setText(warning);
+                tvWarning.setTextColor(Color.RED);
+                tvWarning.setTextSize(12);
+                tvWarning.setGravity(Gravity.CENTER);
+                tvWarning.setBackground(getResources().getDrawable(R.drawable.warning_border));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(0,5,0,0);
+                tvWarning.setLayoutParams(params);
+                warningSection.addView(tvWarning);
+            }
+        }
+    }
+
     public void updateUI(Schedule schedule) {
         if(schedule == null) return;
+        this.schedule = schedule;
         if(schedule.isHoursOverlap()){
-            Toast.makeText(getContext(), "Some of your classes have time conflict. But sorry, we are not capable to tell which on has conflict...", Toast.LENGTH_LONG);
+            System.out.println("*****OVERLAPPED*****");
+            addWarningsInWarningsSection();
+        }else{
+            warningSection.removeAllViewsInLayout();
+            warningSection.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         }
 
         //TODO: create TextView for block of class, size = course Hours
@@ -154,10 +185,35 @@ public class ScheduleFragment extends Fragment {
         newClass.setTextColor(Color.WHITE);
         newClass.setGravity(Gravity.CENTER);
         newClass.setBackground(getResources().getDrawable(R.drawable.course_cell));
+        setNewClassClickListener(newClass, course);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(dpToPx(60), lengthPx);
         params.topMargin = newClassStartPx;
         dayTimeCol.addView(newClass, params);
+    }
+
+    public void setNewClassClickListener(TextView newClass, Course course) {
+        newClass.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO: show dialog
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Remove Entry")
+                        .setMessage(course.toPrettyFormatString())
+                        .setNegativeButton("Remove", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                schedule.removeCourse(course);
+                                updateUI(schedule);
+                                notifyScheduleChangesToObserver();
+                            }
+                        })
+                        .show();
+            }
+        });
+    }
+
+    public void notifyScheduleChangesToObserver() {
+        scheduleObserver.setSchedule(schedule);
     }
 
     public int defaultMinToTimelineMin(int minutesDefault) {

@@ -163,4 +163,10 @@ public class Course {
                 ", timeContent='" + timeContent + '\'' +
                 "}";
     }
+
+    public String toPrettyFormatString() {
+        return "Title: " + title + "\n" +
+                "CRN info: " + courseCRN + "\n" +
+                "Time: " + timeContent + "\n";
+    }
 }

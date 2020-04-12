@@ -19,7 +19,7 @@ import com.example.coursehelper.R;
  */
 public class CourseDescriptionDialogFragment extends DialogFragment {
 
-    CoursesFragment coursesFragment;
+    CoursesFragment targetFragment;
 
     String titleRaw;
     String crnRaw;
@@ -60,7 +60,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        coursesFragment = (CoursesFragment) getTargetFragment();
+        targetFragment = (CoursesFragment) getTargetFragment();
     }
 
     public void setClickListener(View view) {
@@ -78,8 +78,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                coursesFragment.addCourseToSchedule(crnRaw);
-                Toast.makeText(getContext(), "You successfully added class", Toast.LENGTH_SHORT).show();
+                targetFragment.addCourseToSchedule(crnRaw);
                 dismiss();
             }
         });
@@ -87,8 +86,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         dropButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                coursesFragment.removeCourseFromSchedule(crnRaw);
-                Toast.makeText(getContext(), "You successfully dropped class", Toast.LENGTH_SHORT).show();
+                targetFragment.removeCourseFromSchedule(crnRaw);
                 dismiss();
             }
         });
