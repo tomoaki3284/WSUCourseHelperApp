@@ -2,20 +2,14 @@ package com.example.coursehelper.View;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
-
 import com.example.coursehelper.Model.Course;
 import com.example.coursehelper.R;
-import com.example.coursehelper.View.CourseDescriptionDialogFragment;
 
 import java.util.List;
 
@@ -29,6 +23,11 @@ public class courseArrayAdapter extends ArrayAdapter<Course> {
 
         this.context = context;
         this.courses = objects;
+    }
+
+    @Override
+    public int getCount() {
+        return courses.size();
     }
 
     //called when rendering the list

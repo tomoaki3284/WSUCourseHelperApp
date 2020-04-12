@@ -18,31 +18,10 @@
         android:layout_height="2dp"
         android:background="#e8e8e8"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/timeCol"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/course_cell"
-            android:text="Microprocessor"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-condensed-light"/>
-
-        <androidx.legacy.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="120dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:background="@drawable/course_cell"
-            android:text="Biology Lab"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-condensed-light"/>
-    </LinearLayout>
+        android:layout_height="wrap_content">
+    </RelativeLayout>
 
 </LinearLayout>

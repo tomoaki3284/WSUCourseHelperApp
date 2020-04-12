@@ -37,6 +37,7 @@ public class CoursesFragment extends Fragment {
 
     private ListView listView;
     private List<Course> courses;
+    private List<Course> updatedCourses;
     courseArrayAdapter adapter;
 
     private HashMap<String, List<Course>> coreCourses;
@@ -75,7 +76,7 @@ public class CoursesFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Course course = (Course)listView.getItemAtPosition(position);
+                Course course = updatedCourses.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("title", course.getTitle());
                 bundle.putString("timeContent", course.getTimeContent());
@@ -115,6 +116,7 @@ public class CoursesFragment extends Fragment {
                 if(adapter == null) return;
                 if(position == 0){ // first item = "None"
                     adapter.updateList(courses);
+                    updatedCourses = courses;
                     return;
                 }
 
@@ -122,8 +124,10 @@ public class CoursesFragment extends Fragment {
                 assert coreCourses.get(targetCore) != null;
                 if(targetCore.equals("DoubleDipper")){
                     adapter.updateList(doubleDipperCourses);
+                    updatedCourses = doubleDipperCourses;
                 }else{
                     adapter.updateList(coreCourses.get(targetCore));
+                    updatedCourses = coreCourses.get(targetCore);
                 }
             }
 
@@ -140,12 +144,14 @@ public class CoursesFragment extends Fragment {
                 if(adapter == null) return;
                 if(position == 0){ // first item = "None"
                     adapter.updateList(courses);
+                    updatedCourses = courses;
                     return;
                 }
 
                 String targetSubject = parent.getItemAtPosition(position).toString().split(" ")[0];
                 assert subjectCourses.get(targetSubject) != null;
                 adapter.updateList(subjectCourses.get(targetSubject));
+                updatedCourses = subjectCourses.get(targetSubject);
             }
 
             @Override
@@ -178,6 +184,7 @@ public class CoursesFragment extends Fragment {
         if(courses == null) return;
         adapter = new courseArrayAdapter(getActivity(), 0, courses);
         listView.setAdapter(adapter);
+        updatedCourses = courses;
     }
 
     /*
