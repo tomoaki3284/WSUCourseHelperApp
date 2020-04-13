@@ -19,17 +19,24 @@
         <!--  TODO: make spinner here for filtering feature  -->
         <Spinner
             android:id="@+id/coreSpinner"
-            android:layout_width="30dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="3dp"
-            android:layout_weight="0.3" />
+            android:layout_weight="0.33" />
 
         <Spinner
             android:id="@+id/subjectSpinner"
-            android:layout_width="50dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="3dp"
-            android:layout_weight="0.3" />
+            android:layout_weight="0.33" />
+
+        <Spinner
+            android:id="@+id/specialSpinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="0.33" />
     </LinearLayout>
 
     <ListView

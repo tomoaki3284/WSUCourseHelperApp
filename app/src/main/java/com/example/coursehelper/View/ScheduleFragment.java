@@ -111,11 +111,11 @@ public class ScheduleFragment extends Fragment {
                 TextView tvWarning = new TextView(getContext());
                 tvWarning.setText(warning);
                 tvWarning.setTextColor(Color.RED);
-                tvWarning.setTextSize(12);
+                tvWarning.setTextSize(14);
                 tvWarning.setGravity(Gravity.CENTER);
                 tvWarning.setBackground(getResources().getDrawable(R.drawable.warning_border));
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(0,5,0,0);
+                params.setMargins(20,10,0,0);
                 tvWarning.setLayoutParams(params);
                 warningSection.addView(tvWarning);
             }

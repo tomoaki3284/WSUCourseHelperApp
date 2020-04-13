@@ -23,6 +23,8 @@ public class Course {
     //fifth cell
     private EnumMap<DayOfWeek, List<Hours>> hoursOfDay; // use this to detect the overlap
     private String timeContent;
+    // detect afterwards
+    private boolean isCancelled;
 
     public Course() {
         cores = new ArrayList();
@@ -131,6 +133,14 @@ public class Course {
         return hoursOfDay.get(day);
     }
 
+    public boolean getIsCancelled() {
+        return isCancelled;
+    }
+
+    public void setIsCancelled(boolean isCancelled) {
+        this.isCancelled = isCancelled;
+    }
+
     public void putHoursOfDay(DayOfWeek dayOfWeek, List<Hours> hours) {
         hoursOfDay.put(dayOfWeek, hours);
     }
@@ -161,6 +171,7 @@ public class Course {
                 ", cores=" + cores +
                 ", hoursOfDay=" + hoursOfDay +
                 ", timeContent='" + timeContent + '\'' +
+                ", isCancelled=" + isCancelled +
                 "}";
     }
 
@@ -170,3 +181,4 @@ public class Course {
                 "Time: " + timeContent + "\n";
     }
 }
+

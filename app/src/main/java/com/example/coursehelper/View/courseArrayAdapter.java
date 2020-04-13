@@ -27,6 +27,7 @@ public class courseArrayAdapter extends ArrayAdapter<Course> {
 
     @Override
     public int getCount() {
+        if(courses == null) return 0;
         return courses.size();
     }
 
@@ -43,6 +44,7 @@ public class courseArrayAdapter extends ArrayAdapter<Course> {
         TextView title = view.findViewById(R.id.title);
         TextView credit = view.findViewById(R.id.credit);
         TextView timeContent = view.findViewById(R.id.timeContent);
+        TextView classCancelled = view.findViewById(R.id.cancelled);
 
         String raw_title = course.getTitle();
         double raw_credit = course.getCredit();
@@ -51,6 +53,9 @@ public class courseArrayAdapter extends ArrayAdapter<Course> {
         title.setText(raw_title);
         credit.setText(Double.toString(raw_credit));
         timeContent.setText(raw_timeContent);
+        if(course.getIsCancelled()){
+            classCancelled.setText("CANCELLED");
+        }
 
         return view;
     }

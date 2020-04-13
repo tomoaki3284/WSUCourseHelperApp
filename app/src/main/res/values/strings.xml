@@ -4,7 +4,13 @@
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="dialog_header_textSize">10dp</string>
-  
+
+  <string-array name="special">
+    <item>Special</item>
+    <item>Lab Course</item>
+    <item>Online Lecture</item>
+  </string-array>
+
   <string-array name="cores">
     <item>Cores</item>
     <item>DoubleDipper</item>
@@ -59,7 +65,7 @@
     <item>MUSC - Music</item>
     <item>NURS - Nursing</item>
     <item>PHIL - Philosophy</item>
-    <item>PHYC - Physics</item>
+    <item>PHSC - Physics</item>
     <item>SOCI - Sociology</item>
     <item>SOCW - Social Work</item>
     <item>THEA - Theatre</item>

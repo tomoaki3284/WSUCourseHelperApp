@@ -47,6 +47,8 @@ public class CoursesFragment extends Fragment {
 
     private HashMap<String, List<Course>> coreCourses;
     private HashMap<String, List<Course>> subjectCourses;
+    private List<Course> labCourses;
+    private List<Course> onlineCourses;
     private List<Course> doubleDipperCourses;
     static private HashMap<String, Course> crnLinkedCourse;
 
@@ -91,8 +93,10 @@ public class CoursesFragment extends Fragment {
     //called by CourseDescriptionDialog
     public void addCourseToSchedule(String crn) {
         Course course = crnLinkedCourse.get(crn);
-        schedule.addCourse(course);
-        notifyScheduleChangesToObserver();
+        if(course.getIsCancelled() == false){
+            schedule.addCourse(course);
+            notifyScheduleChangesToObserver();
+        }
     }
 
     //called by CourseDescriptionDialog
@@ -149,6 +153,7 @@ public class CoursesFragment extends Fragment {
     public void setUpSpinner(View view) {
         Spinner coreSpinner = view.findViewById(R.id.coreSpinner);
         Spinner subjectSpinner = view.findViewById(R.id.subjectSpinner);
+        Spinner specialSpinner = view.findViewById(R.id.specialSpinner);
 
         ArrayAdapter<CharSequence> adapterCore = ArrayAdapter.createFromResource(getContext(), R.array.cores, android.R.layout.simple_spinner_item);
         adapterCore.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -200,6 +205,35 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
+
+        ArrayAdapter<CharSequence> adapterSpecial = ArrayAdapter.createFromResource(getContext(), R.array.special, android.R.layout.simple_spinner_item);
+        adapterSpecial.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        specialSpinner.setAdapter(adapterSpecial);
+        specialSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(adapter == null) return;
+                if(position == 0){
+                    adapter.updateList(courses);
+                    updatedCourses = courses;
+                    return;
+                }
+
+                switch (parent.getItemAtPosition(position).toString().split(" ")[0].toLowerCase()){
+                    case "lab":
+                        updatedCourses = labCourses;
+                        break;
+
+                    case "online":
+                        updatedCourses = onlineCourses;
+                        break;
+                }
+                adapter.updateList(updatedCourses);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
     }
 
     public void listUpCourses() {
@@ -232,12 +266,20 @@ public class CoursesFragment extends Fragment {
                 coreCourses = new HashMap();
                 subjectCourses = new HashMap();
                 doubleDipperCourses = new ArrayList();
+                labCourses = new ArrayList();
+                onlineCourses = new ArrayList();
                 for(Course course : courses){
                     crnLinkedCourse.put(course.getCourseCRN(), course);
                     linkCoreCourse(course);
                     linkSubjectCourse(course);
                     if(course.getCores() != null && course.getCores().size() > 1){
                         doubleDipperCourses.add(course);
+                    }
+                    if(course.getIsLabCourse()){
+                        labCourses.add(course);
+                    }
+                    if(course.getRoom().toLowerCase().equals("online")){
+                        onlineCourses.add(course);
                     }
                 }
             }
