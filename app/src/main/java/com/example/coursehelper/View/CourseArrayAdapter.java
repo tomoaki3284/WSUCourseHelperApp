@@ -13,12 +13,12 @@ import com.example.coursehelper.R;
 
 import java.util.List;
 
-public class courseArrayAdapter extends ArrayAdapter<Course> {
+public class CourseArrayAdapter extends ArrayAdapter<Course> {
 
     private Context context;
     private List<Course> courses;
 
-    public courseArrayAdapter(Context context, int resource, List<Course> objects) {
+    public CourseArrayAdapter(Context context, int resource, List<Course> objects) {
         super(context, resource, objects);
 
         this.context = context;

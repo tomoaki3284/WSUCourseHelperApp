@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.coursehelper.Model.Course;
-import com.example.coursehelper.Model.DayOfWeek;
 import com.example.coursehelper.Model.Schedule;
 import com.example.coursehelper.Model.ScheduleObserver;
 import com.example.coursehelper.R;
@@ -27,8 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,7 +40,7 @@ public class CoursesFragment extends Fragment {
     private ListView listView;
     private List<Course> courses;
     private List<Course> updatedCourses;
-    private courseArrayAdapter adapter;
+    private CourseArrayAdapter adapter;
 
     private HashMap<String, List<Course>> coreCourses;
     private HashMap<String, List<Course>> subjectCourses;
@@ -238,7 +235,7 @@ public class CoursesFragment extends Fragment {
 
     public void listUpCourses() {
         if(courses == null) return;
-        adapter = new courseArrayAdapter(getActivity(), 0, courses);
+        adapter = new CourseArrayAdapter(getActivity(), 0, courses);
         listView.setAdapter(adapter);
         updatedCourses = courses;
     }

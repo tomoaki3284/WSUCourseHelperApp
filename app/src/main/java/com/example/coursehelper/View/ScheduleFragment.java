@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,8 +61,10 @@ public class ScheduleFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+        schedule = new Schedule();
         warningSection = view.findViewById(R.id.warningArea);
 
+        initialButtonSetup();
         initialDayGraphSetup();
         updateUI(null);
         return view;
@@ -74,6 +77,19 @@ public class ScheduleFragment extends Fragment {
             @Override
             public void onChanged(Schedule schedule) {
                 updateUI(schedule);
+            }
+        });
+    }
+
+    public void initialButtonSetup() {
+        Button clearButton = view.findViewById(R.id.clearSchedule);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                schedule = new Schedule();
+                updateUI(schedule);
+                notifyScheduleChangesToObserver();
+                System.out.println("Clear pressed");
             }
         });
     }
