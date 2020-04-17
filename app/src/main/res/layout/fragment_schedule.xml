@@ -46,6 +46,14 @@
                     app:layout_constraintVertical_bias="0.1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                android:id="@+id/creditAccumulation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/colorPrimaryText"
+                android:gravity="center"
+                android:text="total credit: 0.0" />
 
             <LinearLayout
                 android:id="@+id/warningArea"
@@ -62,8 +70,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp">
                 <include
                     android:id="@+id/dayGraph"
                     layout="@layout/graph_layout"/>

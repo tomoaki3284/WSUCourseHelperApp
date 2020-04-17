@@ -64,7 +64,9 @@ public class Schedule {
      */
     public Course removeCourse(int idx) {
         if(idx < 0 || idx >= courses.size()) return null;
-        return courses.remove(idx);
+        Course removedCourse = courses.remove(idx);
+        totalCredit -= removedCourse.getCredit();
+        return removedCourse;
     }
 
     /**
@@ -100,6 +102,8 @@ public class Schedule {
             Collections.sort(courses, com);
         }
 
+        clearWarnings();
+
         for(DayOfWeek day : map.keySet()){
             List<Course> courses = map.get(day);
             int[] prevClassTime = courses.get(0).getHoursOfDay().get(day).get(0).getInIntervalForm();
@@ -129,6 +133,12 @@ public class Schedule {
         }
 
         return anyOverlap;
+    }
+
+    private void clearWarnings() {
+        for(DayOfWeek day : overlapWarning.keySet()){
+            overlapWarning.put(day, new ArrayList<String>());
+        }
     }
 
     private String minToMilitaryTime(int min) {

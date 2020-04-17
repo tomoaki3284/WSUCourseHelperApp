@@ -49,6 +49,8 @@ public class ScheduleFragment extends Fragment {
 
     private LinearLayout warningSection;
 
+    private TextView tvTotalCredit;
+
     private View view;
 
     public ScheduleFragment() {
@@ -63,6 +65,7 @@ public class ScheduleFragment extends Fragment {
 
         schedule = new Schedule();
         warningSection = view.findViewById(R.id.warningArea);
+        tvTotalCredit = view.findViewById(R.id.creditAccumulation);
 
         initialButtonSetup();
         initialDayGraphSetup();
@@ -122,6 +125,7 @@ public class ScheduleFragment extends Fragment {
 
     public void addWarningsInWarningsSection() {
         EnumMap<DayOfWeek, List<String>> map = schedule.getOverlapWarning();
+        warningSection.removeAllViewsInLayout();
         for(DayOfWeek day : map.keySet()){
             for(String warning : map.get(day)){
                 TextView tvWarning = new TextView(getContext());
@@ -149,12 +153,10 @@ public class ScheduleFragment extends Fragment {
             warningSection.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         }
 
-        //TODO: create TextView for block of class, size = course Hours
-        //             Space for block of break, size = next startTime - prev endTime
-        // Some class has two class in one day: apply changes according to this
+        tvTotalCredit.setText("total credit: " + schedule.getTotalCredit());
 
+        // Display all course schedule in timeline graph
         clearSchedule();// There has to be a better/efficient way to draw timeline
-        int prevClassLength = 0;
         for(Course course : schedule.getCourses()){
             EnumMap<DayOfWeek, List<Hours>> dayOpenHours = course.getHoursOfDay();
             for(DayOfWeek day : dayOpenHours.keySet()){
