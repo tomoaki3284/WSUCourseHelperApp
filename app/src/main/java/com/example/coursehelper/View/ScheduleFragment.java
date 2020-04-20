@@ -69,7 +69,7 @@ public class ScheduleFragment extends Fragment {
 
         initialButtonSetup();
         initialDayGraphSetup();
-        updateUI(null);
+        updateUI();
         return view;
     }
 
@@ -79,9 +79,14 @@ public class ScheduleFragment extends Fragment {
         scheduleObserver.getSchedule().observe(getViewLifecycleOwner(), new Observer<Schedule>() {
             @Override
             public void onChanged(Schedule schedule) {
-                updateUI(schedule);
+                setSchedule(schedule);
+                updateUI();
             }
         });
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 
     public void initialButtonSetup() {
@@ -90,7 +95,7 @@ public class ScheduleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 schedule = new Schedule();
-                updateUI(schedule);
+                updateUI();
                 notifyScheduleChangesToObserver();
                 System.out.println("Clear pressed");
             }
@@ -142,9 +147,8 @@ public class ScheduleFragment extends Fragment {
         }
     }
 
-    public void updateUI(Schedule schedule) {
+    public void updateUI() {
         if(schedule == null) return;
-        this.schedule = schedule;
         if(schedule.isHoursOverlap()){
             System.out.println("*****OVERLAPPED*****");
             addWarningsInWarningsSection();
@@ -190,6 +194,7 @@ public class ScheduleFragment extends Fragment {
     }
 
     public void displayClassToGraph(RelativeLayout dayTimeCol, Course course, int[] classTimeInterval) {
+        //TODO: Animate height changes
         int newClassStart = defaultMinToTimelineMin(classTimeInterval[0]);
         int newClassEnd = defaultMinToTimelineMin(classTimeInterval[1]);
         int newClassStartPx = dpToPx(newClassStart);
@@ -221,7 +226,7 @@ public class ScheduleFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 schedule.removeCourse(course);
-                                updateUI(schedule);
+                                updateUI();
                                 notifyScheduleChangesToObserver();
                             }
                         })
