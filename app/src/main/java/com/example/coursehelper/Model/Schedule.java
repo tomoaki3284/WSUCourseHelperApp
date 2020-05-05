@@ -74,7 +74,6 @@ public class Schedule {
      *
      * @return True, if some course hours is overlapped
      */
-    //TODO: Not detecting the overlapped, need to fix this
     public boolean isHoursOverlap() {
         boolean anyOverlap = false;
         if (courses.size() <= 1) return anyOverlap;
@@ -108,7 +107,7 @@ public class Schedule {
             List<Course> courses = map.get(day);
             int[] prevClassTime = courses.get(0).getHoursOfDay().get(day).get(0).getInIntervalForm();
             for(int i=1; i<courses.size(); i++){
-                int[] currClassTime = courses.get(1).getHoursOfDay().get(day).get(0).getInIntervalForm();
+                int[] currClassTime = courses.get(i).getHoursOfDay().get(day).get(0).getInIntervalForm();
                 if(prevClassTime[1] > currClassTime[0]){
                     // overlapped
                     anyOverlap = true;

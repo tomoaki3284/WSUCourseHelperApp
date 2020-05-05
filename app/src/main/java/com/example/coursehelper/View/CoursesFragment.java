@@ -85,7 +85,7 @@ public class CoursesFragment extends Fragment {
     //call when user removed course from scheduleFragment
     public void updateSchedule(Schedule schedule) {
         this.schedule = schedule;
-        Toast.makeText(getContext(), "You have: " + schedule.getCourses().size() + " class", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "You have: " + schedule.getCourses().size() + " class", Toast.LENGTH_LONG).show();
         System.out.println("User has: " + schedule.getCourses().size() + " courses");
     }
 
