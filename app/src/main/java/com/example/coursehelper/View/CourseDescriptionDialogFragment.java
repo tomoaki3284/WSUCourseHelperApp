@@ -42,15 +42,17 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_course_description, null);
 
-        titleRaw = getArguments().getString("title");
-        timeContentRaw = getArguments().getString("timeContent");
-        facultyRaw = getArguments().getString("faculty");
-        roomRaw = getArguments().getString("room");
-        creditRaw = getArguments().getString("credit");
-        crnRaw = getArguments().getString("crn");
-        descriptionRaw = getArguments().getString("description");
-        coresRaw = getArguments().getString("cores");
-
+        if(getArguments() != null){
+            titleRaw = getArguments().getString("title");
+            timeContentRaw = getArguments().getString("timeContent");
+            facultyRaw = getArguments().getString("faculty");
+            roomRaw = getArguments().getString("room");
+            creditRaw = getArguments().getString("credit");
+            crnRaw = getArguments().getString("crn");
+            descriptionRaw = getArguments().getString("description");
+            coresRaw = getArguments().getString("cores");
+        }
+        
         inflateDialog(view);
         setClickListener(view);
         return view;

@@ -1,20 +1,30 @@
 package com.example.coursehelper.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.coursehelper.Model.Schedule;
 import com.example.coursehelper.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
@@ -26,24 +36,22 @@ import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener;
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private PageAdapter pageAdapter;
-    private TabItem tabCourses;
-    private TabItem tabSchedule;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     private ActionBarDrawerToggle drawerToggle;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+         fragmentManager = getSupportFragmentManager();
+
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navView = findViewById(R.id.nav_view);
@@ -55,32 +63,18 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
         drawerLayout.addDrawerListener(drawerToggle);
 
-        tabLayout = findViewById(R.id.tablayout);
-        tabCourses = findViewById(R.id.coursesTab);
-        tabSchedule = findViewById(R.id.scheduleTab);
-        viewPager = findViewById(R.id.viewPager);
+        loadFragment(CoursesScheduleTabFragment.class);
 
-        pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(pageAdapter);
-
-        tabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
+        //TODO: use proper Back Stack
+        ImageView homeLogo = toolbar.findViewById(R.id.homelogo);
+        homeLogo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabSelected(Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(Tab tab) {
-
+            public void onClick(View v) {
+                Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
             }
         });
-        // sync the swipe move with tabs
-        viewPager.addOnPageChangeListener(new TabLayoutOnPageChangeListener(tabLayout));
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`
@@ -118,17 +112,33 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void loadFragment(Class fragmentClass) {
+        try {
+            if(fragmentClass != null) {
+                System.out.println("New Fragment Replaced");
+                Fragment fragment = (Fragment) fragmentClass.newInstance();
+                // Insert the fragment by replacing any existing fragment
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.frameLayout, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
-        Class fragmentClass;
+        Class fragmentClass = null;
         switch(menuItem.getItemId()) {
             case R.id.nav_schedule:
-//                fragmentClass = FirstFragment.class;
-//                break;
-//            case R.id.nav_second_fragment:
+                fragmentClass = FeedbackFragment.class;
+                break;
+            case R.id.nav_feedback:
 //                fragmentClass = SecondFragment.class;
-//                break;
+                break;
 //            case R.id.nav_third_fragment:
 //                fragmentClass = ThirdFragment.class;
 //                break;
@@ -136,15 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show();
         }
 
-        try {
-//            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        loadFragment(fragmentClass);
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);

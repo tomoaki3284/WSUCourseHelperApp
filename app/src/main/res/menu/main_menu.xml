@@ -18,10 +18,10 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_feedback"
                 android:title="Feedback" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_ratemyprofessor"
                 android:title="Rate My Professor" />
         </menu>
     </item>

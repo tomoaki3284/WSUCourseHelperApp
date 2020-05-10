@@ -36,6 +36,8 @@ import java.util.List;
  */
 public class CoursesFragment extends Fragment {
 
+    private View view;
+
     private ScheduleObserver scheduleObserver;
     private Schedule schedule;
 
@@ -58,7 +60,7 @@ public class CoursesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_courses, container, false);
+        view = inflater.inflate(R.layout.fragment_courses, container, false);
 
         schedule = new Schedule();
         setUpListView(view);
@@ -112,9 +114,6 @@ public class CoursesFragment extends Fragment {
     public void notifyScheduleChangesToObserver() {
         scheduleObserver.setSchedule(schedule);
     }
-
-
-
 
     public void setUpListView(View view) {
         listView = view.findViewById(R.id.customListView);
