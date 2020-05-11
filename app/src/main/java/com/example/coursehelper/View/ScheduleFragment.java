@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -207,7 +209,7 @@ public class ScheduleFragment extends Fragment {
         newClass.setTextSize(12);
         newClass.setTextColor(Color.WHITE);
         newClass.setGravity(Gravity.CENTER);
-        newClass.setBackground(getResources().getDrawable(R.drawable.course_cell));
+        newClass.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.course_cell));
         setNewClassClickListener(newClass, course);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(dpToPx(60), lengthPx);

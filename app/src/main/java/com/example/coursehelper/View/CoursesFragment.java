@@ -63,14 +63,19 @@ public class CoursesFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_courses, container, false);
 
         schedule = new Schedule();
-        setUpListView(view);
-        setUpSpinner(view);
+        setUpListView();
+        setUpSpinner();
 
         if(courses == null || courses.size() < 1){
             new ReadCourses().execute("https://coursehlperwsu.s3.amazonaws.com/current-semester.json");
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -115,7 +120,7 @@ public class CoursesFragment extends Fragment {
         scheduleObserver.setSchedule(schedule);
     }
 
-    public void setUpListView(View view) {
+    public void setUpListView() {
         listView = view.findViewById(R.id.customListView);
         Fragment f = this;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -148,7 +153,7 @@ public class CoursesFragment extends Fragment {
         });
     }
 
-    public void setUpSpinner(View view) {
+    public void setUpSpinner() {
         Spinner coreSpinner = view.findViewById(R.id.coreSpinner);
         Spinner subjectSpinner = view.findViewById(R.id.subjectSpinner);
         Spinner specialSpinner = view.findViewById(R.id.specialSpinner);

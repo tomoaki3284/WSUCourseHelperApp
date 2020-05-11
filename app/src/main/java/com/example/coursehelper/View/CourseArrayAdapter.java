@@ -39,12 +39,15 @@ public class CourseArrayAdapter extends ArrayAdapter<Course> {
 
         //get the inflater and inflate the XML layout for each item
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.course_layout2, null);
+        View view = inflater.inflate(R.layout.course_layout_simple, null);
 
         TextView title = view.findViewById(R.id.title);
         TextView credit = view.findViewById(R.id.credit);
         TextView timeContent = view.findViewById(R.id.timeContent);
         TextView classCancelled = view.findViewById(R.id.cancelled);
+        View colorCode = view.findViewById(R.id.colorCode);
+
+//        colorCode.setBackgroundColor(Color.parseColor("#043a78"));
 
         String raw_title = course.getTitle();
         double raw_credit = course.getCredit();

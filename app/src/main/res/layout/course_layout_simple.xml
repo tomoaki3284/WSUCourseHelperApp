@@ -17,6 +17,7 @@
         android:orientation="horizontal">
 
         <View
+            android:id="@+id/colorCode"
             android:layout_width="3dp"
             android:layout_height="match_parent"
             android:background="@android:color/holo_blue_light" />

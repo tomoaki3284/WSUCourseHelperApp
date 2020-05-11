@@ -23,6 +23,8 @@ import com.google.android.material.tabs.TabLayout;
  */
 public class CoursesScheduleTabFragment extends Fragment {
 
+    public final static String FRAG_TAG = "com.exmaple.coursehelper.View.CoursesScheduleTabFragment";
+    private FragmentManager fragmentManager;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private PageAdapter pageAdapter;
@@ -38,6 +40,8 @@ public class CoursesScheduleTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_main, container, false);
 
+        fragmentManager = getActivity().getSupportFragmentManager();
+
         tabLayout = view.findViewById(R.id.tablayout);
         tabCourses = view.findViewById(R.id.coursesTab);
         tabSchedule = view.findViewById(R.id.scheduleTab);
@@ -45,6 +49,7 @@ public class CoursesScheduleTabFragment extends Fragment {
 
         pageAdapter = new PageAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

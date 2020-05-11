@@ -1,37 +1,24 @@
 package com.example.coursehelper.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
-import com.example.coursehelper.Model.Schedule;
 import com.example.coursehelper.R;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabItem;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
-import com.google.android.material.tabs.TabLayout.Tab;
-import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,18 +27,17 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navView;
     private ActionBarDrawerToggle drawerToggle;
     private FragmentManager fragmentManager;
+    private CoursesScheduleTabFragment homePage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-         fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
+        homePage = new CoursesScheduleTabFragment();
 
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getResources().getString(R.string.app_name));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        setupToolbar();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navView = findViewById(R.id.nav_view);
@@ -63,18 +49,7 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
         drawerLayout.addDrawerListener(drawerToggle);
 
-        loadFragment(CoursesScheduleTabFragment.class);
-
-        //TODO: use proper Back Stack
-        ImageView homeLogo = toolbar.findViewById(R.id.homelogo);
-        homeLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
-                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(homeIntent);
-            }
-        });
+        loadFragment(homePage, CoursesScheduleTabFragment.FRAG_TAG);
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`
@@ -95,6 +70,27 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    private void setupToolbar() {
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.app_name));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ImageView homeLogo = toolbar.findViewById(R.id.homelogo);
+        homeLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CoursesScheduleTabFragment myFragment = (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
+                if(myFragment != null ){
+                    if(myFragment.isVisible()){
+                        Toast.makeText(MainActivity.this, "You are already in Home Page", Toast.LENGTH_SHORT).show();
+                    } else {
+                        returnToHomePage();
+                    }
+                }
+            }
+        });
+    }
+
     private ActionBarDrawerToggle setupDrawerToggle() {
         // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
         // and will not render the hamburger icon without it.
@@ -112,14 +108,46 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void loadFragment(Class fragmentClass) {
+    private void returnToHomePage() {
+        homePage.getView().setVisibility(View.VISIBLE);
+        fragmentManager.popBackStack(CoursesScheduleTabFragment.FRAG_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack();
+        CoursesScheduleTabFragment myFragment = (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
+        myFragment.getView().setVisibility(View.VISIBLE);
+    }
+
+    private void loadFragment(Fragment fragment, String tag) {
+        CoursesScheduleTabFragment myFragment =
+                (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
+        if (myFragment != null) {
+            if(myFragment.isVisible()) {
+                myFragment.getView().setVisibility(View.GONE);
+            }
+        }
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+        fragmentTransaction.add(R.id.frameLayout, fragment, tag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void loadFragment(Class fragmentClass, String tag) {
         try {
             if(fragmentClass != null) {
-                System.out.println("New Fragment Replaced");
+                CoursesScheduleTabFragment myFragment =
+                        (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
+                if (myFragment != null) {
+                    if(myFragment.isVisible()) {
+                        myFragment.getView().setVisibility(View.GONE);
+                    }
+                }
+
                 Fragment fragment = (Fragment) fragmentClass.newInstance();
                 // Insert the fragment by replacing any existing fragment
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.frameLayout, fragment);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                fragmentTransaction.add(R.id.frameLayout, fragment, tag);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -132,21 +160,27 @@ public class MainActivity extends AppCompatActivity {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass = null;
+        String tag = "";
         switch(menuItem.getItemId()) {
             case R.id.nav_schedule:
-                fragmentClass = FeedbackFragment.class;
                 break;
             case R.id.nav_feedback:
-//                fragmentClass = SecondFragment.class;
+                fragmentClass = FeedbackFragment.class;
+                tag = FeedbackFragment.FRAG_TAG;
                 break;
-//            case R.id.nav_third_fragment:
+            case R.id.nav_ratemyprofessor:
 //                fragmentClass = ThirdFragment.class;
-//                break;
+                break;
             default:
                 Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show();
         }
 
-        loadFragment(fragmentClass);
+        try{
+            fragment = (Fragment)fragmentClass.newInstance();
+            loadFragment(fragment, tag);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
