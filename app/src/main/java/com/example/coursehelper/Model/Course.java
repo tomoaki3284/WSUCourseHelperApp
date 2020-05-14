@@ -157,6 +157,14 @@ public class Course {
         this.timeContent = timeContent;
     }
 
+    public String getCoresAsString() {
+        String res = "";
+        for(String core : cores){
+            res += core + "/";
+        }
+        return res.substring(0,res.length()-1);
+    }
+
     @Override
     public String toString() {
         return "Course{" +

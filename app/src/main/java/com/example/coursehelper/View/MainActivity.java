@@ -20,6 +20,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.coursehelper.R;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -106,54 +108,46 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+        navigationView.getHeaderView(0).findViewById(R.id.loginTextView).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //TODO: Do it properly.
+//                returnToHomePage();
+                loadFragment(new LoginFragment(), LoginFragment.TAG_FRAG);
+                drawerLayout.closeDrawers();
+            }
+        });
     }
 
     private void returnToHomePage() {
-        homePage.getView().setVisibility(View.VISIBLE);
-        fragmentManager.popBackStack(CoursesScheduleTabFragment.FRAG_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fragmentManager.popBackStack();
         CoursesScheduleTabFragment myFragment = (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
         myFragment.getView().setVisibility(View.VISIBLE);
     }
 
     private void loadFragment(Fragment fragment, String tag) {
-        CoursesScheduleTabFragment myFragment =
-                (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
-        if (myFragment != null) {
-            if(myFragment.isVisible()) {
-                myFragment.getView().setVisibility(View.GONE);
-            }
-        }
-
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                 .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-        fragmentTransaction.add(R.id.frameLayout, fragment, tag);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
 
-    private void loadFragment(Class fragmentClass, String tag) {
-        try {
-            if(fragmentClass != null) {
-                CoursesScheduleTabFragment myFragment =
-                        (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
-                if (myFragment != null) {
-                    if(myFragment.isVisible()) {
-                        myFragment.getView().setVisibility(View.GONE);
-                    }
-                }
-
-                Fragment fragment = (Fragment) fragmentClass.newInstance();
-                // Insert the fragment by replacing any existing fragment
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
-                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-                fragmentTransaction.add(R.id.frameLayout, fragment, tag);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        //when loading new fragment, make current top stack fragment hide
+        int top = fragmentManager.getBackStackEntryCount()-1;
+        if(top >= 0){
+            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(top);
+            Fragment currentFragment = fragmentManager.findFragmentByTag(backStackEntry.getName());
+            currentFragment.getView().setVisibility(View.GONE);
+//            fragmentTransaction.hide(currentFragment);
+//            homePage.getView().setVisibility(View.GONE);
         }
+
+        fragmentTransaction.add(R.id.frameLayout, fragment, tag);
+
+        if(tag.equals(CoursesScheduleTabFragment.FRAG_TAG)){
+            fragmentTransaction.addToBackStack(tag);
+        }else {
+            fragmentTransaction.addToBackStack(tag);
+        }
+
+        fragmentTransaction.commit();
     }
 
     public void selectDrawerItem(MenuItem menuItem) {

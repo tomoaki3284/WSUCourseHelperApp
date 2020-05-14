@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,20 +16,20 @@ import android.widget.Toast;
 
 import com.example.coursehelper.R;
 
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FeedbackFragment extends Fragment {
 
     public static final String FRAG_TAG = "com.exmaple.coursehelper.View.FeedbackFragment";
-    public static final String FRAG_TAG2 = "com.exmaple.coursehelper.View.FeedbackFragment2";
 
     private View view;
 
     public FeedbackFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,17 +40,14 @@ public class FeedbackFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
-                System.out.println("Back Button Pressed");
+                fragmentManager.popBackStackImmediate();// pop itself
 
-                fragmentManager.popBackStack();
-
-                //Assuming that previous fragment on back stack is CoursesScheduleTagFragment
-                //Also this fragment is currently only open after CoursesScheduleTagFragment is being push to back stack
-                CoursesScheduleTabFragment myFragment = (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
-                if (myFragment != null) {
-                    myFragment.getView().setVisibility(View.VISIBLE);
-                }
+                Fragment csFragment = fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+//                fragmentTransaction.show(csFragment);
+//                fragmentTransaction.addToBackStack(CoursesScheduleTabFragment.FRAG_TAG);
+//                fragmentTransaction.commit();
+                csFragment.getView().setVisibility(View.VISIBLE);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -58,7 +56,6 @@ public class FeedbackFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_feedback, container, false);
 
         Button sendButton = view.findViewById(R.id.sendButton);

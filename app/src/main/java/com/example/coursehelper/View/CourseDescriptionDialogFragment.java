@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
-import android.widget.Toast;
 
 import com.example.coursehelper.Model.Course;
 import com.example.coursehelper.R;
@@ -19,39 +18,23 @@ import com.example.coursehelper.R;
  */
 public class CourseDescriptionDialogFragment extends DialogFragment {
 
-    CoursesFragment targetFragment;
+    private CoursesFragment targetFragment;
+    private Course course;
 
-    String titleRaw;
-    String crnRaw;
-    String facultyRaw;
-    String roomRaw;
-    String timeContentRaw;
-    String creditRaw;
-    String descriptionRaw;
-    String coresRaw;
+    public void setCourse(Course course) {
+        if(null == course) return;
+        this.course = course;
+    }
 
-    public static DialogFragment newInstance(Bundle bundle) {
-        System.out.println("********************** called newInstance on Dialog");
+    public static CourseDescriptionDialogFragment newInstance(Bundle bundle) {
         CourseDescriptionDialogFragment f = new CourseDescriptionDialogFragment();
         f.setArguments(bundle);
         return f;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_course_description, null);
-
-        if(getArguments() != null){
-            titleRaw = getArguments().getString("title");
-            timeContentRaw = getArguments().getString("timeContent");
-            facultyRaw = getArguments().getString("faculty");
-            roomRaw = getArguments().getString("room");
-            creditRaw = getArguments().getString("credit");
-            crnRaw = getArguments().getString("crn");
-            descriptionRaw = getArguments().getString("description");
-            coresRaw = getArguments().getString("cores");
-        }
         
         inflateDialog(view);
         setClickListener(view);
@@ -80,7 +63,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                targetFragment.addCourseToSchedule(crnRaw);
+                targetFragment.addCourseToSchedule(course);
                 dismiss();
             }
         });
@@ -88,7 +71,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         dropButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                targetFragment.removeCourseFromSchedule(crnRaw);
+                targetFragment.removeCourseFromSchedule(course);
                 dismiss();
             }
         });
@@ -104,14 +87,14 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         TextView description = view.findViewById(R.id.courseDescription);
         TextView cores = view.findViewById(R.id.courseCores);
 
-        title.setText(titleRaw);
-        crn.setText(crnRaw);
-        faculty.setText(facultyRaw);
-        room.setText(roomRaw);
-        timeContent.setText(timeContentRaw);
-        credit.setText(creditRaw);
-        description.setText(descriptionRaw);
+        title.setText(course.getTitle());
+        crn.setText(course.getCourseCRN());
+        faculty.setText(course.getFaculty());
+        room.setText(course.getRoom());
+        timeContent.setText(course.getTimeContent());
+        credit.setText(Double.toString(course.getCredit()));
+        description.setText(course.getCourseDescription());
         description.setMovementMethod(new ScrollingMovementMethod());
-        cores.setText(coresRaw);
+        cores.setText(course.getCoresAsString());
     }
 }

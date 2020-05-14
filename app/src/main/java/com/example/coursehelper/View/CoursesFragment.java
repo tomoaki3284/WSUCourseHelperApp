@@ -6,7 +6,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -51,7 +50,6 @@ public class CoursesFragment extends Fragment {
     private List<Course> labCourses;
     private List<Course> onlineCourses;
     private List<Course> doubleDipperCourses;
-    static private HashMap<String, Course> crnLinkedCourse;
 
     public CoursesFragment() {
         // Required empty public constructor
@@ -67,15 +65,10 @@ public class CoursesFragment extends Fragment {
         setUpSpinner();
 
         if(courses == null || courses.size() < 1){
-            new ReadCourses().execute("https://coursehlperwsu.s3.amazonaws.com/current-semester.json");
+            new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
         }
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -89,25 +82,28 @@ public class CoursesFragment extends Fragment {
         });
     }
 
+    //TODO
     //call when user removed course from scheduleFragment
     public void updateSchedule(Schedule schedule) {
         this.schedule = schedule;
-        Toast.makeText(getContext(), "You have: " + schedule.getCourses().size() + " class", Toast.LENGTH_LONG).show();
-        System.out.println("User has: " + schedule.getCourses().size() + " courses");
     }
 
     //called by CourseDescriptionDialog
-    public void addCourseToSchedule(String crn) {
-        Course course = crnLinkedCourse.get(crn);
-        if(course.getIsCancelled() == false){
+    public void addCourseToSchedule(Course course) {
+        if(course.getIsCancelled() == false && !schedule.getCourses().contains(course)){
             schedule.addCourse(course);
+            Toast.makeText(getContext(), "Added to your schedule", Toast.LENGTH_SHORT).show();
             notifyScheduleChangesToObserver();
+        }else{
+            if(course.getIsCancelled())
+                Toast.makeText(getContext(), "This class is cancelled", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(getContext(), "This class is already on your schedule", Toast.LENGTH_SHORT).show();
         }
     }
 
     //called by CourseDescriptionDialog
-    public void removeCourseFromSchedule(String crn) {
-        Course course = crnLinkedCourse.get(crn);
+    public void removeCourseFromSchedule(Course course) {
         if(schedule.removeCourse(course)){
             Toast.makeText(getContext(), "You successfully dropped class", Toast.LENGTH_SHORT).show();
             notifyScheduleChangesToObserver();
@@ -127,28 +123,10 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course course = updatedCourses.get(position);
-                Bundle bundle = new Bundle();
-                bundle.putString("title", course.getTitle());
-                bundle.putString("timeContent", course.getTimeContent());
-                bundle.putString("faculty", course.getFaculty());
-                bundle.putString("room", course.getRoom());
-                bundle.putString("credit", Double.toString(course.getCredit()));
-                bundle.putString("crn", course.getCourseCRN());
-                bundle.putString("description", course.getCourseDescription());
-                bundle.putString("cores", coresToString(course.getCores()));
-
-                DialogFragment dialog = CourseDescriptionDialogFragment.newInstance(bundle);
+                CourseDescriptionDialogFragment dialog = CourseDescriptionDialogFragment.newInstance(null);
                 dialog.setTargetFragment(f,0);
-                dialog.show(getFragmentManager(), "dialog");
-            }
-
-            public String coresToString(List<String> cores) {
-                String res = "";
-                for(String core : cores){
-                    res += core;
-                    res += "/";
-                }
-                return res.substring(0,res.length()-1);
+                dialog.setCourse(course);
+                dialog.show(getActivity().getSupportFragmentManager(), "dialog");
             }
         });
     }
@@ -247,7 +225,6 @@ public class CoursesFragment extends Fragment {
     }
 
     private class ReadCourses extends AsyncTask<Object, Void, List<Course>> {
-
         @Override
         protected List<Course> doInBackground(Object... objects) {
             ObjectMapper mapper = new ObjectMapper();
@@ -263,16 +240,14 @@ public class CoursesFragment extends Fragment {
             }
 
             if(courses == null){
-                System.out.println("********************courses is NULL in AsyncTask");
+                System.out.println("Courses is NULL in AsyncTask");
             }else{
-                crnLinkedCourse = new HashMap();
                 coreCourses = new HashMap();
                 subjectCourses = new HashMap();
                 doubleDipperCourses = new ArrayList();
                 labCourses = new ArrayList();
                 onlineCourses = new ArrayList();
                 for(Course course : courses){
-                    crnLinkedCourse.put(course.getCourseCRN(), course);
                     linkCoreCourse(course);
                     linkSubjectCourse(course);
                     if(course.getCores() != null && course.getCores().size() > 1){
