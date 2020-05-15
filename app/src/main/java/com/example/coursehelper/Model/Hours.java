@@ -1,12 +1,13 @@
 package com.example.coursehelper.Model;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Class to represent the opening and closing hours of a given dining location
  */
-public class Hours {
+public class Hours implements Serializable {
 
     // match the open-close hours using regular expression pattern
     // Notes:
@@ -26,6 +27,7 @@ public class Hours {
     // hours [0..23]/minute[0..59] in military (24h format)
     private int startHour, startMinute, endHour, endMinute;
     private String militaryTime;
+    private String hoursString;
 
     public Hours() {
 
@@ -78,6 +80,8 @@ public class Hours {
         } else {
             throw new Exception("Invalid hours: " + hoursString);
         }
+
+        this.hoursString = hoursString;
     }
 
     /**
@@ -240,6 +244,10 @@ public class Hours {
 
     public String toString() {
         return getMilitaryTime();
+    }
+
+    public String getHoursString() {
+        return hoursString;
     }
 }
 

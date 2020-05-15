@@ -2,6 +2,7 @@ package com.example.coursehelper.Model;
 
 import com.fasterxml.jackson.core.JsonpCharacterEscapes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,8 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Schedule {
+public class Schedule implements Serializable {
 
+    public static final String PREFS_KEY = "com.example.coursehelper.Model.Schedule.java.SharedPreferences";
     List<Course> courses;
     double totalCredit;
     // if overlapped class scheduled, put the warning message in this map

@@ -63,6 +63,8 @@ public class CourseArrayAdapter extends ArrayAdapter<Course> {
         viewHolder.timeContent.setText(raw_timeContent);
         if(course.getIsCancelled()){
             viewHolder.classCancelled.setText("CANCELLED");
+        }else{
+            viewHolder.classCancelled.setText("");
         }
 
         return convertView;

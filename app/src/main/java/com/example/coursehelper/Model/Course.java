@@ -1,29 +1,23 @@
 package com.example.coursehelper.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-public class Course {
-    //first cell
+public class Course implements Serializable {
+
     private String courseCRN;
     private String subject;
-    //second cell
     private String title;
     private boolean isLabCourse;
     private String courseDescription;
-    //fourth cell
     private String faculty;
-    //sixth cell
     private String room;
-    //seventh cell
     private double credit;
-    //eighth cell
     private List<String> cores;
-    //fifth cell
     private EnumMap<DayOfWeek, List<Hours>> hoursOfDay; // use this to detect the overlap
     private String timeContent;
-    // detect afterwards
     private boolean isCancelled;
 
     public Course() {

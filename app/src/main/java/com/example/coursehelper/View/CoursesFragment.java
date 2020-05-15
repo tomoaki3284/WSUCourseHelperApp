@@ -1,5 +1,7 @@
 package com.example.coursehelper.View;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.AdapterView;
@@ -23,12 +25,20 @@ import com.example.coursehelper.R;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +46,8 @@ import java.util.List;
 public class CoursesFragment extends Fragment {
 
     private View view;
+
+    SharedPreferences preferences;
 
     private ScheduleObserver scheduleObserver;
     private Schedule schedule;
@@ -59,8 +71,10 @@ public class CoursesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_courses, container, false);
+        preferences = getActivity().getPreferences(MODE_PRIVATE);
 
-        schedule = new Schedule();
+        loadInternalFileStorageData();
+
         setUpListView();
         setUpSpinner();
 
@@ -71,6 +85,20 @@ public class CoursesFragment extends Fragment {
         return view;
     }
 
+    private void loadInternalFileStorageData() {
+        schedule = new Schedule();
+        try{
+            File file = new File(getContext().getDir("data", MODE_PRIVATE), "scheduleFile.txt");
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+            schedule = (Schedule) ois.readObject();
+            ois.close();
+            System.out.println("***********Successfully read schedule object from local file**********");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
@@ -80,6 +108,25 @@ public class CoursesFragment extends Fragment {
                 updateSchedule(schedule);
             }
         });
+        notifyScheduleChangesToObserver();
+    }
+
+    // This is called when user navigates backwards, or fragment is replaced/remove
+    // Called when fragment is added to back stack, then remove/replaced
+    @Override
+    public void onPause() {
+        super.onPause();
+        try{
+            File file = new File(getContext().getDir("data", MODE_PRIVATE), "scheduleFile.txt");
+            FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(schedule);
+            oos.flush();
+            oos.close();
+            System.out.println("**********Successfully wrote schedule object to local file*************");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //TODO

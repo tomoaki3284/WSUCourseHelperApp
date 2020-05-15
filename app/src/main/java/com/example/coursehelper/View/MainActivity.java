@@ -111,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
         navigationView.getHeaderView(0).findViewById(R.id.loginTextView).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: Do it properly.
-//                returnToHomePage();
                 loadFragment(new LoginFragment(), LoginFragment.TAG_FRAG);
                 drawerLayout.closeDrawers();
             }
@@ -120,9 +118,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void returnToHomePage() {
-        fragmentManager.popBackStack();
-        CoursesScheduleTabFragment myFragment = (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
-        myFragment.getView().setVisibility(View.VISIBLE);
+        int entryCount = fragmentManager.getBackStackEntryCount();
+        for(int i=0; i<entryCount-1; i++){
+            fragmentManager.popBackStackImmediate();
+        }
+
+        String rootFragmentTag  = fragmentManager.getBackStackEntryAt(0).getName();
+        fragmentManager.findFragmentByTag(rootFragmentTag).getView().setVisibility(View.VISIBLE);
     }
 
     private void loadFragment(Fragment fragment, String tag) {
@@ -135,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(top);
             Fragment currentFragment = fragmentManager.findFragmentByTag(backStackEntry.getName());
             currentFragment.getView().setVisibility(View.GONE);
-//            fragmentTransaction.hide(currentFragment);
-//            homePage.getView().setVisibility(View.GONE);
         }
 
         fragmentTransaction.add(R.id.frameLayout, fragment, tag);
