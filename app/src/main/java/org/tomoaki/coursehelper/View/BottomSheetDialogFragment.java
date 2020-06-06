@@ -1,4 +1,4 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;

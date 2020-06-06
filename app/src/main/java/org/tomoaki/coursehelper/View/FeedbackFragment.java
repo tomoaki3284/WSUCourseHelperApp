@@ -1,4 +1,4 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
 import android.os.Bundle;
 
@@ -6,7 +6,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.coursehelper.R;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

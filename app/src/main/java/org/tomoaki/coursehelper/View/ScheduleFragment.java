@@ -1,4 +1,4 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,11 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.coursehelper.Model.Course;
-import com.example.coursehelper.Model.DayOfWeek;
-import com.example.coursehelper.Model.Hours;
-import com.example.coursehelper.Model.Schedule;
-import com.example.coursehelper.Model.ScheduleObserver;
+import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.DayOfWeek;
+import org.tomoaki.coursehelper.Model.Hours;
+import org.tomoaki.coursehelper.Model.Schedule;
+import org.tomoaki.coursehelper.Model.ScheduleObserver;
 import com.example.coursehelper.R;
 
 import java.util.EnumMap;

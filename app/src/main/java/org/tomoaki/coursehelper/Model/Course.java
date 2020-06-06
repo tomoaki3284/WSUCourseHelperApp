@@ -1,4 +1,4 @@
-package com.example.coursehelper.Model;
+package org.tomoaki.coursehelper.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

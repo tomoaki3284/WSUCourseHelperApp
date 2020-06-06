@@ -1,6 +1,5 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,8 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.coursehelper.R;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

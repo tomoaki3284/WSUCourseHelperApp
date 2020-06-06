@@ -1,4 +1,4 @@
-package com.example.coursehelper;
+package org.tomoaki.coursehelper;
 
 import org.junit.Test;
 

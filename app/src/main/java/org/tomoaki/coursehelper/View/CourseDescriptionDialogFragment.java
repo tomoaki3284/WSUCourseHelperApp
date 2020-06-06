@@ -1,4 +1,4 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 
-import com.example.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Course;
 import com.example.coursehelper.R;
 
 /**

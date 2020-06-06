@@ -1,6 +1,5 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,14 +17,13 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.coursehelper.Model.Course;
-import com.example.coursehelper.Model.Schedule;
-import com.example.coursehelper.Model.ScheduleObserver;
+import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Schedule;
+import org.tomoaki.coursehelper.Model.ScheduleObserver;
 import com.example.coursehelper.R;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileInputStream;

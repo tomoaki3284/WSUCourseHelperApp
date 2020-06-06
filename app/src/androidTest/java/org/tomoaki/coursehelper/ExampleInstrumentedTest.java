@@ -1,4 +1,4 @@
-package com.example.coursehelper;
+package org.tomoaki.coursehelper;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
     // Context of the app under test.
     Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-    assertEquals("com.example.coursehelper", appContext.getPackageName());
+    assertEquals("com.tomoaki.coursehelper", appContext.getPackageName());
   }
 }
