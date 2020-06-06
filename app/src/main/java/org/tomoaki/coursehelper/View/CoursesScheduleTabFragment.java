@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.coursehelper.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -25,8 +26,11 @@ public class CoursesScheduleTabFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private PageAdapter pageAdapter;
+    private View view;
     private TabItem tabCourses;
     private TabItem tabSchedule;
+
+    private BottomSheetBehavior sheetBehavior;
 
     public CoursesScheduleTabFragment() {
         // Required empty public constructor
@@ -35,7 +39,7 @@ public class CoursesScheduleTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_main, container, false);
+        view = inflater.inflate(R.layout.tab_main, container, false);
 
         fragmentManager = getActivity().getSupportFragmentManager();
 

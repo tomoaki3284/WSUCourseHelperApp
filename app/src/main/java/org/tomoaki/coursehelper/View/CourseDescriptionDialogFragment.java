@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 
 import org.tomoaki.coursehelper.Model.Course;
+
 import com.example.coursehelper.R;
 
 /**
@@ -93,7 +94,11 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         room.setText(course.getRoom());
         timeContent.setText(course.getTimeContent());
         credit.setText(Double.toString(course.getCredit()));
-        description.setText(course.getCourseDescription());
+        if(course.getCourseDescription() == null || course.getCourseDescription().length() == 0){
+            description.setText("No description available.");
+        }else{
+            description.setText(course.getCourseDescription());
+        }
         description.setMovementMethod(new ScrollingMovementMethod());
         cores.setText(course.getCoresAsString());
     }

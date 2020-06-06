@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import org.tomoaki.coursehelper.Model.Course;
 import org.tomoaki.coursehelper.Model.Schedule;
+
 import com.example.coursehelper.R;
 
 import java.util.List;

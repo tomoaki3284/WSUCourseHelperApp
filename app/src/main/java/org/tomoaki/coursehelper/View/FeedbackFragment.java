@@ -60,7 +60,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: Implement feedback feature
-                Toast.makeText(getContext(), "Not Implemented Yet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Please wait for future update :)", Toast.LENGTH_SHORT).show();
             }
         });
 

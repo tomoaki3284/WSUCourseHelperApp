@@ -24,6 +24,7 @@ import org.tomoaki.coursehelper.Model.DayOfWeek;
 import org.tomoaki.coursehelper.Model.Hours;
 import org.tomoaki.coursehelper.Model.Schedule;
 import org.tomoaki.coursehelper.Model.ScheduleObserver;
+
 import com.example.coursehelper.R;
 
 import java.util.EnumMap;
