@@ -1,4 +1,4 @@
-package com.example.coursehelper;
+package org.tomoaki.coursehelper;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;

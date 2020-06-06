@@ -1,15 +1,11 @@
-package com.example.coursehelper.Model;
-
-import com.fasterxml.jackson.core.JsonpCharacterEscapes;
+package org.tomoaki.coursehelper.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Schedule implements Serializable {
 

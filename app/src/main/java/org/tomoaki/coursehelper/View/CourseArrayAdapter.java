@@ -1,21 +1,17 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.transition.Scene;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
+import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Schedule;
 
-import com.example.coursehelper.Model.Course;
-import com.example.coursehelper.Model.Schedule;
 import com.example.coursehelper.R;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class CourseArrayAdapter extends ArrayAdapter<Course> {

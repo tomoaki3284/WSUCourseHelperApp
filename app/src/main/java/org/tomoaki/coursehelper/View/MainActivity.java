@@ -1,6 +1,5 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,8 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.coursehelper.R;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -157,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         String tag = "";
         switch(menuItem.getItemId()) {
             case R.id.nav_schedule:
+                Toast.makeText(this, "Please wait for future update :)", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_feedback:
                 fragmentClass = FeedbackFragment.class;
@@ -164,9 +162,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_ratemyprofessor:
 //                fragmentClass = ThirdFragment.class;
+                Toast.makeText(this, "Please wait for future update :)", Toast.LENGTH_SHORT).show();
                 break;
             default:
-                Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please wait for future update :)", Toast.LENGTH_SHORT).show();
         }
 
         try{

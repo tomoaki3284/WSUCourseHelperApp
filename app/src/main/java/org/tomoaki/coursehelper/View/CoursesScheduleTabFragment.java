@@ -1,21 +1,18 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.coursehelper.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -29,8 +26,11 @@ public class CoursesScheduleTabFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private PageAdapter pageAdapter;
+    private View view;
     private TabItem tabCourses;
     private TabItem tabSchedule;
+
+    private BottomSheetBehavior sheetBehavior;
 
     public CoursesScheduleTabFragment() {
         // Required empty public constructor
@@ -39,7 +39,7 @@ public class CoursesScheduleTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_main, container, false);
+        view = inflater.inflate(R.layout.tab_main, container, false);
 
         fragmentManager = getActivity().getSupportFragmentManager();
 

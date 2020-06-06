@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F6F8FA"
     android:orientation="vertical"
-    tools:context=".View.CoursesFragment">
+    tools:context="org.tomoaki.coursehelper.View.CoursesFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -38,6 +39,13 @@
             android:layout_margin="3dp"
             android:layout_weight="0.33" />
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="200dp"
+        android:layout_gravity="center" />
 
     <ListView
         android:id="@+id/customListView"

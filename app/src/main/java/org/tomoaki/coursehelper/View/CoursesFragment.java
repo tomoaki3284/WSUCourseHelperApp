@@ -1,6 +1,5 @@
-package com.example.coursehelper.View;
+package org.tomoaki.coursehelper.View;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,21 +10,21 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.coursehelper.Model.Course;
-import com.example.coursehelper.Model.Schedule;
-import com.example.coursehelper.Model.ScheduleObserver;
+import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Schedule;
+import org.tomoaki.coursehelper.Model.ScheduleObserver;
+
 import com.example.coursehelper.R;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -130,7 +129,7 @@ public class CoursesFragment extends Fragment {
     }
 
     //TODO
-    //call when user removed course from scheduleFragment
+    //call when user removed course from scheduleFragment or other
     public void updateSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
@@ -272,6 +271,14 @@ public class CoursesFragment extends Fragment {
     }
 
     private class ReadCourses extends AsyncTask<Object, Void, List<Course>> {
+        ProgressBar progressBar;
+
+        @Override
+        protected void onPreExecute() {
+            progressBar = view.findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
         @Override
         protected List<Course> doInBackground(Object... objects) {
             ObjectMapper mapper = new ObjectMapper();
@@ -342,6 +349,7 @@ public class CoursesFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Course> courses) {
+            progressBar.setVisibility(View.GONE);
             listUpCourses();
         }
     }
