@@ -63,7 +63,9 @@ public class Schedule implements Serializable {
     public Course removeCourse(int idx) {
         if(idx < 0 || idx >= courses.size()) return null;
         Course removedCourse = courses.remove(idx);
-        totalCredit -= removedCourse.getCredit();
+        if(totalCredit > 0){
+            totalCredit -= removedCourse.getCredit();
+        }
         return removedCourse;
     }
 

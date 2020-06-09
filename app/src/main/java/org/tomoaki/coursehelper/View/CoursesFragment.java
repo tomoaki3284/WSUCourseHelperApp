@@ -3,6 +3,7 @@ package org.tomoaki.coursehelper.View;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -14,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.PairableSpinner;
 import org.tomoaki.coursehelper.Model.Schedule;
 import org.tomoaki.coursehelper.Model.ScheduleObserver;
 
@@ -34,6 +37,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,8 +50,6 @@ public class CoursesFragment extends Fragment {
 
     private View view;
 
-    SharedPreferences preferences;
-
     private ScheduleObserver scheduleObserver;
     private Schedule schedule;
 
@@ -56,11 +58,15 @@ public class CoursesFragment extends Fragment {
     private List<Course> updatedCourses;
     private CourseArrayAdapter adapter;
 
-    private HashMap<String, List<Course>> coreCourses;
-    private HashMap<String, List<Course>> subjectCourses;
-    private List<Course> labCourses;
-    private List<Course> onlineCourses;
-    private List<Course> doubleDipperCourses;
+    private int totalNumberOfCourses = 0;
+//    private HashMap<String, List<Course>> coreCourses;
+//    private HashMap<String, List<Course>> subjectCourses;
+//    private List<Course> labCourses;
+//    private List<Course> onlineCourses;
+//    private List<Course> doubleDipperCourses;
+
+    private List<PairableSpinner> spinners;
+    private PairableSpinner spinner;
 
     public CoursesFragment() {
         // Required empty public constructor
@@ -70,10 +76,7 @@ public class CoursesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_courses, container, false);
-        preferences = getActivity().getPreferences(MODE_PRIVATE);
-
         loadInternalFileStorageData();
-
         setUpListView();
         setUpSpinner();
 
@@ -181,6 +184,10 @@ public class CoursesFragment extends Fragment {
         Spinner coreSpinner = view.findViewById(R.id.coreSpinner);
         Spinner subjectSpinner = view.findViewById(R.id.subjectSpinner);
         Spinner specialSpinner = view.findViewById(R.id.specialSpinner);
+        PairableSpinner corePSpin = new PairableSpinner("core", coreSpinner, 0, null);
+        PairableSpinner subjectPSpin = new PairableSpinner("subject", coreSpinner, 0, null);
+        PairableSpinner specialPSpin = new PairableSpinner("special" ,coreSpinner, 0, null);
+        spinners = new ArrayList<>(Arrays.asList(corePSpin, subjectPSpin, specialPSpin));
 
         ArrayAdapter<CharSequence> adapterCore = ArrayAdapter.createFromResource(getContext(), R.array.cores, android.R.layout.simple_spinner_item);
         adapterCore.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -188,22 +195,9 @@ public class CoursesFragment extends Fragment {
         coreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(adapter == null) return;
-                if(position == 0){ // first item = "None"
-                    adapter.updateList(courses);
-                    updatedCourses = courses;
-                    return;
-                }
-
-                String targetCore = parent.getItemAtPosition(position).toString().split(" ")[0];
-                assert coreCourses.get(targetCore) != null;
-                if(targetCore.equals("DoubleDipper")){
-                    adapter.updateList(doubleDipperCourses);
-                    updatedCourses = doubleDipperCourses;
-                }else{
-                    adapter.updateList(coreCourses.get(targetCore));
-                    updatedCourses = coreCourses.get(targetCore);
-                }
+                corePSpin.setParent(parent);
+                corePSpin.setPosition(position);
+                filterCourses();
             }
 
             @Override
@@ -216,17 +210,9 @@ public class CoursesFragment extends Fragment {
         subjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(adapter == null) return;
-                if(position == 0){ // first item = "None"
-                    adapter.updateList(courses);
-                    updatedCourses = courses;
-                    return;
-                }
-
-                String targetSubject = parent.getItemAtPosition(position).toString().split(" ")[0];
-                assert subjectCourses.get(targetSubject) != null;
-                adapter.updateList(subjectCourses.get(targetSubject));
-                updatedCourses = subjectCourses.get(targetSubject);
+                subjectPSpin.setParent(parent);
+                subjectPSpin.setPosition(position);
+                filterCourses();
             }
 
             @Override
@@ -239,28 +225,35 @@ public class CoursesFragment extends Fragment {
         specialSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(adapter == null) return;
-                if(position == 0){
-                    adapter.updateList(courses);
-                    updatedCourses = courses;
-                    return;
-                }
-
-                switch (parent.getItemAtPosition(position).toString().split(" ")[0].toLowerCase()){
-                    case "lab":
-                        updatedCourses = labCourses;
-                        break;
-
-                    case "online":
-                        updatedCourses = onlineCourses;
-                        break;
-                }
-                adapter.updateList(updatedCourses);
+                specialPSpin.setParent(parent);
+                specialPSpin.setPosition(position);
+                filterCourses();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
+    }
+
+    /**
+     * Apply multiple filter
+     */
+    private void filterCourses() {
+        if(adapter == null){
+            System.out.println("*********Adapter is null*********");
+            return;
+        }
+
+        List<Course> filteredCourses = courses;
+
+        for(int i=0; i<spinners.size(); i++){
+            spinner = spinners.get(i);
+            filteredCourses = spinner.filterCourses(filteredCourses);
+        }
+
+        updatedCourses = filteredCourses;
+        adapter.updateList(updatedCourses);
+
     }
 
     public void listUpCourses() {
@@ -295,56 +288,9 @@ public class CoursesFragment extends Fragment {
 
             if(courses == null){
                 System.out.println("Courses is NULL in AsyncTask");
-            }else{
-                coreCourses = new HashMap();
-                subjectCourses = new HashMap();
-                doubleDipperCourses = new ArrayList();
-                labCourses = new ArrayList();
-                onlineCourses = new ArrayList();
-                for(Course course : courses){
-                    linkCoreCourse(course);
-                    linkSubjectCourse(course);
-                    if(course.getCores() != null && course.getCores().size() > 1){
-                        doubleDipperCourses.add(course);
-                    }
-                    if(course.getIsLabCourse()){
-                        labCourses.add(course);
-                    }
-                    if(course.getRoom().toLowerCase().equals("online")){
-                        onlineCourses.add(course);
-                    }
-                }
             }
 
             return courses;
-        }
-
-        public void linkCoreCourse(Course course) {
-            List<String> cores = course.getCores();
-            if(cores == null || cores.size() < 1) return;
-
-            for(String core : cores){
-                if(coreCourses.get(core) == null){
-                    List<Course> courses = new ArrayList();
-                    courses.add(course);
-                    coreCourses.put(core, courses);
-                }else{
-                    coreCourses.get(core).add(course);
-                }
-            }
-        }
-
-        public void linkSubjectCourse(Course course) {
-            String subject = course.getSubject();
-            if(course.getSubject() == null) return;
-
-            if(subjectCourses.get(subject) == null){
-                List<Course> courses = new ArrayList();
-                courses.add(course);
-                subjectCourses.put(subject, courses);
-            }else{
-                subjectCourses.get(subject).add(course);
-            }
         }
 
         @Override

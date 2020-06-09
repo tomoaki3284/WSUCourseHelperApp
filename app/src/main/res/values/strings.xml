@@ -7,8 +7,8 @@
 
     <string-array name="special">
         <item>Special</item>
-        <item>Lab Course</item>
-        <item>Online Lecture</item>
+        <item>lab course</item>
+        <item>online lecture</item>
     </string-array>
 
     <string-array name="cores">
