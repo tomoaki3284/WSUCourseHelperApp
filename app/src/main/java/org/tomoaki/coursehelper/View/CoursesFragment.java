@@ -1,5 +1,6 @@
 package org.tomoaki.coursehelper.View;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.example.coursehelper.R;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,15 +60,10 @@ public class CoursesFragment extends Fragment {
     private List<Course> updatedCourses;
     private CourseArrayAdapter adapter;
 
-    private int totalNumberOfCourses = 0;
-//    private HashMap<String, List<Course>> coreCourses;
-//    private HashMap<String, List<Course>> subjectCourses;
-//    private List<Course> labCourses;
-//    private List<Course> onlineCourses;
-//    private List<Course> doubleDipperCourses;
-
     private List<PairableSpinner> spinners;
     private PairableSpinner spinner;
+
+    private CoursesBottomSheetDialogFragment bottomSheetDialogFragment;
 
     public CoursesFragment() {
         // Required empty public constructor
@@ -79,6 +76,7 @@ public class CoursesFragment extends Fragment {
         loadInternalFileStorageData();
         setUpListView();
         setUpSpinner();
+        setupBottomBar();
 
         if(courses == null || courses.size() < 1){
             new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
@@ -94,7 +92,7 @@ public class CoursesFragment extends Fragment {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
             schedule = (Schedule) ois.readObject();
             ois.close();
-            System.out.println("***********Successfully read schedule object from local file**********");
+            System.out.println("Successfully read schedule object from local file");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -125,7 +123,7 @@ public class CoursesFragment extends Fragment {
             oos.writeObject(schedule);
             oos.flush();
             oos.close();
-            System.out.println("**********Successfully wrote schedule object to local file*************");
+            System.out.println("Successfully wrote schedule object to local file");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -235,9 +233,21 @@ public class CoursesFragment extends Fragment {
         });
     }
 
-    /**
-     * Apply multiple filter
-     */
+    private void setupBottomBar() {
+        FloatingActionButton button = view.findViewById(R.id.fab);
+        bottomSheetDialogFragment = new CoursesBottomSheetDialogFragment();
+        Context context = bottomSheetDialogFragment.getContext();
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //TODO: Generate BottomSheetDialog
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "ExampleBottomSheet");
+                bottomSheetDialogFragment.updateSchedule(schedule);
+                notifyScheduleChangesToObserver();
+            }
+        });
+    }
+
     private void filterCourses() {
         if(adapter == null){
             System.out.println("*********Adapter is null*********");

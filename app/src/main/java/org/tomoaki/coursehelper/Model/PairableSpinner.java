@@ -91,7 +91,7 @@ public class PairableSpinner {
                     Course course = courses.get(i);
                     if(isLab && course.getIsLabCourse()){
                         filteredCourses.add(course);
-                    }else if(!isLab && course.getRoom().equals("online")){
+                    }else if(!isLab && course.getRoom().toLowerCase().equals("online")){
                         filteredCourses.add(course);
                     }
                 }

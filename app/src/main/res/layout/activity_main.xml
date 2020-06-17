@@ -18,7 +18,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar_main"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_width="match_parent" />
 
         <FrameLayout
@@ -26,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
     <com.google.android.material.navigation.NavigationView
@@ -39,7 +38,6 @@
         app:menu="@menu/main_menu">
 
     </com.google.android.material.navigation.NavigationView>
-
 </androidx.drawerlayout.widget.DrawerLayout>
 
 

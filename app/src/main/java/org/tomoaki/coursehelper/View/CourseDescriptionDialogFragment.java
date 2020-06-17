@@ -29,7 +29,6 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
 
     public static CourseDescriptionDialogFragment newInstance(Bundle bundle) {
         CourseDescriptionDialogFragment f = new CourseDescriptionDialogFragment();
-        f.setArguments(bundle);
         return f;
     }
 
@@ -46,6 +45,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //assuming that this dialog is opened by CourseFragment
         targetFragment = (CoursesFragment) getTargetFragment();
     }
 

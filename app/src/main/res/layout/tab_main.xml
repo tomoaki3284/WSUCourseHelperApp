@@ -12,7 +12,7 @@
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.65"
+        android:layout_weight="0.55"
         android:background="#2e2e2e"
         app:tabIndicatorColor="@android:color/holo_blue_dark"
         app:tabTextColor="@android:color/white">

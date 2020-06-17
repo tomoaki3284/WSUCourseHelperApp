@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.coursehelper.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         homePage = new CoursesScheduleTabFragment();
 
         setupToolbar();
+//        setupBottomBar(); no longer associated with main page, it's in CourseFragment
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navView = findViewById(R.id.nav_view);
