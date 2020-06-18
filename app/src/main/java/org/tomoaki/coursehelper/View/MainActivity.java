@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navView;
     private ActionBarDrawerToggle drawerToggle;
     private FragmentManager fragmentManager;
-    private CoursesScheduleTabFragment homePage;
+    private HomePageFragment homePage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
-        homePage = new CoursesScheduleTabFragment();
+        //set homepage fragment to whatever I want
+//        homePage = new CoursesScheduleTabFragment();
+        homePage = new HomePageFragment();
+        homePage.setParentActivity(this);
 
         setupToolbar();
-//        setupBottomBar(); no longer associated with main page, it's in CourseFragment
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navView = findViewById(R.id.nav_view);
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
         drawerLayout.addDrawerListener(drawerToggle);
 
-        loadFragment(homePage, CoursesScheduleTabFragment.FRAG_TAG);
+        loadFragment(homePage, homePage.FRAG_TAG);
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         homeLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CoursesScheduleTabFragment myFragment = (CoursesScheduleTabFragment) fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
+                HomePageFragment myFragment = (HomePageFragment) fragmentManager.findFragmentByTag(HomePageFragment.FRAG_TAG);
                 if(myFragment != null ){
                     if(myFragment.isVisible()){
                         Toast.makeText(MainActivity.this, "You are already in Home Page", Toast.LENGTH_SHORT).show();
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void returnToHomePage() {
         int entryCount = fragmentManager.getBackStackEntryCount();
+        //pop stacked fragment until size becomes 1
         for(int i=0; i<entryCount-1; i++){
             fragmentManager.popBackStackImmediate();
         }
@@ -126,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.findFragmentByTag(rootFragmentTag).getView().setVisibility(View.VISIBLE);
     }
 
-    private void loadFragment(Fragment fragment, String tag) {
+    public void loadFragment(Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                 .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
-        //when loading new fragment, make current top stack fragment hide
+        //when loading new fragment to the stack, make current top stack fragment hide
         int top = fragmentManager.getBackStackEntryCount()-1;
         if(top >= 0){
             FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(top);
@@ -163,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
                 tag = FeedbackFragment.FRAG_TAG;
                 break;
             case R.id.nav_ratemyprofessor:
-//                fragmentClass = ThirdFragment.class;
                 Toast.makeText(this, "Please wait for future update :)", Toast.LENGTH_SHORT).show();
                 break;
             default:

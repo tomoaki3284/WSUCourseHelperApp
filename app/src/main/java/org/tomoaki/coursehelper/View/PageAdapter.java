@@ -13,6 +13,7 @@ class PageAdapter extends FragmentPagerAdapter {
     public PageAdapter(FragmentManager fm, int numOfTabs) {
         super(fm);
         this.numOfTabs = numOfTabs;
+        System.out.println("New Fragment Created: PageAdapter class");
         coursesFragment = new CoursesFragment();
         scheduleFragment = new ScheduleFragment();
     }
@@ -21,7 +22,6 @@ class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch(position){
             case 0:
-                System.out.println(coursesFragment.isVisible());
                 return coursesFragment;
 
             case 1:

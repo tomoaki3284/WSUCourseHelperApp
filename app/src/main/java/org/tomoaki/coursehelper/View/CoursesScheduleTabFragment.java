@@ -3,6 +3,7 @@ package org.tomoaki.coursehelper.View;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
@@ -41,22 +42,30 @@ public class CoursesScheduleTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.tab_main, container, false);
 
-        fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager = getChildFragmentManager();
 
         tabLayout = view.findViewById(R.id.tablayout);
         tabCourses = view.findViewById(R.id.coursesTab);
         tabSchedule = view.findViewById(R.id.scheduleTab);
         viewPager = view.findViewById(R.id.viewPager);
 
-        pageAdapter = new PageAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        pageAdapter = new PageAdapter(fragmentManager, tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
 
         // This callback will only be called when MyFragment is at least Started.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                System.out.println("Back Button Pressed");
-                // do nothing, since this is the main page
+                //TODO: Back Stack one fragment
+                FragmentManager fragmentManager = getParentFragmentManager();
+                fragmentManager.popBackStackImmediate();// pop itself
+
+                int top = fragmentManager.getBackStackEntryCount()-1;
+                if(top >= 0){
+                    FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(top);
+                    Fragment currentFragment = fragmentManager.findFragmentByTag(backStackEntry.getName());
+                    currentFragment.getView().setVisibility(View.VISIBLE);
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -81,5 +90,10 @@ public class CoursesScheduleTabFragment extends Fragment {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 }

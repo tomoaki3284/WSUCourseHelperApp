@@ -77,6 +77,7 @@ public class CoursesFragment extends Fragment {
         setUpListView();
         setUpSpinner();
         setupBottomBar();
+        System.out.println("onCreateView");
 
         if(courses == null || courses.size() < 1){
             new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
@@ -109,6 +110,7 @@ public class CoursesFragment extends Fragment {
             }
         });
         notifyScheduleChangesToObserver();
+        System.out.println("onViewCreated");
     }
 
     // This is called when user navigates backwards, or fragment is replaced/remove
@@ -173,7 +175,7 @@ public class CoursesFragment extends Fragment {
                 CourseDescriptionDialogFragment dialog = CourseDescriptionDialogFragment.newInstance(null);
                 dialog.setTargetFragment(f,0);
                 dialog.setCourse(course);
-                dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                dialog.show(getParentFragmentManager(), "dialog");
             }
         });
     }

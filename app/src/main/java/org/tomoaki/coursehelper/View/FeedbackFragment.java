@@ -31,7 +31,7 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = getParentFragmentManager();
 
         // This callback will only be called when MyFragment is at least Started.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -39,12 +39,12 @@ public class FeedbackFragment extends Fragment {
             public void handleOnBackPressed() {
                 fragmentManager.popBackStackImmediate();// pop itself
 
-                Fragment csFragment = fragmentManager.findFragmentByTag(CoursesScheduleTabFragment.FRAG_TAG);
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-//                fragmentTransaction.show(csFragment);
-//                fragmentTransaction.addToBackStack(CoursesScheduleTabFragment.FRAG_TAG);
-//                fragmentTransaction.commit();
-                csFragment.getView().setVisibility(View.VISIBLE);
+                int top = fragmentManager.getBackStackEntryCount()-1;
+                if(top >= 0){
+                    FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(top);
+                    Fragment currentFragment = fragmentManager.findFragmentByTag(backStackEntry.getName());
+                    currentFragment.getView().setVisibility(View.VISIBLE);
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
