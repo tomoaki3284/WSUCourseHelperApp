@@ -62,7 +62,7 @@ public class CoursesBottomSheetDialogFragment extends BottomSheetDialogFragment 
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
         scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
-        scheduleObserver.getSchedule().observe(requireActivity(), new Observer<Schedule>() {
+        scheduleObserver.getData().observe(requireActivity(), new Observer<Schedule>() {
             @Override
             public void onChanged(Schedule schedule) {
                 updateSchedule(schedule);
@@ -78,7 +78,7 @@ public class CoursesBottomSheetDialogFragment extends BottomSheetDialogFragment 
     }
 
     private void notifyScheduleChangesToObserver() {
-        scheduleObserver.setSchedule(schedule);
+        scheduleObserver.setData(schedule);
     }
 
     private void setupListView() {

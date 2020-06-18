@@ -1,10 +1,12 @@
 package org.tomoaki.coursehelper.View;
 
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -18,8 +20,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.coursehelper.R;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+
+import org.tomoaki.coursehelper.Model.Course;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

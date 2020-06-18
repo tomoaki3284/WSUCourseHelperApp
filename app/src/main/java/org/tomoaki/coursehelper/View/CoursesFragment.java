@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import org.tomoaki.coursehelper.Model.Course;
 import org.tomoaki.coursehelper.Model.MultiFilterable;
+import org.tomoaki.coursehelper.Model.Observable;
 import org.tomoaki.coursehelper.Model.PairableSpinner;
 import org.tomoaki.coursehelper.Model.Schedule;
 import org.tomoaki.coursehelper.Model.ScheduleObserver;
@@ -45,7 +46,7 @@ public class CoursesFragment extends Fragment implements MultiFilterable {
 
     private View view;
 
-    private ScheduleObserver scheduleObserver;
+    private Observable scheduleObserver;
     private Schedule schedule;
 
     private ListView listView;
@@ -65,11 +66,11 @@ public class CoursesFragment extends Fragment implements MultiFilterable {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_courses, container, false);
+
         loadInternalFileStorageData();
         setUpListView();
         setUpSpinner();
         setupBottomBar();
-        System.out.println("onCreateView");
 
         if(courses == null || courses.size() < 1){
             new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
@@ -95,7 +96,7 @@ public class CoursesFragment extends Fragment implements MultiFilterable {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
-        scheduleObserver.getSchedule().observe(requireActivity(), new Observer<Schedule>() {
+        scheduleObserver.getData().observe(requireActivity(), new Observer<Schedule>() {
             @Override
             public void onChanged(Schedule schedule) {
                 updateSchedule(schedule);
@@ -154,7 +155,7 @@ public class CoursesFragment extends Fragment implements MultiFilterable {
     }
 
     public void notifyScheduleChangesToObserver() {
-        scheduleObserver.setSchedule(schedule);
+        scheduleObserver.setData(schedule);
     }
 
     public void setUpListView() {

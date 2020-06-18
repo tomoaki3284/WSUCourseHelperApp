@@ -4,6 +4,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import org.tomoaki.coursehelper.Model.Course;
+
+import java.util.List;
+
 class PageAdapter extends FragmentPagerAdapter {
 
     private int numOfTabs;
@@ -11,9 +15,8 @@ class PageAdapter extends FragmentPagerAdapter {
     private ScheduleFragment scheduleFragment;
 
     public PageAdapter(FragmentManager fm, int numOfTabs) {
-        super(fm);
+        super(fm, numOfTabs);
         this.numOfTabs = numOfTabs;
-        System.out.println("New Fragment Created: PageAdapter class");
         coursesFragment = new CoursesFragment();
         scheduleFragment = new ScheduleFragment();
     }

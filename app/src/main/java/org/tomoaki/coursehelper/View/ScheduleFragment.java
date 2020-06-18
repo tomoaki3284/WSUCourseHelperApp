@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import org.tomoaki.coursehelper.Model.Course;
 import org.tomoaki.coursehelper.Model.DayOfWeek;
 import org.tomoaki.coursehelper.Model.Hours;
+import org.tomoaki.coursehelper.Model.Observable;
 import org.tomoaki.coursehelper.Model.Schedule;
 import org.tomoaki.coursehelper.Model.ScheduleObserver;
 
@@ -36,7 +38,7 @@ import java.util.List;
 public class ScheduleFragment extends Fragment {
 
     private Schedule schedule;
-    private ScheduleObserver scheduleObserver;
+    private Observable scheduleObserver;
 
     private LinearLayout mondayTimeGraph;
     private LinearLayout tuesdayTimeGraph;
@@ -79,7 +81,7 @@ public class ScheduleFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
-        scheduleObserver.getSchedule().observe(getViewLifecycleOwner(), new Observer<Schedule>() {
+        scheduleObserver.getData().observe(getViewLifecycleOwner(), new Observer<Schedule>() {
             @Override
             public void onChanged(Schedule schedule) {
                 setSchedule(schedule);
@@ -197,7 +199,6 @@ public class ScheduleFragment extends Fragment {
     }
 
     public void displayClassToGraph(RelativeLayout dayTimeCol, Course course, int[] classTimeInterval) {
-        //TODO: Animate height changes
         int newClassStart = defaultMinToTimelineMin(classTimeInterval[0]);
         int newClassEnd = defaultMinToTimelineMin(classTimeInterval[1]);
         int newClassStartPx = dpToPx(newClassStart);
@@ -239,11 +240,11 @@ public class ScheduleFragment extends Fragment {
     }
 
     public void notifyScheduleChangesToObserver() {
-        scheduleObserver.setSchedule(schedule);
+        scheduleObserver.setData(schedule);
     }
 
     public int defaultMinToTimelineMin(int minutesDefault) {
-        int diffInMinutes = 7 * 60;
+        int diffInMinutes = 7 * 60;// 7 is starting time of the graph, I think
         return minutesDefault - diffInMinutes;
     }
 

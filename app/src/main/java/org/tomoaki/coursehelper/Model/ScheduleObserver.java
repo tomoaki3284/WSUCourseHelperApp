@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ScheduleObserver extends ViewModel {
+public class ScheduleObserver extends ViewModel implements Observable {
     private final MutableLiveData<Schedule> schedule = new MutableLiveData<>();
 
-    public void setSchedule(Schedule schedule) {
+    public void setData(Schedule schedule) {
         this.schedule.setValue(schedule);
     }
 
-    public LiveData<Schedule> getSchedule() {
+    public LiveData<Schedule> getData() {
         return schedule;
     }
 }

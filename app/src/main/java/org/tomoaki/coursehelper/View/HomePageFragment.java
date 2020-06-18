@@ -22,6 +22,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
     public final static String FRAG_TAG = "com.exmaple.coursehelper.View.HomePageFragment";
 
     private CoursesScheduleTabFragment coursesScheduleTabFragment;
+    private GeneratorTabFragment generatorTabFragment;
 
     private View view;
     private MainActivity activity;//need this reference for replacing/adding fragment with other one
@@ -79,10 +80,13 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
                 activity.loadFragment(coursesScheduleTabFragment, coursesScheduleTabFragment.FRAG_TAG);
                 break;
 
+            case R.id.homepage_card_generator:
+                if(generatorTabFragment == null) generatorTabFragment = new GeneratorTabFragment();
+                activity.loadFragment(generatorTabFragment, generatorTabFragment.FRAG_TAG);
+                break;
+
             // Fall through for now
             case R.id.homepage_card_setting:
-
-            case R.id.homepage_card_generator:
 
             case R.id.homepage_card_advanceGenerator:
 
@@ -93,5 +97,4 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
                 break;
         }
     }
-
 }

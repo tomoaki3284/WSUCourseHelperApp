@@ -1,0 +1,26 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.tomoaki.coursehelper.View.GeneratorAutomateFragment">
+
+    <include layout="@layout/spinners_filter"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center" />
+
+    <ListView
+        android:id="@+id/customListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="50dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        tools:layout_editor_absoluteX="5dp" />
+</FrameLayout>
