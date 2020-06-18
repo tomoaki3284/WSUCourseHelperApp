@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,37 +14,7 @@
         android:orientation="vertical"
         tools:context="org.tomoaki.coursehelper.View.CoursesFragment">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@android:color/white"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <!--  TODO: make spinner here for filtering feature  -->
-            <Spinner
-                android:id="@+id/coreSpinner"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
-                android:layout_weight="0.33" />
-
-            <Spinner
-                android:id="@+id/subjectSpinner"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
-                android:layout_weight="0.33" />
-
-            <Spinner
-                android:id="@+id/specialSpinner"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
-                android:layout_weight="0.33" />
-        </LinearLayout>
+        <include layout="@layout/spinners_filter" />
 
         <ProgressBar
             android:id="@+id/progressBar"

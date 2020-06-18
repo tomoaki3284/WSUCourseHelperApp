@@ -1,12 +1,9 @@
 package org.tomoaki.coursehelper.View;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -16,11 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Space;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.MultiFilterable;
 import org.tomoaki.coursehelper.Model.PairableSpinner;
 import org.tomoaki.coursehelper.Model.Schedule;
 import org.tomoaki.coursehelper.Model.ScheduleObserver;
@@ -38,9 +34,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -48,7 +41,7 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CoursesFragment extends Fragment {
+public class CoursesFragment extends Fragment implements MultiFilterable {
 
     private View view;
 
@@ -61,7 +54,6 @@ public class CoursesFragment extends Fragment {
     private CourseArrayAdapter adapter;
 
     private List<PairableSpinner> spinners;
-    private PairableSpinner spinner;
 
     private CoursesBottomSheetDialogFragment bottomSheetDialogFragment;
 
@@ -181,58 +173,8 @@ public class CoursesFragment extends Fragment {
     }
 
     public void setUpSpinner() {
-        Spinner coreSpinner = view.findViewById(R.id.coreSpinner);
-        Spinner subjectSpinner = view.findViewById(R.id.subjectSpinner);
-        Spinner specialSpinner = view.findViewById(R.id.specialSpinner);
-        PairableSpinner corePSpin = new PairableSpinner("core", coreSpinner, 0, null);
-        PairableSpinner subjectPSpin = new PairableSpinner("subject", coreSpinner, 0, null);
-        PairableSpinner specialPSpin = new PairableSpinner("special" ,coreSpinner, 0, null);
-        spinners = new ArrayList<>(Arrays.asList(corePSpin, subjectPSpin, specialPSpin));
-
-        ArrayAdapter<CharSequence> adapterCore = ArrayAdapter.createFromResource(getContext(), R.array.cores, android.R.layout.simple_spinner_item);
-        adapterCore.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        coreSpinner.setAdapter(adapterCore);
-        coreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                corePSpin.setParent(parent);
-                corePSpin.setPosition(position);
-                filterCourses();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
-
-        ArrayAdapter<CharSequence> adapterSubject = ArrayAdapter.createFromResource(getContext(), R.array.subjects, android.R.layout.simple_spinner_item);
-        adapterSubject.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        subjectSpinner.setAdapter(adapterSubject);
-        subjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                subjectPSpin.setParent(parent);
-                subjectPSpin.setPosition(position);
-                filterCourses();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
-
-        ArrayAdapter<CharSequence> adapterSpecial = ArrayAdapter.createFromResource(getContext(), R.array.special, android.R.layout.simple_spinner_item);
-        adapterSpecial.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        specialSpinner.setAdapter(adapterSpecial);
-        specialSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                specialPSpin.setParent(parent);
-                specialPSpin.setPosition(position);
-                filterCourses();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
+        EncapsulatedPairableSpinners ePairableSpinners = new EncapsulatedPairableSpinners(view,getContext(),this);
+        spinners = ePairableSpinners.getSpinners();
     }
 
     private void setupBottomBar() {
@@ -250,7 +192,7 @@ public class CoursesFragment extends Fragment {
         });
     }
 
-    private void filterCourses() {
+    public void filterCourses() {
         if(adapter == null){
             System.out.println("*********Adapter is null*********");
             return;
@@ -259,7 +201,7 @@ public class CoursesFragment extends Fragment {
         List<Course> filteredCourses = courses;
 
         for(int i=0; i<spinners.size(); i++){
-            spinner = spinners.get(i);
+            PairableSpinner spinner = spinners.get(i);
             filteredCourses = spinner.filterCourses(filteredCourses);
         }
 
