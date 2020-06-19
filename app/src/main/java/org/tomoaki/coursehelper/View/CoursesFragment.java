@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.CoursesEditable;
 import org.tomoaki.coursehelper.Model.MultiFilterable;
 import org.tomoaki.coursehelper.Model.Observable;
 import org.tomoaki.coursehelper.Model.PairableSpinner;
@@ -42,7 +43,7 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CoursesFragment extends Fragment implements MultiFilterable {
+public class CoursesFragment extends Fragment implements MultiFilterable, CoursesEditable {
 
     private View view;
 
@@ -62,19 +63,26 @@ public class CoursesFragment extends Fragment implements MultiFilterable {
         // Required empty public constructor
     }
 
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_courses, container, false);
 
+        adapter = new CourseArrayAdapter(getActivity(), 0, courses);
         loadInternalFileStorageData();
         setUpListView();
         setUpSpinner();
         setupBottomBar();
 
-        if(courses == null || courses.size() < 1){
-            new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
-        }
+        updateList();
+
+//        if(courses == null || courses.size() < 1){
+//            new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
+//        }
 
         return view;
     }
@@ -208,50 +216,48 @@ public class CoursesFragment extends Fragment implements MultiFilterable {
 
         updatedCourses = filteredCourses;
         adapter.updateList(updatedCourses);
-
     }
 
-    public void listUpCourses() {
-        if(courses == null) return;
-        adapter = new CourseArrayAdapter(getActivity(), 0, courses);
+    public void updateList() {
+        if(courses == null || courses.size() == 0 || adapter == null) return;
+        adapter.updateList(courses);
         listView.setAdapter(adapter);
-        updatedCourses = courses;
     }
 
-    private class ReadCourses extends AsyncTask<Object, Void, List<Course>> {
-        ProgressBar progressBar;
-
-        @Override
-        protected void onPreExecute() {
-            progressBar = view.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Course> doInBackground(Object... objects) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                String urlStr = (String) objects[0];
-                URL url = new URL(urlStr);
-                courses = mapper.readValue(url, new TypeReference<List<Course>>(){ });
-                if(courses == null){
-                    System.out.println("***Courses Object Null***");
-                }
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-
-            if(courses == null){
-                System.out.println("Courses is NULL in AsyncTask");
-            }
-
-            return courses;
-        }
-
-        @Override
-        protected void onPostExecute(List<Course> courses) {
-            progressBar.setVisibility(View.GONE);
-            listUpCourses();
-        }
-    }
+//    private class ReadCourses extends AsyncTask<Object, Void, List<Course>> {
+//        ProgressBar progressBar;
+//
+//        @Override
+//        protected void onPreExecute() {
+//            progressBar = view.findViewById(R.id.progressBar);
+//            progressBar.setVisibility(View.VISIBLE);
+//        }
+//
+//        @Override
+//        protected List<Course> doInBackground(Object... objects) {
+//            ObjectMapper mapper = new ObjectMapper();
+//            try {
+//                String urlStr = (String) objects[0];
+//                URL url = new URL(urlStr);
+//                courses = mapper.readValue(url, new TypeReference<List<Course>>(){ });
+//                if(courses == null){
+//                    System.out.println("***Courses Object Null***");
+//                }
+//            } catch (IOException e){
+//                e.printStackTrace();
+//            }
+//
+//            if(courses == null){
+//                System.out.println("Courses is NULL in AsyncTask");
+//            }
+//
+//            return courses;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Course> courses) {
+//            progressBar.setVisibility(View.GONE);
+//            listUpCourses();
+//        }
+//    }
 }

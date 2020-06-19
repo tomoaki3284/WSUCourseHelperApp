@@ -1,5 +1,6 @@
 package org.tomoaki.coursehelper.View;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -10,9 +11,19 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.coursehelper.R;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.tomoaki.coursehelper.Model.Course;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +39,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
     private MainActivity activity;//need this reference for replacing/adding fragment with other one
     private FragmentManager fragmentManager;
 
+    List<Course> courses;
+
     public HomePageFragment() {
         // Required empty public constructor
     }
@@ -41,6 +54,10 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.homepage_gridcards_layout, container, false);
         fragmentManager = getActivity().getSupportFragmentManager();
+
+        if(courses == null || courses.size() < 1){
+            new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
+        }
 
         setOnClickListener();
 
@@ -77,6 +94,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
         switch(v.getId()){
             case R.id.homepage_card_viewCourses:
                 if(coursesScheduleTabFragment == null) coursesScheduleTabFragment = new CoursesScheduleTabFragment();
+                assert  courses != null && courses.size() != 0;
+                coursesScheduleTabFragment.setCourses(courses);
                 activity.loadFragment(coursesScheduleTabFragment, coursesScheduleTabFragment.FRAG_TAG);
                 break;
 
@@ -95,6 +114,46 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
             case R.id.homepage_card_donation:
                 Toast.makeText(getActivity(), "Not Implemented Yet", Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    private class ReadCourses extends AsyncTask<Object, Void, List<Course>> {
+        ProgressBar progressBar;
+        GridLayout gridLayout;
+
+        @Override
+        protected void onPreExecute() {
+            progressBar = view.findViewById(R.id.progressBar);
+            gridLayout = view.findViewById(R.id.homepage_gridlayout);
+            gridLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected List<Course> doInBackground(Object... objects) {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                String urlStr = (String) objects[0];
+                URL url = new URL(urlStr);
+                courses = mapper.readValue(url, new TypeReference<List<Course>>(){ });
+                if(courses == null){
+                    System.out.println("***Courses Object Null***");
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+
+            if(courses == null){
+                System.out.println("Courses is NULL in AsyncTask");
+            }
+
+            return courses;
+        }
+
+        @Override
+        protected void onPostExecute(List<Course> courses) {
+            progressBar.setVisibility(View.GONE);
+            gridLayout.setVisibility(View.VISIBLE);
         }
     }
 }

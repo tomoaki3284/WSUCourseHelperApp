@@ -17,7 +17,14 @@
         android:layout_gravity="center"
         android:gravity="center"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center" />
+
     <GridLayout
+        android:id="@+id/homepage_gridlayout"
         android:layout_weight="8.75"
         android:layout_width="match_parent"
         android:layout_height="0dp"

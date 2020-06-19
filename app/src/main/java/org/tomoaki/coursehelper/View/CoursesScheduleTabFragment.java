@@ -35,8 +35,14 @@ public class CoursesScheduleTabFragment extends Fragment {
     private TabItem tabCourses;
     private TabItem tabSchedule;
 
+    private List<Course> courses;
+
     public CoursesScheduleTabFragment() {
         // Required empty public constructor
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
     @Override
@@ -52,6 +58,7 @@ public class CoursesScheduleTabFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
 
         pageAdapter = new PageAdapter(fragmentManager, tabLayout.getTabCount());
+        pageAdapter.setCourses(courses);
         viewPager.setAdapter(pageAdapter);
 
         // This callback will only be called when MyFragment is at least Started.

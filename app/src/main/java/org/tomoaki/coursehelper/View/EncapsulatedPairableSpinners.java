@@ -60,7 +60,10 @@ public class EncapsulatedPairableSpinners {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 corePSpin.setParent(parent);
                 corePSpin.setPosition(position);
-                embeddedIn.filterCourses();
+                if(subjectPSpin.getParent()!=null && specialPSpin.getParent()!=null){
+                    embeddedIn.filterCourses();
+                }
+//                embeddedIn.filterCourses();
             }
 
             @Override
@@ -75,7 +78,9 @@ public class EncapsulatedPairableSpinners {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 subjectPSpin.setParent(parent);
                 subjectPSpin.setPosition(position);
-                embeddedIn.filterCourses();
+                if(corePSpin.getParent()!=null && specialPSpin.getParent()!=null){
+                    embeddedIn.filterCourses();
+                }
             }
 
             @Override
@@ -90,7 +95,9 @@ public class EncapsulatedPairableSpinners {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 specialPSpin.setParent(parent);
                 specialPSpin.setPosition(position);
-                embeddedIn.filterCourses();
+                if(subjectPSpin.getParent()!=null && corePSpin.getParent()!=null){
+                    embeddedIn.filterCourses();
+                }
             }
 
             @Override

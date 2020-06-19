@@ -45,7 +45,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //assuming that this dialog is opened by CourseFragment
+        //assuming that this dialog is opened by CourseFragment only
         targetFragment = (CoursesFragment) getTargetFragment();
     }
 

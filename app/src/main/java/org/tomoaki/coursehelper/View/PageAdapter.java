@@ -14,6 +14,10 @@ class PageAdapter extends FragmentPagerAdapter {
     private CoursesFragment coursesFragment;
     private ScheduleFragment scheduleFragment;
 
+    public void setCourses(List<Course> courses) {
+        coursesFragment.setCourses(courses);
+    }
+
     public PageAdapter(FragmentManager fm, int numOfTabs) {
         super(fm, numOfTabs);
         this.numOfTabs = numOfTabs;
