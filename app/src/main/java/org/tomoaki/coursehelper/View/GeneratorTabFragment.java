@@ -33,19 +33,14 @@ public class GeneratorTabFragment extends Fragment {
     private ViewPager viewPager;
     private GeneratorPageAdapter pageAdapter;
 
-    private List<Course> courses;
+    private List<Course> uniqueCourses;
 
     public GeneratorTabFragment() {
         // Required empty public constructor
     }
 
-    public GeneratorTabFragment(List<Course> courses) {
-        this.courses = courses;
-    }
-
-
     public void setCourses(List<Course> courses) {
-        this.courses = courses;
+        this.uniqueCourses = courses;
     }
 
     @Override
@@ -59,6 +54,7 @@ public class GeneratorTabFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager_generator);
 
         pageAdapter = new GeneratorPageAdapter(fragmentManager, tabLayout.getTabCount());
+        pageAdapter.setCourses(uniqueCourses);
         viewPager.setAdapter(pageAdapter);
 
         // This callback will only be called when MyFragment is at least Started.

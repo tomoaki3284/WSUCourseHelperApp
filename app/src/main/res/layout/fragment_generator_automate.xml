@@ -1,26 +1,65 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout android:id="@+id/linearLayout2"
+    android:weightSum="1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.tomoaki.coursehelper.View.GeneratorAutomateFragment">
+    android:background="#F6F8FA"
+    android:orientation="vertical"
+    tools:context="org.tomoaki.coursehelper.View.CoursesFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/spinners_filter"/>
+        <include layout="@layout/spinners_filter" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center" />
+        <ListView
+            android:id="@+id/customListView"
+            android:layout_weight="0.875"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            tools:layout_editor_absoluteX="5dp" />
 
-    <ListView
-        android:id="@+id/generator_customListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="50dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"
-        tools:layout_editor_absoluteX="5dp" />
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_weight="0.125"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/closeTheDistanceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@android:color/holo_blue_light"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="close the distance"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/viewConsiderationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/holo_blue_light"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="view consideration"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+

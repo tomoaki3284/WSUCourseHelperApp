@@ -6,11 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 
+import org.jetbrains.annotations.NotNull;
 import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.CoursesEditable;
 
 import com.example.coursehelper.R;
 
@@ -19,22 +23,30 @@ import com.example.coursehelper.R;
  */
 public class CourseDescriptionDialogFragment extends DialogFragment {
 
-    private CoursesFragment targetFragment;
+    public static final String LAYOUT_TO_INFLATE = "layoutToInflate";
+
+    private CoursesEditable targetFragment;
     private Course course;
+    private int layoutToInflate;
 
     public void setCourse(Course course) {
         if(null == course) return;
         this.course = course;
     }
 
-    public static CourseDescriptionDialogFragment newInstance(Bundle bundle) {
+    public void setLayoutToInflate(int layoutToInflate) {
+        this.layoutToInflate = layoutToInflate;
+    }
+
+    public static CourseDescriptionDialogFragment newInstance(@NotNull Bundle bundle) {
         CourseDescriptionDialogFragment f = new CourseDescriptionDialogFragment();
+        f.setLayoutToInflate((int) bundle.get(LAYOUT_TO_INFLATE));
         return f;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_course_description, null);
+        View view = inflater.inflate(layoutToInflate, null);
         
         inflateDialog(view);
         setClickListener(view);
@@ -46,7 +58,7 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         super.onResume();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //assuming that this dialog is opened by CourseFragment only
-        targetFragment = (CoursesFragment) getTargetFragment();
+        targetFragment = (CoursesEditable) getTargetFragment();
     }
 
     public void setClickListener(View view) {
@@ -89,11 +101,12 @@ public class CourseDescriptionDialogFragment extends DialogFragment {
         TextView cores = view.findViewById(R.id.courseCores);
 
         title.setText(course.getTitle());
-        crn.setText(course.getCourseCRN());
-        faculty.setText(course.getFaculty());
-        room.setText(course.getRoom());
-        timeContent.setText(course.getTimeContent());
-        credit.setText(Double.toString(course.getCredit()));
+        //Need to check null, because some need to inflate layout that has no info about these
+        if(crn != null) crn.setText(course.getCourseCRN());
+        if(faculty != null) faculty.setText(course.getFaculty());
+        if(room != null) room.setText(course.getRoom());
+        if(timeContent != null) timeContent.setText(course.getTimeContent());
+        if(credit != null) credit.setText(Double.toString(course.getCredit()));
         if(course.getCourseDescription() == null || course.getCourseDescription().length() == 0){
             description.setText("No description available.");
         }else{

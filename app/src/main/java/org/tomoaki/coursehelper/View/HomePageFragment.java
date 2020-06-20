@@ -23,6 +23,8 @@ import org.tomoaki.coursehelper.Model.Course;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -39,7 +41,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
     private MainActivity activity;//need this reference for replacing/adding fragment with other one
     private FragmentManager fragmentManager;
 
-    List<Course> courses;
+    private List<Course> courses;
+    private List<Course> uniqueCourses;
 
     public HomePageFragment() {
         // Required empty public constructor
@@ -101,6 +104,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
 
             case R.id.homepage_card_generator:
                 if(generatorTabFragment == null) generatorTabFragment = new GeneratorTabFragment();
+                generatorTabFragment.setCourses(uniqueCourses);
                 activity.loadFragment(generatorTabFragment, generatorTabFragment.FRAG_TAG);
                 break;
 
@@ -145,6 +149,15 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
 
             if(courses == null){
                 System.out.println("Courses is NULL in AsyncTask");
+            }
+
+            uniqueCourses = new ArrayList<>();
+            HashSet<String> titleSeen = new HashSet<>();
+            for(Course course : courses){
+                if(!titleSeen.contains(course.getTitle())){
+                    titleSeen.add(course.getTitle());
+                    uniqueCourses.add(course);
+                }
             }
 
             return courses;

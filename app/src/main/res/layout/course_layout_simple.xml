@@ -57,7 +57,6 @@
                     android:layout_marginBottom="5dp"
                     android:layout_weight="0.5"
                     android:fontFamily="sans-serif-medium"
-                    android:text="3.0"
                     android:textColor="#029891"
                     android:textSize="14dp" />
 
@@ -90,7 +89,6 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:fontFamily="sans-serif"
-            android:text="MWF 06:10 AM-7:10 AM\nMWF 06:10 AM-7:10 AM"
             android:textColor="@android:color/black"
             android:textSize="12dp" />
     </LinearLayout>

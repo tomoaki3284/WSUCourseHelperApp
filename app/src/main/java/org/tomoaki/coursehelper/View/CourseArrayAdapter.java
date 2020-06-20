@@ -20,11 +20,14 @@ public class CourseArrayAdapter extends ArrayAdapter<Course> {
     private List<Course> courses;
     private Schedule schedule;
 
-    public CourseArrayAdapter(Context context, int resource, List<Course> objects) {
+    private int layoutToInflate;
+
+    public CourseArrayAdapter(Context context, int resource, List<Course> objects, int layoutToInflate) {
         super(context, resource, objects);
 
         this.context = context;
         this.courses = objects;
+        this.layoutToInflate = layoutToInflate;
         schedule = new Schedule();
     }
 
@@ -43,7 +46,7 @@ public class CourseArrayAdapter extends ArrayAdapter<Course> {
 
         // if view is not created yet
         if(convertView == null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.course_layout_simple, parent, false);
+            convertView = LayoutInflater.from(context).inflate(layoutToInflate, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }else{
@@ -55,12 +58,15 @@ public class CourseArrayAdapter extends ArrayAdapter<Course> {
         String raw_timeContent = course.getTimeContent();
 
         viewHolder.title.setText(raw_title);
-        viewHolder.credit.setText(Double.toString(raw_credit));
-        viewHolder.timeContent.setText(raw_timeContent);
-        if(course.getIsCancelled()){
-            viewHolder.classCancelled.setText("CANCELLED");
-        }else{
-            viewHolder.classCancelled.setText("");
+        // Need to check for null, because Generator class (unique course) shouldn't have these info
+        if(viewHolder.credit != null) viewHolder.credit.setText(Double.toString(raw_credit));
+        if(viewHolder.timeContent != null) viewHolder.timeContent.setText(raw_timeContent);
+        if(viewHolder.classCancelled != null){
+            if(course.getIsCancelled()){
+                viewHolder.classCancelled.setText("CANCELLED");
+            }else{
+                viewHolder.classCancelled.setText("");
+            }
         }
 
         return convertView;

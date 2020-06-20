@@ -72,7 +72,7 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_courses, container, false);
 
-        adapter = new CourseArrayAdapter(getActivity(), 0, courses);
+        adapter = new CourseArrayAdapter(getActivity(), 0, courses, R.layout.course_layout_simple);
         loadInternalFileStorageData();
         setUpListView();
         setUpSpinner();
@@ -80,22 +80,18 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
 
         updateList();
 
-//        if(courses == null || courses.size() < 1){
-//            new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
-//        }
-
         return view;
     }
 
     private void loadInternalFileStorageData() {
         schedule = new Schedule();
-        try{
+        try {
             File file = new File(getContext().getDir("data", MODE_PRIVATE), "scheduleFile.txt");
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
             schedule = (Schedule) ois.readObject();
             ois.close();
             System.out.println("Successfully read schedule object from local file");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -119,7 +115,7 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
     @Override
     public void onPause() {
         super.onPause();
-        try{
+        try {
             File file = new File(getContext().getDir("data", MODE_PRIVATE), "scheduleFile.txt");
             FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -127,7 +123,7 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
             oos.flush();
             oos.close();
             System.out.println("Successfully wrote schedule object to local file");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -140,12 +136,12 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
 
     //called by CourseDescriptionDialog
     public void addCourseToSchedule(Course course) {
-        if(course.getIsCancelled() == false && !schedule.getCourses().contains(course)){
+        if (course.getIsCancelled() == false && !schedule.getCourses().contains(course)) {
             schedule.addCourse(course);
             Toast.makeText(getContext(), "Added to your schedule", Toast.LENGTH_SHORT).show();
             notifyScheduleChangesToObserver();
-        }else{
-            if(course.getIsCancelled())
+        } else {
+            if (course.getIsCancelled())
                 Toast.makeText(getContext(), "This class is cancelled", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(getContext(), "This class is already on your schedule", Toast.LENGTH_SHORT).show();
@@ -154,10 +150,10 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
 
     //called by CourseDescriptionDialog
     public void removeCourseFromSchedule(Course course) {
-        if(schedule.removeCourse(course)){
+        if (schedule.removeCourse(course)) {
             Toast.makeText(getContext(), "You successfully dropped class", Toast.LENGTH_SHORT).show();
             notifyScheduleChangesToObserver();
-        }else{
+        } else {
             Toast.makeText(getContext(), "You never add this class", Toast.LENGTH_SHORT).show();
         }
     }
@@ -173,8 +169,10 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course course = updatedCourses.get(position);
-                CourseDescriptionDialogFragment dialog = CourseDescriptionDialogFragment.newInstance(null);
-                dialog.setTargetFragment(f,0);
+                Bundle bundle = new Bundle();
+                bundle.putInt(CourseDescriptionDialogFragment.LAYOUT_TO_INFLATE, R.layout.dialog_course_description);
+                CourseDescriptionDialogFragment dialog = CourseDescriptionDialogFragment.newInstance(bundle);
+                dialog.setTargetFragment(f, 0);
                 dialog.setCourse(course);
                 dialog.show(getParentFragmentManager(), "dialog");
             }
@@ -182,18 +180,16 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
     }
 
     public void setUpSpinner() {
-        EncapsulatedPairableSpinners ePairableSpinners = new EncapsulatedPairableSpinners(view,getContext(),this);
+        EncapsulatedPairableSpinners ePairableSpinners = new EncapsulatedPairableSpinners(view, getContext(), this);
         spinners = ePairableSpinners.getSpinners();
     }
 
     private void setupBottomBar() {
         FloatingActionButton button = view.findViewById(R.id.fab);
         bottomSheetDialogFragment = new CoursesBottomSheetDialogFragment();
-        Context context = bottomSheetDialogFragment.getContext();
-        button.setOnClickListener(new View.OnClickListener(){
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Generate BottomSheetDialog
                 bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "ExampleBottomSheet");
                 bottomSheetDialogFragment.updateSchedule(schedule);
                 notifyScheduleChangesToObserver();
@@ -202,14 +198,14 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
     }
 
     public void filterCourses() {
-        if(adapter == null){
+        if (adapter == null) {
             System.out.println("*********Adapter is null*********");
             return;
         }
 
         List<Course> filteredCourses = courses;
 
-        for(int i=0; i<spinners.size(); i++){
+        for (int i = 0; i < spinners.size(); i++) {
             PairableSpinner spinner = spinners.get(i);
             filteredCourses = spinner.filterCourses(filteredCourses);
         }
@@ -219,45 +215,8 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
     }
 
     public void updateList() {
-        if(courses == null || courses.size() == 0 || adapter == null) return;
+        if (courses == null || courses.size() == 0 || adapter == null) return;
         adapter.updateList(courses);
         listView.setAdapter(adapter);
     }
-
-//    private class ReadCourses extends AsyncTask<Object, Void, List<Course>> {
-//        ProgressBar progressBar;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            progressBar = view.findViewById(R.id.progressBar);
-//            progressBar.setVisibility(View.VISIBLE);
-//        }
-//
-//        @Override
-//        protected List<Course> doInBackground(Object... objects) {
-//            ObjectMapper mapper = new ObjectMapper();
-//            try {
-//                String urlStr = (String) objects[0];
-//                URL url = new URL(urlStr);
-//                courses = mapper.readValue(url, new TypeReference<List<Course>>(){ });
-//                if(courses == null){
-//                    System.out.println("***Courses Object Null***");
-//                }
-//            } catch (IOException e){
-//                e.printStackTrace();
-//            }
-//
-//            if(courses == null){
-//                System.out.println("Courses is NULL in AsyncTask");
-//            }
-//
-//            return courses;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<Course> courses) {
-//            progressBar.setVisibility(View.GONE);
-//            listUpCourses();
-//        }
-//    }
 }
