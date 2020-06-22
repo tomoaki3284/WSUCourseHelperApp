@@ -1,4 +1,4 @@
-package org.tomoaki.coursehelper.Model;
+package org.tomoaki.coursehelper.Model.Data;
 
 import java.io.Serializable;
 

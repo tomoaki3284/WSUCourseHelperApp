@@ -1,4 +1,4 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.tomoaki.coursehelper.Model.Course;
-import org.tomoaki.coursehelper.Model.Schedule;
+import org.tomoaki.coursehelper.Model.Data.Course;
+import org.tomoaki.coursehelper.Model.Data.Schedule;
 
 import com.example.coursehelper.R;
 

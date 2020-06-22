@@ -1,4 +1,4 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.TabFragment;
 
 import android.os.Bundle;
 
@@ -10,51 +10,54 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.coursehelper.R;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Data.Course;
+import org.tomoaki.coursehelper.View.Adapter.PageAdapter;
 
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GeneratorTabFragment extends Fragment {
+public class CoursesScheduleTabFragment extends Fragment {
 
-    public static final String FRAG_TAG = "com.exmaple.coursehelper.View.GeneratorTabFragment";
-
-    private View view;
-    private TabLayout tabLayout;
+    public final static String FRAG_TAG = "com.exmaple.coursehelper.View.CoursesScheduleTabFragment";
     private FragmentManager fragmentManager;
+    private TabLayout tabLayout;
     private ViewPager viewPager;
-    private GeneratorPageAdapter pageAdapter;
+    private PageAdapter pageAdapter;
+    private View view;
+    private TabItem tabCourses;
+    private TabItem tabSchedule;
 
-    private List<Course> uniqueCourses;
+    private List<Course> courses;
 
-    public GeneratorTabFragment() {
+    public CoursesScheduleTabFragment() {
         // Required empty public constructor
     }
 
     public void setCourses(List<Course> courses) {
-        this.uniqueCourses = courses;
+        this.courses = courses;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.tab_generator, container, false);
+        view = inflater.inflate(R.layout.tab_main, container, false);
 
         fragmentManager = getChildFragmentManager();
 
-        tabLayout = view.findViewById(R.id.tablayout_generator);
-        viewPager = view.findViewById(R.id.viewPager_generator);
+        tabLayout = view.findViewById(R.id.tablayout);
+        tabCourses = view.findViewById(R.id.coursesTab);
+        tabSchedule = view.findViewById(R.id.scheduleTab);
+        viewPager = view.findViewById(R.id.viewPager);
 
-        pageAdapter = new GeneratorPageAdapter(fragmentManager, tabLayout.getTabCount());
-        pageAdapter.setCourses(uniqueCourses);
+        pageAdapter = new PageAdapter(fragmentManager, tabLayout.getTabCount());
+        pageAdapter.setCourses(courses);
         viewPager.setAdapter(pageAdapter);
 
         // This callback will only be called when MyFragment is at least Started.
@@ -95,5 +98,10 @@ public class GeneratorTabFragment extends Fragment {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 }

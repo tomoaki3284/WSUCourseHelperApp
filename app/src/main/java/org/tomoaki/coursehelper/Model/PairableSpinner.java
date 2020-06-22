@@ -3,6 +3,8 @@ package org.tomoaki.coursehelper.Model;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import org.tomoaki.coursehelper.Model.Data.Course;
+
 import java.util.ArrayList;
 import java.util.List;
 

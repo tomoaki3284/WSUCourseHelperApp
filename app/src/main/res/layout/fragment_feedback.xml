@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.tomoaki.coursehelper.View.FeedbackFragment">
+    tools:context="org.tomoaki.coursehelper.View.Fragment.FeedbackFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

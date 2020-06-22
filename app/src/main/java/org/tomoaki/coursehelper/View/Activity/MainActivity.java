@@ -1,15 +1,12 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Activity;
 
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,16 +17,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.coursehelper.R;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import org.tomoaki.coursehelper.Model.Course;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
+import org.tomoaki.coursehelper.View.TabFragment.CoursesScheduleTabFragment;
+import org.tomoaki.coursehelper.View.Fragment.FeedbackFragment;
+import org.tomoaki.coursehelper.View.Fragment.HomePageFragment;
+import org.tomoaki.coursehelper.View.Fragment.LoginFragment;
 
 public class MainActivity extends AppCompatActivity {
 

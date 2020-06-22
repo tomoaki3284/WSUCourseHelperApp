@@ -1,6 +1,7 @@
-package org.tomoaki.coursehelper.Model;
+package org.tomoaki.coursehelper.Model.Data;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,6 +15,11 @@ public class Schedule implements Serializable {
     double totalCredit;
     // if overlapped class scheduled, put the warning message in this map
     private EnumMap<DayOfWeek, List<String>> overlapWarning = new EnumMap<>(DayOfWeek.class);
+
+    public Schedule(Schedule schedule) {
+        this.courses = new ArrayList<>(schedule.courses);
+        this.totalCredit = schedule.totalCredit;
+    }
 
     public Schedule() {
         this.courses = new ArrayList<Course>();
@@ -32,12 +38,10 @@ public class Schedule implements Serializable {
      * Add course that is from param, then check if the course cause schedule conflict
      *
      * @param course
-     * @return True, if added courses cause time overlap conflict with other courses
      */
-    public boolean addCourse(Course course) {
+    public void addCourse(Course course) {
         courses.add(course);
         totalCredit += course.getCredit();
-        return isHoursOverlap();
     }
 
     public double getTotalCredit() {

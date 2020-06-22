@@ -1,10 +1,13 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Data.Course;
+import org.tomoaki.coursehelper.View.Fragment.GeneratorAutomateFragment;
+import org.tomoaki.coursehelper.View.Fragment.GeneratorOptionsFragment;
+import org.tomoaki.coursehelper.View.Fragment.ScheduleFragment;
 
 import java.util.List;
 
@@ -12,6 +15,7 @@ public class GeneratorPageAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
     private GeneratorAutomateFragment generatorAutomateFragment;
     private GeneratorOptionsFragment generatorOptionsFragment;
+
     //TODO: Might use same ViewModel, but it works tangible. Create new one? Works great, but diff is only ViewModel
     private ScheduleFragment scheduleFragment;//TODO: in schedule class, add viewModel and instanceof
 

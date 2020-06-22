@@ -1,4 +1,4 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,16 +19,18 @@ import com.example.coursehelper.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.tomoaki.coursehelper.Model.BottomSheetListView;
-import org.tomoaki.coursehelper.Model.Course;
-import org.tomoaki.coursehelper.Model.Schedule;
-import org.tomoaki.coursehelper.Model.ScheduleObserver;
+import org.tomoaki.coursehelper.Model.Data.Course;
+import org.tomoaki.coursehelper.Model.ViewModel.GeneratorObserver;
+import org.tomoaki.coursehelper.Model.Observable;
+import org.tomoaki.coursehelper.Model.Data.Schedule;
+import org.tomoaki.coursehelper.View.Adapter.CourseArrayAdapter;
 
 import java.util.List;
 
-public class CoursesBottomSheetDialogFragment extends BottomSheetDialogFragment {
+public class GeneratorBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private View view;
 
-    private ScheduleObserver observer;
+    private Observable observer;
     private Schedule schedule;
 
     private List<Course> courses;
@@ -36,7 +39,7 @@ public class CoursesBottomSheetDialogFragment extends BottomSheetDialogFragment 
     private CourseArrayAdapter adapter;
     private Context context;
 
-    public CoursesBottomSheetDialogFragment() {
+    public GeneratorBottomSheetDialogFragment() {
         // empty constructor require
     }
 
@@ -51,7 +54,9 @@ public class CoursesBottomSheetDialogFragment extends BottomSheetDialogFragment 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bottom_sheet_dialog, container, false);
 
-        adapter = new CourseArrayAdapter(context,0,courses,R.layout.course_layout_simple);
+        TextView tv_header = view.findViewById(R.id.header);
+        tv_header.setText("Courses to consider");
+        adapter = new CourseArrayAdapter(context,0,courses,R.layout.generator_course_layout_simple);
         setupListView();
 
         return view;
@@ -61,7 +66,7 @@ public class CoursesBottomSheetDialogFragment extends BottomSheetDialogFragment 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
-        observer = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
+        observer = new ViewModelProvider(requireActivity()).get(GeneratorObserver.class);
         observer.getData().observe(requireActivity(), new Observer<Schedule>() {
             @Override
             public void onChanged(Schedule schedule) {
@@ -87,7 +92,6 @@ public class CoursesBottomSheetDialogFragment extends BottomSheetDialogFragment 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course course = schedule.getCourses().get(position);
-                //TODO: show dialog
                 new AlertDialog.Builder(getContext())
                         .setTitle("Remove Entry")
                         .setMessage(course.toPrettyFormatString())

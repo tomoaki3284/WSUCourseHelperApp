@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="#F6F8FA"
         android:orientation="vertical"
-        tools:context="org.tomoaki.coursehelper.View.CoursesFragment">
+        tools:context="org.tomoaki.coursehelper.View.Fragment.CoursesFragment">
 
         <include layout="@layout/spinners_filter" />
 

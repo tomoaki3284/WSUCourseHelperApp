@@ -1,14 +1,16 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Data.Course;
+import org.tomoaki.coursehelper.View.Fragment.CoursesFragment;
+import org.tomoaki.coursehelper.View.Fragment.ScheduleFragment;
 
 import java.util.List;
 
-class PageAdapter extends FragmentPagerAdapter {
+public class PageAdapter extends FragmentPagerAdapter {
 
     private int numOfTabs;
     private CoursesFragment coursesFragment;

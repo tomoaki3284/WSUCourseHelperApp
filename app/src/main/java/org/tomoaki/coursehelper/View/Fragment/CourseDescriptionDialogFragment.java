@@ -1,4 +1,4 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Fragment;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 
 import org.jetbrains.annotations.NotNull;
-import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Data.Course;
 import org.tomoaki.coursehelper.Model.CoursesEditable;
 
 import com.example.coursehelper.R;

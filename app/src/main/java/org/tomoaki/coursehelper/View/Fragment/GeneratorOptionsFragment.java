@@ -1,4 +1,4 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Fragment;
 
 import android.os.Bundle;
 
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.example.coursehelper.R;
 
+
+//TODO: Maybe implement ExpandableListView
 public class GeneratorOptionsFragment extends Fragment {
 
     private View view;

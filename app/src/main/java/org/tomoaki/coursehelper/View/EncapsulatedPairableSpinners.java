@@ -6,11 +6,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.fragment.app.Fragment;
-
 import com.example.coursehelper.R;
 
-import org.tomoaki.coursehelper.Model.Course;
 import org.tomoaki.coursehelper.Model.MultiFilterable;
 import org.tomoaki.coursehelper.Model.PairableSpinner;
 

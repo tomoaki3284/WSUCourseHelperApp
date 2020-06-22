@@ -1,46 +1,36 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Fragment;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.transition.Scene;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.coursehelper.R;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Data.Course;
 import org.tomoaki.coursehelper.Model.CoursesEditable;
-import org.tomoaki.coursehelper.Model.GeneratorObserver;
 import org.tomoaki.coursehelper.Model.MultiFilterable;
 import org.tomoaki.coursehelper.Model.Observable;
 import org.tomoaki.coursehelper.Model.PairableSpinner;
-import org.tomoaki.coursehelper.Model.Schedule;
-import org.tomoaki.coursehelper.Model.ScheduleObserver;
+import org.tomoaki.coursehelper.Model.Data.Schedule;
+import org.tomoaki.coursehelper.Model.ViewModel.ScheduleObserver;
+import org.tomoaki.coursehelper.View.Adapter.CourseArrayAdapter;
+import org.tomoaki.coursehelper.View.EncapsulatedPairableSpinners;
+
+import com.example.coursehelper.R;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -48,22 +38,23 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GeneratorAutomateFragment extends Fragment implements MultiFilterable, CoursesEditable {
+public class CoursesFragment extends Fragment implements MultiFilterable, CoursesEditable {
 
     private View view;
 
-    private Observable generatorObserver;
-    //TODO: Another observable class might needed, for communication between Options and Automate
-
+    private Observable scheduleObserver;
     private Schedule schedule;
+
+    private ListView listView;
     private List<Course> courses;
     private List<Course> updatedCourses;
     private CourseArrayAdapter adapter;
 
-    private ListView listView;
     private List<PairableSpinner> spinners;
 
-    public GeneratorAutomateFragment() {
+    private CoursesBottomSheetDialogFragment bottomSheetDialogFragment;
+
+    public CoursesFragment() {
         // Required empty public constructor
     }
 
@@ -74,10 +65,10 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_generator_automate, container, false);
+        view = inflater.inflate(R.layout.fragment_courses, container, false);
 
-        schedule = new Schedule();
-        adapter = new CourseArrayAdapter(getActivity(), 0, courses, R.layout.generator_course_layout_simple);
+        adapter = new CourseArrayAdapter(getActivity(), 0, courses, R.layout.course_layout_simple);
+        loadInternalFileStorageData();
         setUpListView();
         setUpSpinner();
         setupBottomBar();
@@ -87,47 +78,83 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
         return view;
     }
 
+    private void loadInternalFileStorageData() {
+        schedule = new Schedule();
+        try {
+            File file = new File(getContext().getDir("data", MODE_PRIVATE), "scheduleFile.txt");
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+            schedule = (Schedule) ois.readObject();
+            ois.close();
+            System.out.println("Successfully read schedule object from local file");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        generatorObserver = new ViewModelProvider(requireActivity()).get(GeneratorObserver.class);
-        generatorObserver.getData().observe(requireActivity(), new Observer<Schedule>() {
+        scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
+        scheduleObserver.getData().observe(requireActivity(), new Observer<Schedule>() {
             @Override
             public void onChanged(Schedule schedule) {
                 updateSchedule(schedule);
             }
         });
         notifyScheduleChangesToObserver();
+        System.out.println("onViewCreated");
     }
 
+    // This is called when user navigates backwards, or fragment is replaced/remove
+    // Called when fragment is added to back stack, then remove/replaced
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            File file = new File(getContext().getDir("data", MODE_PRIVATE), "scheduleFile.txt");
+            FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(schedule);
+            oos.flush();
+            oos.close();
+            System.out.println("Successfully wrote schedule object to local file");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //TODO
     //call when user removed course from scheduleFragment or other
     public void updateSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
 
-    //called by some dialog
+    //called by CourseDescriptionDialog
     public void addCourseToSchedule(Course course) {
-        if (course.getIsCancelled() == false) {
+        if (course.getIsCancelled() == false && !schedule.getCourses().contains(course)) {
             schedule.addCourse(course);
-            Toast.makeText(getContext(), "Added to your consideration", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Added to your schedule", Toast.LENGTH_SHORT).show();
             notifyScheduleChangesToObserver();
         } else {
-            Toast.makeText(getContext(), "This class is already under your consideration", Toast.LENGTH_SHORT).show();
+            if (course.getIsCancelled())
+                Toast.makeText(getContext(), "This class is cancelled", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(getContext(), "This class is already on your schedule", Toast.LENGTH_SHORT).show();
         }
     }
 
-    //called by some dialog
+    //called by CourseDescriptionDialog
     public void removeCourseFromSchedule(Course course) {
         if (schedule.removeCourse(course)) {
-            Toast.makeText(getContext(), "You successfully removed class from consideration", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "You successfully dropped class", Toast.LENGTH_SHORT).show();
             notifyScheduleChangesToObserver();
         } else {
-            Toast.makeText(getContext(), "You never added this class", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "You never add this class", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void notifyScheduleChangesToObserver() {
-        generatorObserver.setData(schedule);
+        scheduleObserver.setData(schedule);
     }
 
     public void setUpListView() {
@@ -138,7 +165,7 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course course = updatedCourses.get(position);
                 Bundle bundle = new Bundle();
-                bundle.putInt(CourseDescriptionDialogFragment.LAYOUT_TO_INFLATE, R.layout.generator_course_description_dialog);
+                bundle.putInt(CourseDescriptionDialogFragment.LAYOUT_TO_INFLATE, R.layout.dialog_course_description);
                 CourseDescriptionDialogFragment dialog = CourseDescriptionDialogFragment.newInstance(bundle);
                 dialog.setTargetFragment(f, 0);
                 dialog.setCourse(course);
@@ -153,28 +180,21 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
     }
 
     private void setupBottomBar() {
-        Button viewConsiderationButton = view.findViewById(R.id.viewConsiderationButton);
-        GeneratorBottomSheetDialogFragment bottomSheetDialogFragment = new GeneratorBottomSheetDialogFragment();
-        viewConsiderationButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton button = view.findViewById(R.id.fab);
+        bottomSheetDialogFragment = new CoursesBottomSheetDialogFragment();
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "GeneratorExampleBottomSheet");
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), "ExampleBottomSheet");
                 bottomSheetDialogFragment.updateSchedule(schedule);
                 notifyScheduleChangesToObserver();
-            }
-        });
-
-        Button closeTheDistanceButton = view.findViewById(R.id.closeTheDistanceButton);
-        closeTheDistanceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Permuting Courses", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void filterCourses() {
         if (adapter == null) {
+            System.out.println("*********Adapter is null*********");
             return;
         }
 

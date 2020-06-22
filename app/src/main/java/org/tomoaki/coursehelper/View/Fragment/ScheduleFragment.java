@@ -1,4 +1,4 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.Gravity;
@@ -20,12 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.tomoaki.coursehelper.Model.Course;
-import org.tomoaki.coursehelper.Model.DayOfWeek;
-import org.tomoaki.coursehelper.Model.Hours;
+import org.tomoaki.coursehelper.Model.Data.Course;
+import org.tomoaki.coursehelper.Model.Data.DayOfWeek;
+import org.tomoaki.coursehelper.Model.Data.Hours;
 import org.tomoaki.coursehelper.Model.Observable;
-import org.tomoaki.coursehelper.Model.Schedule;
-import org.tomoaki.coursehelper.Model.ScheduleObserver;
+import org.tomoaki.coursehelper.Model.Data.Schedule;
+import org.tomoaki.coursehelper.Model.ViewModel.ScheduleObserver;
 
 import com.example.coursehelper.R;
 

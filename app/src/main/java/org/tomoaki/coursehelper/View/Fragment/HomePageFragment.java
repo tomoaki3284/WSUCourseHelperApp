@@ -1,4 +1,4 @@
-package org.tomoaki.coursehelper.View;
+package org.tomoaki.coursehelper.View.Fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,7 +19,10 @@ import com.example.coursehelper.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.tomoaki.coursehelper.Model.Course;
+import org.tomoaki.coursehelper.Model.Data.Course;
+import org.tomoaki.coursehelper.View.TabFragment.CoursesScheduleTabFragment;
+import org.tomoaki.coursehelper.View.TabFragment.GeneratorTabFragment;
+import org.tomoaki.coursehelper.View.Activity.MainActivity;
 
 import java.io.IOException;
 import java.net.URL;
@@ -104,7 +107,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
 
             case R.id.homepage_card_generator:
                 if(generatorTabFragment == null) generatorTabFragment = new GeneratorTabFragment();
-                generatorTabFragment.setCourses(uniqueCourses);
+                generatorTabFragment.setCourses(courses);
                 activity.loadFragment(generatorTabFragment, generatorTabFragment.FRAG_TAG);
                 break;
 
@@ -149,15 +152,6 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
 
             if(courses == null){
                 System.out.println("Courses is NULL in AsyncTask");
-            }
-
-            uniqueCourses = new ArrayList<>();
-            HashSet<String> titleSeen = new HashSet<>();
-            for(Course course : courses){
-                if(!titleSeen.contains(course.getTitle())){
-                    titleSeen.add(course.getTitle());
-                    uniqueCourses.add(course);
-                }
             }
 
             return courses;
