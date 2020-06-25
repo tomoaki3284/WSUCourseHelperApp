@@ -10,6 +10,7 @@ import org.tomoaki.coursehelper.View.Fragment.GeneratorOptionsFragment;
 import org.tomoaki.coursehelper.View.Fragment.GeneratorScheduleFragment;
 import org.tomoaki.coursehelper.View.Fragment.ScheduleFragment;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class GeneratorPageAdapter extends FragmentPagerAdapter {
@@ -22,6 +23,10 @@ public class GeneratorPageAdapter extends FragmentPagerAdapter {
 
     public void setCourses(List<Course> courses) {
         generatorAutomateFragment.setCourses(courses);
+    }
+
+    public void setLabBinder(HashMap<Course, List<Course>> labBindMap) {
+        generatorAutomateFragment.setLabBinder(labBindMap);
     }
 
     public GeneratorPageAdapter(FragmentManager fm, int numOfTabs) {

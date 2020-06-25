@@ -27,6 +27,8 @@ import org.tomoaki.coursehelper.View.Activity.MainActivity;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -46,6 +48,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
 
     private List<Course> courses;
     private List<Course> uniqueCourses;
+    private HashMap<Course, List<Course>> labBindMap;
 
     public HomePageFragment() {
         // Required empty public constructor
@@ -108,6 +111,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
             case R.id.homepage_card_generator:
                 if(generatorTabFragment == null) generatorTabFragment = new GeneratorTabFragment();
                 generatorTabFragment.setCourses(courses);
+                generatorTabFragment.setLabBinder(labBindMap);
                 activity.loadFragment(generatorTabFragment, generatorTabFragment.FRAG_TAG);
                 break;
 
@@ -154,7 +158,28 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
                 System.out.println("Courses is NULL in AsyncTask");
             }
 
+            bindLabCourses();
+
             return courses;
+        }
+
+        private void bindLabCourses() {
+            assert courses != null && courses.size() > 0;
+            //Course with Labs
+            labBindMap = new HashMap<>();
+            Course prevCourse = courses.get(0);
+            for(int i=1; i<courses.size(); i++){
+                Course currCourse = courses.get(i);
+                if(currCourse.getIsLabCourse()){
+                    if(labBindMap.containsKey(prevCourse)){
+                        labBindMap.get(prevCourse).add(currCourse);
+                    }else{
+                        labBindMap.put(prevCourse, new ArrayList<>(Arrays.asList(currCourse)));
+                    }
+                }else{
+                    prevCourse = currCourse;
+                }
+            }
         }
 
         @Override

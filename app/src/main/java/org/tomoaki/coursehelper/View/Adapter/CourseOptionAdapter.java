@@ -57,8 +57,13 @@ public class CourseOptionAdapter extends ExpandableRecyclerViewAdapter<CourseOpt
 
     @Override
     public void onBindGroupViewHolder(CourseOptionViewHolder holder, int flatPosition, ExpandableGroup group) {
-        Schedule selectedSchedule = schedules.get(flatPosition);
+        //TODO: flat position seem not a position of which Option is clicked. So find a way to get position, it might be in different place
+        //But somehow it is working....... Maybe flatPosition is correct in the first input, but it will be off-value when scrolling
         holder.setTitle(group);
+        if(flatPosition >= schedules.size()){
+            return;
+        }
+        Schedule selectedSchedule = schedules.get(flatPosition);
         holder.set(selectedSchedule);
     }
 }

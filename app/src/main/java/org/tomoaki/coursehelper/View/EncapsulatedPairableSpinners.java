@@ -60,7 +60,6 @@ public class EncapsulatedPairableSpinners {
                 if(subjectPSpin.getParent()!=null && specialPSpin.getParent()!=null){
                     embeddedIn.filterCourses();
                 }
-//                embeddedIn.filterCourses();
             }
 
             @Override

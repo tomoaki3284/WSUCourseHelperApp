@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.tomoaki.coursehelper.Model.Data.Course;
 import org.tomoaki.coursehelper.View.Adapter.GeneratorPageAdapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public class GeneratorTabFragment extends Fragment {
     private GeneratorPageAdapter pageAdapter;
 
     private List<Course> courses;
+    private HashMap<Course, List<Course>> labBindMap;
 
     public GeneratorTabFragment() {
         // Required empty public constructor
@@ -40,6 +42,10 @@ public class GeneratorTabFragment extends Fragment {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public void setLabBinder(HashMap<Course, List<Course>> labBindMap) {
+        this.labBindMap = labBindMap;
     }
 
     @Override
@@ -54,6 +60,7 @@ public class GeneratorTabFragment extends Fragment {
 
         pageAdapter = new GeneratorPageAdapter(fragmentManager, tabLayout.getTabCount());
         pageAdapter.setCourses(courses);
+        pageAdapter.setLabBinder(labBindMap);
         viewPager.setAdapter(pageAdapter);
 
         // This callback will only be called when MyFragment is at least Started.

@@ -28,6 +28,7 @@ import org.tomoaki.coursehelper.View.Adapter.CourseArrayAdapter;
 import org.tomoaki.coursehelper.View.EncapsulatedPairableSpinners;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -50,12 +51,12 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
     private List<Course> originalCourses;
     private List<Course> courses;// this only contains unique courses
     private List<Course> updatedCourses;
+    private HashMap<Course, List<Course>> labBindMap;
     private CourseArrayAdapter adapter;
 
     private ListView listView;
     private List<PairableSpinner> spinners;
     private EncapsulatedPairableSpinners ePairableSpinners;
-
 
     public GeneratorAutomateFragment() {
         // Required empty public constructor
@@ -72,6 +73,10 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
             }
         }
         updateList();
+    }
+
+    public void setLabBinder(HashMap<Course, List<Course>> labBindMap) {
+        this.labBindMap = labBindMap;
     }
 
     @Override
@@ -237,10 +242,36 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
             return;
         }
         for(int i=0; i<coursesList.get(idx).size(); i++){
-            aSchedule.addCourse(coursesList.get(idx).get(i));
+            Course course = coursesList.get(idx).get(i);
+            // if course require lab, then we need to bind with correspond lab courses with correct class section#
+            if(labBindMap.containsKey(course)){
+                int labIdx = getIndexOfLabCourses(coursesList, course);
+                // if user (unintentionally/intentionally) didn't put lab course under consideration
+                if(labIdx == -1) {/* do nothing */}
+                else {
+                    //replace unbind lab courses wth correct bind lab courses
+                    coursesList.set(labIdx, labBindMap.get(course));
+                }
+            }
+            aSchedule.addCourse(course);
             backtrack(coursesList, idx+1, aSchedule, res, scheduleSize);
             aSchedule.removeCourse(aSchedule.getCourses().size()-1);
         }
+    }
+
+    private int getIndexOfLabCourses(List<List<Course>> coursesList, Course course) {
+        for(int i=0; i<coursesList.size(); i++){
+            if(coursesList.get(i).size() == 0) continue;
+            Course lookupCourse = coursesList.get(i).get(0);
+            if(coursesList.get(i).get(0).getIsLabCourse()){
+                // if it is right lab course, then it should contains normal course name in prefix
+                if(lookupCourse.getTitle().contains(course.getTitle())){
+                    return i;
+                }
+            }
+        }
+        //user didn't put lab course under course consideration
+        return -1;
     }
 
     public List<List<Course>> findAllCourses() {
