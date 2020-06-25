@@ -1,11 +1,16 @@
 package org.tomoaki.coursehelper.Model.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-public class Course implements Serializable {
+public class Course implements Serializable, Parcelable{
 
     private String courseCRN;
     private String subject;
@@ -46,6 +51,32 @@ public class Course implements Serializable {
         this.hoursOfDay = new EnumMap<DayOfWeek, List<Hours>>(DayOfWeek.class);
         this.timeContent = timeContent;
     }
+
+    protected Course(Parcel in) {
+        courseCRN = in.readString();
+        subject = in.readString();
+        title = in.readString();
+        isLabCourse = in.readByte() != 0;
+        courseDescription = in.readString();
+        faculty = in.readString();
+        room = in.readString();
+        credit = in.readDouble();
+        cores = in.createStringArrayList();
+        timeContent = in.readString();
+        isCancelled = in.readByte() != 0;
+    }
+
+    public static final Creator<Course> CREATOR = new Creator<Course>() {
+        @Override
+        public Course createFromParcel(Parcel in) {
+            return new Course(in);
+        }
+
+        @Override
+        public Course[] newArray(int size) {
+            return new Course[size];
+        }
+    };
 
     public String getCourseDescription() {
         return courseDescription;
@@ -181,6 +212,16 @@ public class Course implements Serializable {
         return "Title: " + title + "\n" +
                 "CRN info: " + courseCRN + "\n" +
                 "Time: " + timeContent + "\n";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeSerializable(this);
     }
 }
 

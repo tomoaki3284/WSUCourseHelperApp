@@ -37,10 +37,11 @@ import java.util.List;
 public class GeneratorAutomateFragment extends Fragment implements MultiFilterable, CoursesEditable {
 
     private View view;
+    private Button viewConsiderationButton;
+    private Button closeTheDistanceButton;
 
     //ViewModel for communication between Automate and BottomSheetDialogFragment
     private Observable generatorObserver;
-    //TODO: Another observable class might needed, for communication between Options and Schedule in Options Fragment
     private GeneratorOptionsObserver generatorOptionsObserver;
 
     private Schedule consideration;
@@ -53,6 +54,8 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
 
     private ListView listView;
     private List<PairableSpinner> spinners;
+    private EncapsulatedPairableSpinners ePairableSpinners;
+
 
     public GeneratorAutomateFragment() {
         // Required empty public constructor
@@ -76,9 +79,9 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_generator_automate, container, false);
 
-        consideration = new Schedule();
-        courseTitleInConsideration = new HashSet<>();
-        adapter = new CourseArrayAdapter(getActivity(), 0, courses, R.layout.generator_course_layout_simple);
+        if(consideration == null) consideration = new Schedule();
+        if(courseTitleInConsideration == null) courseTitleInConsideration = new HashSet<>();
+        if(adapter == null) adapter = new CourseArrayAdapter(getActivity(), 0, courses, R.layout.generator_course_layout_simple);
         setUpListView();
         setUpSpinner();
         setupBottomBar();
@@ -91,14 +94,10 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // for optionTab <-> GeneratorAutomateTab
         generatorOptionsObserver = new ViewModelProvider(requireActivity()).get(GeneratorOptionsObserver.class);
+        // for bottomSheetDialogFragment <-> GeneratorAutomateTab
         generatorObserver = new ViewModelProvider(requireActivity()).get(GeneratorObserver.class);
-        generatorObserver.getData().observe(requireActivity(), new Observer<Schedule>() {
-            @Override
-            public void onChanged(Schedule schedule) {
-                updateSchedule(schedule);
-            }
-        });
     }
 
     //call when user removed course from scheduleFragment or other
@@ -156,12 +155,12 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
     }
 
     public void setUpSpinner() {
-        EncapsulatedPairableSpinners ePairableSpinners = new EncapsulatedPairableSpinners(view, getContext(), this);
+        ePairableSpinners = new EncapsulatedPairableSpinners(view, getContext(), this);
         spinners = ePairableSpinners.getSpinners();
     }
 
     private void setupBottomBar() {
-        Button viewConsiderationButton = view.findViewById(R.id.viewConsiderationButton);
+        viewConsiderationButton = view.findViewById(R.id.viewConsiderationButton);
         GeneratorBottomSheetDialogFragment bottomSheetDialogFragment = new GeneratorBottomSheetDialogFragment();
         viewConsiderationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,12 +171,14 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
             }
         });
 
-        Button closeTheDistanceButton = view.findViewById(R.id.closeTheDistanceButton);
+        closeTheDistanceButton = view.findViewById(R.id.closeTheDistanceButton);
         closeTheDistanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getContext(), "Pressed", Toast.LENGTH_SHORT).show();
                 List<Schedule> schedules = getCoursesCombination();
                 notifyCombinationCompletedToOptionsObserver(schedules);
+                System.out.println("Notified!!!!!!!!!");
             }
         });
     }
@@ -213,7 +214,11 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
         backtrack(coursesList, 0, new Schedule(), res, coursesList.size());
 
 //        System.out.println("Printing Courses");
+//        List<Schedule> availables = new ArrayList<>();
 //        for(Schedule schedule : res){
+//            boolean timeOverlapped = schedule.isHoursOverlap();
+//            if(!timeOverlapped) availables.add(schedule);
+//            System.out.println("Below have overlapped = " + timeOverlapped);
 //            for(Course course : schedule.getCourses()){
 //                System.out.println(course.getTitle() + ": " + course.getTimeContent());
 //            }
@@ -243,11 +248,8 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
         for(Course myCourse : consideration.getCourses()){
             String courseTitle = myCourse.getTitle();
             List<Course> courses = new ArrayList<>();
-            boolean seen = false;
             for(Course course : originalCourses){
-                if(seen && !course.getTitle().equals(courseTitle)) break;
                 if(course.getTitle().equals(courseTitle)){
-                    seen = true;
                     if(!course.getIsCancelled() && course.getTimeContent() != null && course.getTimeContent().length() != 0) courses.add(course);
                 }
             }

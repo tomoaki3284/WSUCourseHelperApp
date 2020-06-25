@@ -1,15 +1,7 @@
 package org.tomoaki.coursehelper.View.Fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,25 +11,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.coursehelper.R;
+
 import org.tomoaki.coursehelper.Model.Data.Course;
 import org.tomoaki.coursehelper.Model.Data.DayOfWeek;
 import org.tomoaki.coursehelper.Model.Data.Hours;
-import org.tomoaki.coursehelper.Model.Observable;
 import org.tomoaki.coursehelper.Model.Data.Schedule;
-import org.tomoaki.coursehelper.Model.ViewModel.ScheduleObserver;
-
-import com.example.coursehelper.R;
+import org.tomoaki.coursehelper.Model.ViewModel.OptionVHScheduleObserver;
 
 import java.util.EnumMap;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ScheduleFragment extends Fragment {
+public class GeneratorScheduleFragment extends Fragment {
 
     private Schedule schedule;
-    private Observable scheduleObserver;
+    private OptionVHScheduleObserver optionViewHolderScheduleObserver;
 
     private LinearLayout mondayTimeGraph;
     private LinearLayout tuesdayTimeGraph;
@@ -57,13 +50,13 @@ public class ScheduleFragment extends Fragment {
 
     private View view;
 
-    public ScheduleFragment() {
+    public GeneratorScheduleFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
@@ -79,8 +72,8 @@ public class ScheduleFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        scheduleObserver = new ViewModelProvider(requireActivity()).get(ScheduleObserver.class);
-        scheduleObserver.getData().observe(getViewLifecycleOwner(), new Observer<Schedule>() {
+        optionViewHolderScheduleObserver = new ViewModelProvider(requireActivity()).get(OptionVHScheduleObserver.class);
+        optionViewHolderScheduleObserver.getData().observe(getViewLifecycleOwner(), new Observer<Schedule>() {
             @Override
             public void onChanged(Schedule schedule) {
                 setSchedule(schedule);
@@ -100,7 +93,7 @@ public class ScheduleFragment extends Fragment {
             public void onClick(View v) {
                 schedule = new Schedule();
                 updateUI();
-                notifyScheduleChangesToObserver();
+//                notifyScheduleChangesToObserver();
                 System.out.println("Clear pressed");
             }
         });
@@ -221,33 +214,15 @@ public class ScheduleFragment extends Fragment {
     public void setNewClassClickListener(TextView newClass, Course course) {
         newClass.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO: show dialog
-                if(scheduleObserver instanceof ScheduleObserver) {
-                    // make dialog that can remove classes
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Remove Entry")
-                            .setMessage(course.toPrettyFormatString())
-                            .setNegativeButton("Remove", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    schedule.removeCourse(course);
-                                    updateUI();
-                                    notifyScheduleChangesToObserver();
-                                }
-                            })
-                            .show();
-                }
-                // if observer is belong to generator page, then removing fixed combination of classes is not allow
-                else{
-                    System.out.println("Clicked, but fixed combination class so it's not allow");
-                }
+                //TODO: Difference here and ViewModel part
+
             }
         });
     }
 
-    public void notifyScheduleChangesToObserver() {
-        scheduleObserver.setData(schedule);
-    }
+//    public void notifyScheduleChangesToObserver() {
+//        scheduleObserver.setData(schedule);
+//    }
 
     public int defaultMinToTimelineMin(int minutesDefault) {
         int diffInMinutes = 7 * 60;// 7 is starting time of the graph, I think
@@ -272,4 +247,5 @@ public class ScheduleFragment extends Fragment {
         thursdayTimeCol.removeAllViews();
         fridayTimeCol.removeAllViews();
     }
+
 }

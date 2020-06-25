@@ -21,6 +21,13 @@ public class Schedule implements Serializable {
         this.totalCredit = schedule.totalCredit;
     }
 
+    public Schedule(List<Course> courses) {
+        this.courses = courses;
+        for(Course course : this.courses){
+            totalCredit += course.getCredit();
+        }
+    }
+
     public Schedule() {
         this.courses = new ArrayList<Course>();
         totalCredit = 0;
@@ -82,6 +89,7 @@ public class Schedule implements Serializable {
         boolean anyOverlap = false;
         if (courses.size() <= 1) return anyOverlap;
 
+        // put List<Course> in each corresponded day of week to make things simple
         EnumMap<DayOfWeek, List<Course>> map = new EnumMap(DayOfWeek.class);
         for(Course course : courses){
             for(DayOfWeek day : course.getHoursOfDay().keySet()){
@@ -95,6 +103,7 @@ public class Schedule implements Serializable {
             }
         }
 
+        // sort List<Course> by time in each day of week using comparator
         for(DayOfWeek day : map.keySet()){
             Comparator<Course> com = new Comparator<Course>(){
                 public int compare(Course o1, Course o2) {
@@ -105,12 +114,19 @@ public class Schedule implements Serializable {
             Collections.sort(courses, com);
         }
 
-        clearWarnings();
+        clearWarnings();// just clearing old warnings that possibly left out in warnings variable
 
+        // From here, detect overlapped classes. In each day of week, List<Course> is sorted by time,
+        // so it is relatively simple to detect overlapped.
+        // -> IF previous class end time is "larger" than current class start time, then that's the overlapped
         for(DayOfWeek day : map.keySet()){
             List<Course> courses = map.get(day);
             int[] prevClassTime = courses.get(0).getHoursOfDay().get(day).get(0).getInIntervalForm();
             for(int i=1; i<courses.size(); i++){
+                // courses.get(i)....get(day).get(0) <- why get(0)? Because some of the classes have multiple classes
+                // in one day (very minor cases). So in here, I am only checking if first class won't overlapped with
+                // other classes.
+                // TODO: Cover the edge case, where some of the class has two class in one day.
                 int[] currClassTime = courses.get(i).getHoursOfDay().get(day).get(0).getInIntervalForm();
                 if(prevClassTime[1] > currClassTime[0]){
                     // overlapped

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import org.tomoaki.coursehelper.Model.Data.Course;
 import org.tomoaki.coursehelper.View.Fragment.GeneratorAutomateFragment;
 import org.tomoaki.coursehelper.View.Fragment.GeneratorOptionsFragment;
+import org.tomoaki.coursehelper.View.Fragment.GeneratorScheduleFragment;
 import org.tomoaki.coursehelper.View.Fragment.ScheduleFragment;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class GeneratorPageAdapter extends FragmentPagerAdapter {
     private GeneratorOptionsFragment generatorOptionsFragment;
 
     //TODO: Might use same ViewModel, but it works tangible. Create new one? Works great, but diff is only ViewModel
-    private ScheduleFragment scheduleFragment;//TODO: in schedule class, add viewModel and instanceof
+    private GeneratorScheduleFragment scheduleFragment;//TODO: in schedule class, add viewModel and instanceof
 
     public void setCourses(List<Course> courses) {
         generatorAutomateFragment.setCourses(courses);
@@ -28,7 +29,7 @@ public class GeneratorPageAdapter extends FragmentPagerAdapter {
         this.numOfTabs = numOfTabs;
         generatorAutomateFragment = new GeneratorAutomateFragment();
         generatorOptionsFragment = new GeneratorOptionsFragment();
-        scheduleFragment = new ScheduleFragment();
+        scheduleFragment = new GeneratorScheduleFragment();
     }
 
     @Override
