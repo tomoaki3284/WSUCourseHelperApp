@@ -3,7 +3,10 @@
 Created by Tomoaki Mitsuhashi, [GitHub Page](https://github.com/tomoaki3284).
 Source code: [Here](https://github.com/tomoaki3284/WSUCourseHelperApp).
 
+## Sample Images
+Course Viewer
 ![ScreenShot](projectImages/projectOverviewViewer.png)
+Auto-Schedule Generator
 ![ScreenShot](projectImages/projectOverviewGenerator.png)
 
 ## Who is this project for?
