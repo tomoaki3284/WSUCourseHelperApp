@@ -4,6 +4,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dialog_header_textSize">10dp</string>
+    <string name="donation_description">\ \ \ \ \ \ WSU Technology (WuTech) Team’s mission is to provide free technology resources for anyone, anywhere. To run the free services on a non-free platform like iOS and Android, we need your help now to keep going. Any gift—even $5— would brighten our future.</string>
+    <string name="donationLink"><a href="https://www.patreon.com/WuTech">Patreon</a></string>
 
     <string-array name="special">
         <item>Special</item>

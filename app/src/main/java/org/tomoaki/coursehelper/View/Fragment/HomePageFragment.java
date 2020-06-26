@@ -41,6 +41,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
 
     private CoursesScheduleTabFragment coursesScheduleTabFragment;
     private GeneratorTabFragment generatorTabFragment;
+    private DonationFragment donationFragment;
 
     private View view;
     private MainActivity activity;//need this reference for replacing/adding fragment with other one
@@ -105,14 +106,14 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
                 if(coursesScheduleTabFragment == null) coursesScheduleTabFragment = new CoursesScheduleTabFragment();
                 assert  courses != null && courses.size() != 0;
                 coursesScheduleTabFragment.setCourses(courses);
-                activity.loadFragment(coursesScheduleTabFragment, coursesScheduleTabFragment.FRAG_TAG);
+                activity.loadFragment(coursesScheduleTabFragment, CoursesScheduleTabFragment.FRAG_TAG);
                 break;
 
             case R.id.homepage_card_generator:
                 if(generatorTabFragment == null) generatorTabFragment = new GeneratorTabFragment();
                 generatorTabFragment.setCourses(courses);
                 generatorTabFragment.setLabBinder(labBindMap);
-                activity.loadFragment(generatorTabFragment, generatorTabFragment.FRAG_TAG);
+                activity.loadFragment(generatorTabFragment, GeneratorTabFragment.FRAG_TAG);
                 break;
 
             // Fall through for now
@@ -121,9 +122,11 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
             case R.id.homepage_card_advanceGenerator:
 
             case R.id.homepage_card_rateProfessor:
+                break;
 
             case R.id.homepage_card_donation:
-                Toast.makeText(getActivity(), "Not Implemented Yet", Toast.LENGTH_SHORT).show();
+                if(donationFragment == null) donationFragment = new DonationFragment();
+                activity.loadFragment(donationFragment, DonationFragment.FRAG_TAG);
                 break;
         }
     }

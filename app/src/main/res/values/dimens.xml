@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="dialog_header_textSize">12dp</dimen>
+  <dimen name="donation_description_lineHeight">20dp</dimen>
 <!--  <dimen name=""-->
 </resources>
