@@ -8,7 +8,6 @@ import org.tomoaki.coursehelper.Model.Data.Course;
 import org.tomoaki.coursehelper.View.Fragment.GeneratorAutomateFragment;
 import org.tomoaki.coursehelper.View.Fragment.GeneratorOptionsFragment;
 import org.tomoaki.coursehelper.View.Fragment.GeneratorScheduleFragment;
-import org.tomoaki.coursehelper.View.Fragment.ScheduleFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +17,7 @@ public class GeneratorPageAdapter extends FragmentPagerAdapter {
     private GeneratorAutomateFragment generatorAutomateFragment;
     private GeneratorOptionsFragment generatorOptionsFragment;
 
-    //TODO: Might use same ViewModel, but it works tangible. Create new one? Works great, but diff is only ViewModel
-    private GeneratorScheduleFragment scheduleFragment;//TODO: in schedule class, add viewModel and instanceof
+    private GeneratorScheduleFragment scheduleFragment;
 
     public void setCourses(List<Course> courses) {
         generatorAutomateFragment.setCourses(courses);

@@ -24,13 +24,23 @@ import org.tomoaki.coursehelper.Model.MultiFilterable;
 import org.tomoaki.coursehelper.Model.PairableSpinner;
 import org.tomoaki.coursehelper.Model.Data.Schedule;
 import org.tomoaki.coursehelper.Model.ViewModel.GeneratorOptionsObserver;
+import org.tomoaki.coursehelper.Model.ViewModel.ScheduleObserver;
 import org.tomoaki.coursehelper.View.Adapter.CourseArrayAdapter;
 import org.tomoaki.coursehelper.View.EncapsulatedPairableSpinners;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,6 +94,8 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_generator_automate, container, false);
 
+        loadInternalFileStorageData();
+
         if(consideration == null) consideration = new Schedule();
         if(courseTitleInConsideration == null) courseTitleInConsideration = new HashSet<>();
         if(adapter == null) adapter = new CourseArrayAdapter(getActivity(), 0, courses, R.layout.generator_course_layout_simple);
@@ -103,6 +115,43 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
         generatorOptionsObserver = new ViewModelProvider(requireActivity()).get(GeneratorOptionsObserver.class);
         // for bottomSheetDialogFragment <-> GeneratorAutomateTab
         generatorObserver = new ViewModelProvider(requireActivity()).get(GeneratorObserver.class);
+    }
+
+    private void loadInternalFileStorageData() {
+        consideration = new Schedule();
+        try {
+            File file = new File(getContext().getDir("data", MODE_PRIVATE), "generatorFile.txt");
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+            consideration = (Schedule) ois.readObject();
+            ois.close();
+            System.out.println("Generator Page: Successfully read schedule object from local file");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(consideration != null){
+            courseTitleInConsideration = new HashSet<>();
+            for(Course course : consideration.getCourses()){
+                courseTitleInConsideration.add(course.getTitle());
+            }
+        }
+    }
+
+    // This is called when user navigates backwards, or fragment is replaced/remove
+    // Called when fragment is added to back stack, then remove/replaced
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            File file = new File(getContext().getDir("data", MODE_PRIVATE), "generatorFile.txt");
+            FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(consideration);
+            oos.flush();
+            oos.close();
+            System.out.println("Generator Page: Successfully wrote schedule object to local file");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //call when user removed course from scheduleFragment or other
@@ -214,22 +263,19 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
         // first, get all the classes that has a same name in list
         //[[Eng,Eng,Eng],[Math,Math,Math,Math],[Env]], something like this
         List<List<Course>> coursesList = findAllCourses();
+        Comparator<List<Course>> com = new Comparator<List<Course>>() {
+            @Override
+            public int compare(List<Course> o1, List<Course> o2) {
+                if(o1.size() > 0 && o2.size() > 0){
+                    return o1.get(0).getTitle().compareTo(o2.get(0).getTitle());
+                }
+                return 0;
+            }
+        };
+        Collections.sort(coursesList, com);
         //now combination
         List<Schedule> res = new ArrayList<>();
         backtrack(coursesList, 0, new Schedule(), res, coursesList.size());
-
-//        System.out.println("Printing Courses");
-//        List<Schedule> availables = new ArrayList<>();
-//        for(Schedule schedule : res){
-//            boolean timeOverlapped = schedule.isHoursOverlap();
-//            if(!timeOverlapped) availables.add(schedule);
-//            System.out.println("Below have overlapped = " + timeOverlapped);
-//            for(Course course : schedule.getCourses()){
-//                System.out.println(course.getTitle() + ": " + course.getTimeContent());
-//            }
-//            System.out.println("-----------------");
-//        }
-//        System.out.println("Finish Printing");
 
         return res;
     }
@@ -270,7 +316,7 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
                 }
             }
         }
-        //user didn't put lab course under course consideration
+        //user didn't put lab course under course consideration correspond to param course
         return -1;
     }
 

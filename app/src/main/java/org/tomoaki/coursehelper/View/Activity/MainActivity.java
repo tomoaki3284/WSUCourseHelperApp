@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
         //set homepage fragment to whatever I want
-//        homePage = new CoursesScheduleTabFragment();
         homePage = new HomePageFragment();
         homePage.setParentActivity(this);
 

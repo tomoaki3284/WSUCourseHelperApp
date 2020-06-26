@@ -13,7 +13,6 @@ import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 import org.tomoaki.coursehelper.Model.Data.Course;
 import org.tomoaki.coursehelper.Model.Data.CourseOption;
 import org.tomoaki.coursehelper.Model.Data.Schedule;
-import org.tomoaki.coursehelper.View.Fragment.GeneratorOptionsFragment;
 import org.tomoaki.coursehelper.View.ViewHolder.CourseOptionViewHolder;
 import org.tomoaki.coursehelper.View.ViewHolder.CourseViewHolder;
 
