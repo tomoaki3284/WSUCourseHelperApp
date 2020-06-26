@@ -3,8 +3,8 @@
 Created by Tomoaki Mitsuhashi, [GitHub Page](https://github.com/tomoaki3284).
 Source code: [Here](https://github.com/tomoaki3284/WSUCourseHelperApp).
 
-![ScreenShot](projectImages/project_overview_viewer.png)
-![ScreenShot](projectImages/project_overview_generator.png)
+![ScreenShot](projectImages/projectOverviewViewer.png)
+![ScreenShot](projectImages/projectOverviewGenerator.png)
 
 ## Who is this project for?
 This project is for students at Westfield State University selecting the courses for future semesters with less work by utilizing various features, such as schedule visualization, filter course by various categories, etc.
