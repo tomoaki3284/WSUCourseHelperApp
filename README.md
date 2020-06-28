@@ -22,7 +22,7 @@ The **problem** with the current process of selecting the courses through univer
 - [x] Time overlapped detector from the premade schedule by the user.
 - [x] Credit calculation, and some other simple calculation system that can be helpful to students.
 - [x] Save data when the app is closed (using the internal file in android).
-- [x ] RateMyProfessors feature to view professors rating from students.
+- [x] RateMyProfessors feature to view professors rating from students.
 
 Available in future updates!
 - [ ] Search courses by name, title, time range, etc.
