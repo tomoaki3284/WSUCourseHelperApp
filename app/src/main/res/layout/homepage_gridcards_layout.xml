@@ -190,7 +190,6 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:backgroundTint="@android:color/darker_gray"
             app:cardElevation="8dp"
             app:cardCornerRadius="8dp">
 
@@ -210,7 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
-                    android:text="Rate Professor"
+                    android:text="Rate Professors"
                     android:textAlignment="center"
                     android:textSize="18sp"/>
             </LinearLayout>

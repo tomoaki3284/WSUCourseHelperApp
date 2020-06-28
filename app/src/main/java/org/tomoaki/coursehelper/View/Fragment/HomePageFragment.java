@@ -2,46 +2,44 @@ package org.tomoaki.coursehelper.View.Fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.ProgressBar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.example.coursehelper.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.tomoaki.coursehelper.Model.Data.Course;
+import org.tomoaki.coursehelper.View.Activity.MainActivity;
 import org.tomoaki.coursehelper.View.TabFragment.CoursesScheduleTabFragment;
 import org.tomoaki.coursehelper.View.TabFragment.GeneratorTabFragment;
-import org.tomoaki.coursehelper.View.Activity.MainActivity;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePageFragment extends Fragment implements View.OnClickListener{
+public class HomePageFragment extends Fragment implements View.OnClickListener {
 
     public final static String FRAG_TAG = "com.exmaple.coursehelper.View.HomePageFragment";
 
     private CoursesScheduleTabFragment coursesScheduleTabFragment;
     private GeneratorTabFragment generatorTabFragment;
     private DonationFragment donationFragment;
+    private RateProfessorFragment rateProfessorFragment;
 
     private View view;
     private MainActivity activity;//need this reference for replacing/adding fragment with other one
@@ -65,7 +63,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
         view = inflater.inflate(R.layout.homepage_gridcards_layout, container, false);
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        if(courses == null || courses.size() < 1){
+        if (courses == null || courses.size() < 1) {
             new ReadCourses().execute("https://wsucoursehelper.s3.amazonaws.com/current-semester.json");
         }
 
@@ -101,16 +99,16 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         //TODO: Generate each fragment if null, and replace it
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.homepage_card_viewCourses:
-                if(coursesScheduleTabFragment == null) coursesScheduleTabFragment = new CoursesScheduleTabFragment();
-                assert  courses != null && courses.size() != 0;
+                if (coursesScheduleTabFragment == null) coursesScheduleTabFragment = new CoursesScheduleTabFragment();
+                assert courses != null && courses.size() != 0;
                 coursesScheduleTabFragment.setCourses(courses);
                 activity.loadFragment(coursesScheduleTabFragment, CoursesScheduleTabFragment.FRAG_TAG);
                 break;
 
             case R.id.homepage_card_generator:
-                if(generatorTabFragment == null) generatorTabFragment = new GeneratorTabFragment();
+                if (generatorTabFragment == null) generatorTabFragment = new GeneratorTabFragment();
                 generatorTabFragment.setCourses(courses);
                 generatorTabFragment.setLabBinder(labBindMap);
                 activity.loadFragment(generatorTabFragment, GeneratorTabFragment.FRAG_TAG);
@@ -120,12 +118,15 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
             case R.id.homepage_card_setting:
 
             case R.id.homepage_card_advanceGenerator:
+                break;
 
             case R.id.homepage_card_rateProfessor:
+                if (rateProfessorFragment == null) rateProfessorFragment = new RateProfessorFragment();
+                activity.loadFragment(rateProfessorFragment, RateProfessorFragment.FRAG_TAG);
                 break;
 
             case R.id.homepage_card_donation:
-                if(donationFragment == null) donationFragment = new DonationFragment();
+                if (donationFragment == null) donationFragment = new DonationFragment();
                 activity.loadFragment(donationFragment, DonationFragment.FRAG_TAG);
                 break;
         }
@@ -150,14 +151,14 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
                 String urlStr = (String) objects[0];
                 URL url = new URL(urlStr);
                 courses = mapper.readValue(url, new TypeReference<List<Course>>(){ });
-                if(courses == null){
-                    System.out.println("***Courses Object Null***");
+                if (courses == null) {
+                    System.out.println("AsyncTask: Courses Object Null");
                 }
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            if(courses == null){
+            if (courses == null) {
                 System.out.println("Courses is NULL in AsyncTask");
             }
 
@@ -171,15 +172,15 @@ public class HomePageFragment extends Fragment implements View.OnClickListener{
             //Course with Labs
             labBindMap = new HashMap<>();
             Course prevCourse = courses.get(0);
-            for(int i=1; i<courses.size(); i++){
+            for (int i = 1; i < courses.size(); i++) {
                 Course currCourse = courses.get(i);
-                if(currCourse.getIsLabCourse()){
-                    if(labBindMap.containsKey(prevCourse)){
+                if (currCourse.getIsLabCourse()) {
+                    if (labBindMap.containsKey(prevCourse)) {
                         labBindMap.get(prevCourse).add(currCourse);
-                    }else{
+                    } else {
                         labBindMap.put(prevCourse, new ArrayList<>(Arrays.asList(currCourse)));
                     }
-                }else{
+                } else {
                     prevCourse = currCourse;
                 }
             }

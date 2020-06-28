@@ -61,8 +61,9 @@ public class Schedule implements Serializable {
      * @return True, if successfully found course to be removed False, otherwise
      */
     public boolean removeCourse(Course course) {
-        totalCredit -= course.getCredit();
-        return courses.remove(course);
+        boolean containsCourse = courses.remove(course);
+        if(containsCourse) totalCredit -= course.getCredit();
+        return containsCourse;
     }
 
     /**

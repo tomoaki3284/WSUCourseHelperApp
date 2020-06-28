@@ -86,13 +86,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 HomePageFragment myFragment = (HomePageFragment) fragmentManager.findFragmentByTag(HomePageFragment.FRAG_TAG);
-                if(myFragment != null ){
-                    if(myFragment.isVisible()){
-                        Toast.makeText(MainActivity.this, "You are already in Home Page", Toast.LENGTH_SHORT).show();
-                    } else {
-                        returnToHomePage();
-                    }
+                if(myFragment == null) return;
+                if(myFragment.isVisible()){
+                    Toast.makeText(MainActivity.this, "You are already in Home Page", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                returnToHomePage();
             }
         });
     }
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(tag.equals(CoursesScheduleTabFragment.FRAG_TAG)){
             fragmentTransaction.addToBackStack(tag);
-        }else {
+        } else {
             fragmentTransaction.addToBackStack(tag);
         }
 

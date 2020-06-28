@@ -229,10 +229,9 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
         closeTheDistanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Pressed", Toast.LENGTH_SHORT).show();
                 List<Schedule> schedules = getCoursesCombination();
                 notifyCombinationCompletedToOptionsObserver(schedules);
-                System.out.println("Notified!!!!!!!!!");
+                Toast.makeText(getContext(), schedules.size() + " options generated", Toast.LENGTH_SHORT).show();
             }
         });
     }
