@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void returnToHomePage() {
         int entryCount = fragmentManager.getBackStackEntryCount();
+
         //pop stacked fragment until size becomes 1
         for(int i=0; i<entryCount-1; i++){
             fragmentManager.popBackStackImmediate();
