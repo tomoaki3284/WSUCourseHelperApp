@@ -212,26 +212,6 @@ public class CoursesFragment extends Fragment implements MultiFilterable, Course
         adapter.updateList(updatedCourses);
     }
 
-//    public void setupSearchBar() {
-//        searchBar = view.findViewById(R.id.courses_searchBar);
-//        searchBar.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                adapter.getFilter().filter(s);
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//    }
-
     public void updateList() {
         if (courses == null || courses.size() == 0 || adapter == null) return;
         adapter.updateList(courses);

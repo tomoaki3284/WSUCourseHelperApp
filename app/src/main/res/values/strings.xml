@@ -11,6 +11,7 @@
         <item>Special</item>
         <item>lab course</item>
         <item>online lecture</item>
+        <item>remsyc remote sync</item>
     </string-array>
 
     <string-array name="cores">

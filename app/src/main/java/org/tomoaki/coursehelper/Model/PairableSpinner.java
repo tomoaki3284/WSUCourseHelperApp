@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PairableSpinner {
+
+    private static final int LAB = 1;
+    private static final int ONLINE = 2;
+    private static final int REMOTE = 3;
+
     private String categoryName;
     private Spinner spinner;
     private int position;
@@ -88,12 +93,18 @@ public class PairableSpinner {
                 break;
 
             case "special":
-                boolean isLab = target.equals("lab");
+                int selection = 0;
+                if(target.equals("lab")) selection = LAB;
+                else if(target.equals("online")) selection = ONLINE;
+                else if(target.equals("remsyc")) selection = REMOTE;
+
                 for(int i=0; i<courses.size(); i++){
                     Course course = courses.get(i);
-                    if(isLab && course.getIsLabCourse()){
+                    if(selection == LAB && course.getIsLabCourse()){
                         filteredCourses.add(course);
-                    }else if(!isLab && course.getRoom().toLowerCase().equals("online")){
+                    }else if(selection == ONLINE && course.getRoom().toLowerCase().equals("online")){
+                        filteredCourses.add(course);
+                    }else if(selection == REMOTE && course.getRoom().toLowerCase().contains("remsyc")){
                         filteredCourses.add(course);
                     }
                 }
