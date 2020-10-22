@@ -326,7 +326,7 @@ public class GeneratorAutomateFragment extends Fragment implements MultiFilterab
             List<Course> courses = new ArrayList<>();
             for(Course course : originalCourses){
                 if(course.getTitle().equals(courseTitle)){
-                    if(!course.getIsCancelled() && course.getTimeContent() != null && course.getTimeContent().length() != 0) courses.add(course);
+                    if(!course.getIsCancelled()) courses.add(course);
                 }
             }
             res.add(courses);
